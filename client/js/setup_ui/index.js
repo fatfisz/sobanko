@@ -7,6 +7,7 @@ var { width, height, tileSize } = require('../constants');
 var { $ } = require('../utils');
 
 
+// Setup the canvas
 var canvas = $('canvas')[0];
 var resizeCanvas = canvasResizer(canvas);
 

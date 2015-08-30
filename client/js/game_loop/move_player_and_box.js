@@ -7,14 +7,6 @@ var { isPassable, getTargetPosition } = require('../utils');
 var boxPulling = require('./box_pulling');
 
 
-function endMove(level) {
-  level.currentState.direction = null;
-
-  if (level.pulledBox.direction) {
-    boxPulling.stop(level);
-  }
-}
-
 var directionToAxis = {
   up: 'Y',
   down: 'Y',
@@ -28,6 +20,14 @@ var directionToDirectionMod = {
   left: -1,
   right: 1,
 };
+
+function endMove(level) {
+  level.clearCurrentState();
+
+  if (level.pulledBoxState.direction) {
+    boxPulling.stop(level);
+  }
+}
 
 function movePlayer(level, direction, delta) {
   var axis = directionToAxis[direction];
@@ -59,13 +59,10 @@ module.exports = function movePlayerAndBox(level, delta) {
       return;
     }
 
-    assign(currentState, controlsState);
+    level.setCurrentState(controlsState);
+    currentState = level.currentState;
+    assign(level, { targetX, targetY });
     ({ direction } = currentState);
-    assign(level, {
-      currentState,
-      targetX,
-      targetY,
-    });
 
     if (currentState.pulling) {
       boxPulling.start(level);

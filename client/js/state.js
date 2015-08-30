@@ -10,12 +10,12 @@ var { $ } = require('./utils');
 var playing = false;
 var currentLevel;
 
-function controlsStateChanged(state) {
+function controlsStateChanged(controlsState) {
   if (!playing) {
     return;
   }
 
-  currentLevel.move(state);
+  currentLevel.move(controlsState);
 }
 
 function gameFinished() {

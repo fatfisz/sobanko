@@ -29,7 +29,7 @@ function step() {
   if (level.playerMoved) {
     drawPlayer(level);
 
-    if (level.pulledBox.direction) {
+    if (level.pulledBoxState.direction) {
       drawPulledBox(level);
     }
 
@@ -46,6 +46,7 @@ function start(_level) {
 
   clear();
   drawLevelFragment(level, 0, 0, level.width, level.height);
+  drawPlayer(level);
 
   return stop;
 }

@@ -10,6 +10,10 @@ var blankState = {
   direction: null,
   pulling: false,
 };
+var blankPulledBoxState = {
+  direction: null,
+  type: null,
+};
 
 function cloneData(level) {
   level.data = level.data.map((row) => row.slice()); // clone rows
@@ -21,6 +25,28 @@ var LevelPrototype = {
     this.controlsState = controlsState;
   },
 
+  setCurrentState(state) {
+    this.currentState = assign({}, state);
+  },
+
+  clearCurrentState() {
+    this.currentState = blankState;
+  },
+
+  setPulledBoxState(state) {
+    this.pulledBoxState = assign({}, state);
+  },
+
+  clearPulledBoxState() {
+    this.pulledBoxState = blankPulledBoxState;
+  },
+
+  undo() {
+    this.controlsState = blankState;
+    this.currentState = blankState;
+    this.pulledBoxState = blankPulledBoxState;
+  },
+
 };
 
 module.exports = function processLevel(level, uiState) {
@@ -28,20 +54,18 @@ module.exports = function processLevel(level, uiState) {
     Object.create(LevelPrototype),
     {
       uiState,
-      pulledBox: {
-        direction: null,
-        type: null,
-      },
-      currentState: blankState,
       controlsState: blankState,
+      currentState: blankState,
+      pulledBoxState: blankPulledBoxState,
+      playerMoved: false,
       offsetX: (canvasWidth - level.width) / 2,
       offsetY: (canvasHeight - level.height) / 2,
-      playerMoved: true, // force first draw
       boxesLeft: 0,
     },
     level
   );
 
+  // Clone data so that the levels remain unchanged
   cloneData(result);
 
   result.data.forEach((row, y) => {

@@ -1,7 +1,5 @@
 'use strict';
 
-var assign = require('object-assign');
-
 var { tiles } = require('../constants');
 var {
   isBoxTile,
@@ -12,7 +10,7 @@ var {
 
 
 function start(level) {
-  var { data, currentState, pulledBox, playerX, playerY } = level;
+  var { data, currentState, playerX, playerY } = level;
   var { direction } = currentState;
   var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
   var boxTile = data[boxY][boxX];
@@ -22,21 +20,22 @@ function start(level) {
   }
 
   data[boxY][boxX] = getTileBeforePulling(boxTile);
-  assign(pulledBox, {
+  level.setPulledBoxState({
     direction,
     type: boxTile,
   });
 }
 
 function stop(level) {
-  var { data, uiState, pulledBox, playerX, playerY } = level;
-  var [boxX, boxY] = getBoxPosition(pulledBox.direction, playerX, playerY);
+  var { data, uiState, pulledBoxState, playerX, playerY } = level;
+  var { direction, type } = pulledBoxState;
+  var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
   var newBoxTile = getTileAfterPulling(data[boxY][boxX]);
 
   data[boxY][boxX] = newBoxTile;
-  pulledBox.direction = null;
+  level.clearPulledBoxState();
 
-  if (newBoxTile === pulledBox.type) {
+  if (newBoxTile === type) {
     return;
   }
 

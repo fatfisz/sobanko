@@ -1,69 +1,61 @@
 'use strict';
 
-var keys = {
-  16: 'pulling',
+var shiftKey = 16;
+
+var directionKeys = {
   37: 'left',
   38: 'up',
   39: 'right',
   40: 'down',
 };
 
-var order = [];
+var pressedKeys = [];
 
-module.exports = function setup(callback, controlsState) {
+function getState() {
+  var length = pressedKeys.length;
 
-  window.onkeydown = (event) => {
-    var which = keys[event.which];
+  if (length === 0) {
+    return null;
+  }
 
-    if (!which) {
-      return;
+  var shiftIndex = pressedKeys.indexOf(shiftKey);
+  var lastKey = pressedKeys[length - 1];
+
+  if (shiftIndex === length - 1) {
+    lastKey = length === 1 ? null : pressedKeys[length - 2];
+  }
+
+  if (directionKeys[lastKey]) {
+    return {
+      direction: directionKeys[lastKey],
+      pulling: shiftIndex !== -1,
+    };
+  }
+
+  if (shiftIndex === length - 1) {
+    // Shift is the last key, but the last but one is not a direction key
+    return null;
+  }
+
+  return null;
+}
+
+module.exports = function setup(callback) {
+
+  window.onkeydown = ({ which }) => {
+    if (pressedKeys.indexOf(which) === -1) {
+      pressedKeys.push(which);
     }
-
-    if (which === 'pulling') {
-      if (!controlsState.pulling) {
-        controlsState.pulling = true;
-        callback();
-      }
-      return;
-    }
-
-    if (order.indexOf(which) !== -1) {
-      return;
-    }
-
-    if (order.push(which) === 1) {
-      controlsState.direction = which;
-      callback();
-    }
+    callback(getState());
   };
 
-  window.onkeyup = (event) => {
-    var which = keys[event.which];
+  window.onkeyup = ({ which }) => {
+    var pos = pressedKeys.indexOf(which);
 
-    if (!which) {
-      return;
+    if (pos !== -1) {
+      pressedKeys.splice(pos, 1);
     }
-
-    if (which === 'pulling') {
-      if (controlsState.pulling) {
-        controlsState.pulling = false;
-        callback();
-      }
-      return;
-    }
-
-    var whichOrder = order.indexOf(which);
-
-    if (whichOrder === -1) {
-      return;
-    }
-
-    order.splice(whichOrder, 1);
-
-    if (whichOrder === 0) {
-      controlsState.direction = order[0] || null;
-      callback();
-    }
+    callback(getState());
   };
 
 };
