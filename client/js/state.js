@@ -4,6 +4,7 @@ var gameLoop = require('./game_loop');
 var levels = require('./levels');
 var processLevel = require('./process_level');
 var setupControls = require('./setup_controls');
+var storage = require('./storage');
 var { $ } = require('./utils');
 
 
@@ -15,7 +16,11 @@ function controlsStateChanged(controlsState) {
     return;
   }
 
-  currentLevel.move(controlsState);
+  if (controlsState.special === 'undo') {
+    state.undo();
+  } else {
+    currentLevel.move(controlsState);
+  }
 }
 
 function gameFinished() {
@@ -49,6 +54,7 @@ var state = {
 
     playing = true;
     currentLevel = processLevel(levels[which], state);
+    storage.pushState(currentLevel);
     gameLoop.start(currentLevel);
     $('#start-screen')[0].classList.add('hidden');
   },
@@ -59,7 +65,22 @@ var state = {
     }
 
     playing = false;
+    storage.resetUndo();
     gameLoop.stop();
+  },
+
+  moveFinished() {
+    if (playing) {
+      storage.pushState(currentLevel);
+    }
+  },
+
+  undo() {
+    var isMoving = currentLevel.currentState.direction;
+
+    currentLevel.undo();
+    storage[isMoving ? 'restoreState' : 'popState'](currentLevel);
+    gameLoop.scheduleRedraw();
   },
 
   boxesLeftChanged(boxesLeft) {

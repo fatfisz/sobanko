@@ -1,6 +1,7 @@
 'use strict';
 
 var shiftKey = 16;
+var ctrlKey = 17;
 
 var directionKeys = {
   37: 'left',
@@ -9,9 +10,13 @@ var directionKeys = {
   40: 'down',
 };
 
+var specialKeys = {
+  90: 'undo',
+};
+
 var pressedKeys = [];
 
-function getState() {
+function getState(doNotCheckSpecial) {
   var length = pressedKeys.length;
 
   if (length === 0) {
@@ -19,6 +24,7 @@ function getState() {
   }
 
   var shiftIndex = pressedKeys.indexOf(shiftKey);
+  var ctrlIndex = pressedKeys.indexOf(ctrlKey);
   var lastKey = pressedKeys[length - 1];
 
   if (shiftIndex === length - 1) {
@@ -35,6 +41,17 @@ function getState() {
   if (shiftIndex === length - 1) {
     // Shift is the last key, but the last but one is not a direction key
     return null;
+  }
+
+  if (doNotCheckSpecial) {
+    // Don't fire special keys on keyup
+    return null;
+  }
+
+  if (specialKeys[lastKey] && ctrlIndex !== -1) {
+    return {
+      special: specialKeys[lastKey],
+    };
   }
 
   return null;
@@ -55,7 +72,7 @@ module.exports = function setup(callback) {
     if (pos !== -1) {
       pressedKeys.splice(pos, 1);
     }
-    callback(getState());
+    callback(getState(true));
   };
 
 };

@@ -4,6 +4,7 @@ require('./levels');
 
 var canvasResizer = require('./canvas_resizer');
 var { width, height, tileSize } = require('../constants');
+var state = require('../state');
 var { $ } = require('../utils');
 
 
@@ -16,3 +17,10 @@ canvas.height = height * tileSize;
 
 resizeCanvas();
 window.onresize = resizeCanvas;
+
+// Setup the undo button
+var undo = $('#undo')[0];
+
+undo.onclick = () => {
+  state.undo();
+};

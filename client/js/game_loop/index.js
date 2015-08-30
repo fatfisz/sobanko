@@ -7,6 +7,7 @@ var drawPulledBox = require('../draw/pulled_box');
 var movePlayerAndBox = require('./move_player_and_box');
 
 
+var redrawScheduled = false;
 var timestamp;
 var delta;
 var level;
@@ -21,6 +22,11 @@ function step() {
 
   delta = performance.now() - timestamp;
   timestamp += delta;
+
+  if (redrawScheduled) {
+    drawLevelFragment(level, 0, 0, level.width, level.height);
+    drawPlayer(level);
+  }
 
   if (level.currentState.direction || level.controlsState.direction) {
     movePlayerAndBox(level, delta);
@@ -43,10 +49,9 @@ function start(_level) {
   timestamp = performance.now();
   level = _level;
   stopped = false;
+  scheduleRedraw();
 
   clear();
-  drawLevelFragment(level, 0, 0, level.width, level.height);
-  drawPlayer(level);
 
   return stop;
 }
@@ -55,7 +60,12 @@ function stop() {
   stopped = true;
 }
 
+function scheduleRedraw() {
+  redrawScheduled = true;
+}
+
 module.exports = {
   start,
   stop,
+  scheduleRedraw,
 };

@@ -9,6 +9,7 @@ var setupMouse = require('./mouse');
 var blankState = {
   direction: null,
   pulling: false,
+  special: null,
 };
 
 var controlsState = blankState;
@@ -18,7 +19,8 @@ function getStateCallback(callback) {
     var nextState = assign({}, blankState, _nextState);
 
     if (controlsState.direction !== nextState.direction ||
-        controlsState.pulling !== nextState.pulling) {
+        controlsState.pulling !== nextState.pulling ||
+        controlsState.special !== nextState.special) {
       controlsState = nextState;
       callback(controlsState);
     }

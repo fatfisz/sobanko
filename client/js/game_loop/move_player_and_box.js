@@ -27,6 +27,8 @@ function endMove(level) {
   if (level.pulledBoxState.direction) {
     boxPulling.stop(level);
   }
+
+  level.uiState.moveFinished();
 }
 
 function movePlayer(level, direction, delta) {
