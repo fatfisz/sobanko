@@ -90,7 +90,15 @@ module.exports = function tasks(grunt) {
         options: {
           plugins: [
             new (require('less-plugin-autoprefix'))(),
-            new (require('less-plugin-clean-css'))(),
+            new (require('less-plugin-clean-css'))({
+              compatibility: {
+                units: {
+                  in: false,
+                  pc: false,
+                  pt: false,
+                },
+              },
+            }),
           ],
         },
         src: '<%= style_bundle_src %>',
