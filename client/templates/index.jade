@@ -18,6 +18,9 @@ html
       #moves
         span#moves-count
         | #{' '}moves
+      #best
+        | Your best:#{' '}
+        span#best-count
 
     #start-screen
       h1 Sobanko
@@ -28,7 +31,9 @@ html
       h4#win-moves
         | You've finished with#{' '}
         span#win-moves-count
-        | #{' '}moves!
+        | #{' '}moves
+      h5#win-best
+        | You've beaten your previous best score!
       #back-to-level-select.button Back
 
     script(src='static/js/bundle.js')

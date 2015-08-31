@@ -4,6 +4,7 @@ var assign = require('object-assign');
 
 
 var undoPrefix = 'undo/';
+var bestPrefix = 'best/';
 
 var stateIndex = +localStorage.getItem('stateIndex');
 
@@ -75,6 +76,16 @@ function popState(level) {
   restoreState(level);
 }
 
+function getBest(which) {
+  var best = localStorage.getItem(bestPrefix + which);
+
+  return best === null ? null : +best;
+}
+
+function saveBest(which, moves) {
+  localStorage.setItem(bestPrefix + which, moves);
+}
+
 module.exports = {
   saveLevel,
   clearLevel,
@@ -82,6 +93,8 @@ module.exports = {
   pushState,
   restoreState,
   popState,
+  getBest,
+  saveBest,
 
   get movesStored() {
     return stateIndex - 1;

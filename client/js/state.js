@@ -36,9 +36,14 @@ function updateBoxCount() {
 }
 
 function initStatus() {
-  updateMoveCount();
-  updateBoxCount();
   $('#destination-count')[0].textContent = currentLevel.destinationCount;
+  updateBoxCount();
+  updateMoveCount();
+
+  var best = storage.getBest(currentLevel.which);
+
+  $('#best')[0].style.display = best === null ? 'none' : '';
+  $('#best-count')[0].textContent = best;
 }
 
 function startLevel(which) {
@@ -79,14 +84,20 @@ function gameWon() {
     throw new Error('Already stopped');
   }
 
+  var { which } = currentLevel;
   var moves = storage.movesStored;
+  var newBest = moves < storage.getBest(which);
 
   playing = false;
   storage.clearLevel();
   storage.resetUndo();
   gameLoop.stop();
+  if (newBest) {
+    storage.saveBest(which, moves);
+  }
 
   $('#win-moves-count')[0].textContent = moves;
+  $('#win-best')[0].style.display = newBest ? '' : 'none';
 
   root.className = 'game-won';
 }
