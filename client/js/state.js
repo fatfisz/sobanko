@@ -91,6 +91,14 @@ function gameWon() {
   root.className = 'game-won';
 }
 
+function backToLevelSelect() {
+  if (process.env.NODE_ENV !== 'prodcution' && playing) {
+    throw new Error('The game should have been stopped');
+  }
+
+  root.className = '';
+}
+
 function moveFinished() {
   storage.pushState(currentLevel);
   updateMoveCount(storage.movesStored);
@@ -115,6 +123,7 @@ module.exports = {
   controlsDetected,
   startLevel,
   stopLevel,
+  backToLevelSelect,
   moveFinished,
   undo,
 };

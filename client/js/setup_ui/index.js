@@ -21,5 +21,7 @@ window.onresize = resizeCanvas;
 // Setup the Undo button
 $('#undo')[0].onclick = state.undo;
 
-// Setup the Back button
+// Setup the Back buttons
 $('#back')[0].onclick = state.stopLevel;
+
+$('#back-to-level-select')[0].onclick = state.backToLevelSelect;

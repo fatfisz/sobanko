@@ -8,8 +8,8 @@ html
     #game-container
       canvas
       #menu
-        #undo.menu-button Undo
-        #back.menu-button Back
+        #undo.button Undo
+        #back.button Back
       #moves
         span#moves-count
         | #{' '}moves
@@ -25,9 +25,10 @@ html
 
     #win-screen
       h1 Good job!
-      #win-moves
+      h4#win-moves
         | You've finished with#{' '}
         span#win-moves-count
         | #{' '}moves!
+      #back-to-level-select.button Back
 
     script(src='static/js/bundle.js')
