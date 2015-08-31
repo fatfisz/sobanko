@@ -51,22 +51,26 @@ var LevelPrototype = {
 };
 
 module.exports = function getLevel(which, uiState) {
-  var level = levels[which];
+  var data = levels[which];
+  var width = data[0].length;
+  var height = data.length;
   var result = assign(
     Object.create(LevelPrototype),
     {
-      which,
       uiState,
+      which,
+      data,
+      width,
+      height,
       controlsState: blankState,
       currentState: blankState,
       pulledBoxState: blankPulledBoxState,
       playerMoved: false,
-      offsetX: (canvasWidth - level.width) / 2,
-      offsetY: (canvasHeight - level.height) / 2,
+      offsetX: (canvasWidth - width) / 2,
+      offsetY: (canvasHeight - height) / 2,
       boxesLeft: 0,
       destinationCount: 0,
-    },
-    level
+    }
   );
 
   // Clone data so that the levels remain unchanged
