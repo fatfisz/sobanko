@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-family: sans-serif;
   font-size: 16px;
@@ -7,8 +11,15 @@ body {
   user-select: none;
 }
 
+.center-elements() {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .fullscreen() {
-  background: #fff;
+  background: white;
   height: 100%;
   left: 0;
   position: fixed;
@@ -18,13 +29,6 @@ body {
 
 .shadow() {
   box-shadow: 0 0 12px 0 rgba(0, 0, 0, .75);
-}
-
-.center-elements() {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 #game-container,
@@ -105,18 +109,47 @@ body {
 
 #levels {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  max-width: (10 * (44px + 2 * 10px) + 2 * 30px);
+  padding: 0 30px;
+  width: 100%;
 }
 
 .level {
-  border: 1px solid black;
   border-radius: 4px;
+  border: 2px solid black;
   cursor: pointer;
-  height: 40px;
-  margin: 5px;
-  width: 40px;
+  height: 44px;
   line-height: 40px;
+  margin: 10px;
   text-align: center;
+  width: 44px;
+}
+
+.continue {
+  position: relative;
+
+  &:before {
+    background: white;
+    border: 2px solid black;
+    border-radius: 4px;
+    content: 'Continue';
+    font-size: 11px;
+    line-height: 14px;
+    height: 14px;
+    position: absolute;
+    left: 50%;
+    bottom: -13px;
+    padding: 0 3px;
+    transform: translateX(-50%);
+  }
+}
+
+.solved {
+  &, &:before {
+    border-color: green;
+  }
 }
 
 #win-screen {

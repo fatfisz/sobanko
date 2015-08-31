@@ -100,7 +100,7 @@ module.exports = {
     return stateIndex - 1;
   },
 
-  get savedLevel() {
+  get level() {
     var level = localStorage.getItem('level');
 
     return level === null ? null : +level;

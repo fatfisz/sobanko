@@ -36,6 +36,16 @@ function updateBoxCount() {
 }
 
 function initStatus() {
+  setTimeout(() => {
+    var currentContinue = $('.level.continue')[0];
+
+    if (currentContinue) {
+      currentContinue.classList.remove('continue');
+    }
+
+    $('.level')[currentLevel.which].classList.add('continue');
+  }, 1000);
+
   $('#destination-count')[0].textContent = currentLevel.destinationCount;
   updateBoxCount();
   updateMoveCount();
@@ -54,7 +64,7 @@ function startLevel(which) {
   playing = true;
   currentLevel = getLevel(which, module.exports);
 
-  if (storage.savedLevel === which) {
+  if (storage.level === which) {
     storage.restoreState(currentLevel);
   } else {
     storage.resetUndo();
@@ -86,13 +96,14 @@ function gameWon() {
 
   var { which } = currentLevel;
   var moves = storage.movesStored;
-  var newBest = moves < storage.getBest(which);
+  var best = storage.getBest(which);
+  var newBest = moves < best;
 
   playing = false;
   storage.clearLevel();
   storage.resetUndo();
   gameLoop.stop();
-  if (newBest) {
+  if (best === null || newBest) {
     storage.saveBest(which, moves);
   }
 
@@ -100,6 +111,11 @@ function gameWon() {
   $('#win-best')[0].style.display = newBest ? '' : 'none';
 
   root.className = 'game-won';
+
+  var levelButton = $('.level.continue')[0];
+
+  levelButton.classList.add('solved');
+  levelButton.classList.remove('continue');
 }
 
 function backToLevelSelect() {
