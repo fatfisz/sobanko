@@ -27,9 +27,16 @@ body {
   justify-content: center;
 }
 
-#game-container {
+#game-container,
+#start-screen,
+#win-screen {
   .center-elements();
   .fullscreen();
+}
+
+#start-screen,
+#win-screen {
+  .shadow();
 }
 
 #menu {
@@ -77,9 +84,6 @@ body {
 }
 
 #start-screen {
-  .center-elements();
-  .fullscreen();
-  .shadow();
   transition: top 1s;
 
   html.playing & {
@@ -108,9 +112,6 @@ body {
 }
 
 #win-screen {
-  .center-elements();
-  .fullscreen();
-  .shadow();
   top: -105%;
   transition: top 1s;
 
