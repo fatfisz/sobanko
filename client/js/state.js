@@ -1,13 +1,13 @@
 'use strict';
 
 var gameLoop = require('./game_loop');
-var levels = require('./levels');
-var processLevel = require('./process_level');
+var getLevel = require('./get_level');
 var setupControls = require('./setup_controls');
 var storage = require('./storage');
 var { $ } = require('./utils');
 
 
+var root = document.querySelectorAll('html')[0];
 var playing = false;
 var currentLevel;
 
@@ -17,85 +17,104 @@ function controlsStateChanged(controlsState) {
   }
 
   if (controlsState.special === 'undo') {
-    state.undo();
+    undo();
   } else {
     currentLevel.move(controlsState);
   }
 }
 
-function gameFinished() {
-  $('#start-screen')[0].classList.remove('hidden');
+function controlsDetected(type) {
+  setupControls(type, controlsStateChanged);
 }
 
-var state = {
+function updateMoveCount() {
+  $('#moves-count')[0].textContent = storage.movesStored;
+}
 
-  desktopDetected() {
-    setupControls({
-      isKeyboard: true,
-      callback: controlsStateChanged,
-    });
-  },
+function updateBoxCount() {
+  $('#boxes-count')[0].textContent = currentLevel.boxesLeft;
+}
 
-  mobileDetected() {
-    setupControls({
-      isMouse: true,
-      callback: controlsStateChanged,
-    });
-  },
+function initStatus() {
+  updateMoveCount();
+  updateBoxCount();
+  $('#destination-count')[0].textContent = currentLevel.destinationCount;
+}
 
-  get playing() {
-    return playing;
-  },
+function startLevel(which) {
+  if (process.env.NODE_ENV !== 'production' && playing) {
+    throw new Error('Already playing');
+  }
 
-  startLevel(which) {
-    if (process.env.NODE_ENV !== 'production' && playing) {
-      throw new Error('Already playing');
-    }
+  playing = true;
+  currentLevel = getLevel(which, module.exports);
 
-    playing = true;
-    currentLevel = processLevel(levels[which], state);
-    storage.pushState(currentLevel);
-    gameLoop.start(currentLevel);
-    $('#start-screen')[0].classList.add('hidden');
-  },
-
-  stopLevel() {
-    if (process.env.NODE_ENV !== 'prodcution' && !playing) {
-      throw new Error('Already stopped');
-    }
-
-    playing = false;
+  if (storage.savedLevel === which) {
+    storage.restoreState(currentLevel);
+  } else {
     storage.resetUndo();
-    gameLoop.stop();
-  },
+    storage.saveLevel(which);
+    storage.pushState(currentLevel);
+  }
 
-  moveFinished() {
-    if (playing) {
-      storage.pushState(currentLevel);
-    }
-  },
+  initStatus();
+  gameLoop.start(currentLevel);
 
-  undo() {
-    var isMoving = currentLevel.currentState.direction;
+  root.className = 'playing';
+}
 
-    currentLevel.undo();
-    storage[isMoving ? 'restoreState' : 'popState'](currentLevel);
-    gameLoop.scheduleRedraw();
-  },
+function stopLevel() {
+  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+    throw new Error('Already stopped');
+  }
 
-  boxesLeftChanged(boxesLeft) {
-    if (boxesLeft !== 0) {
-      // TODO: Change some counter
-      return;
-    }
+  playing = false;
+  gameLoop.stop();
 
-    state.stopLevel();
+  root.className = '';
+}
 
-    setTimeout(gameFinished, 1000);
-  },
+function gameWon() {
+  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+    throw new Error('Already stopped');
+  }
 
+  var moves = storage.movesStored;
+
+  playing = false;
+  storage.clearLevel();
+  storage.resetUndo();
+  gameLoop.stop();
+
+  $('#win-moves-count')[0].textContent = moves;
+
+  root.className = 'game-won';
+}
+
+function moveFinished() {
+  storage.pushState(currentLevel);
+  updateMoveCount(storage.movesStored);
+  updateBoxCount(currentLevel);
+
+  if (currentLevel.boxesLeft === 0) {
+    gameWon();
+  }
+}
+
+function undo() {
+  var isMoving = currentLevel.currentState.direction;
+
+  currentLevel.undo();
+  storage[isMoving ? 'restoreState' : 'popState'](currentLevel);
+  gameLoop.scheduleRedraw();
+
+  updateMoveCount(storage.movesStored);
+}
+
+module.exports = {
+  controlsDetected,
+  startLevel,
+  stopLevel,
+  moveFinished,
+  undo,
 };
-
-window.q = state.stopLevel;
-
-module.exports = state;

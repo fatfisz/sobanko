@@ -5,7 +5,15 @@ var assign = require('object-assign');
 
 var undoPrefix = 'undo/';
 
-var stateIndex = 0;
+var stateIndex = +localStorage.getItem('stateIndex');
+
+function saveLevel(which) {
+  localStorage.setItem('level', which);
+}
+
+function clearLevel() {
+  localStorage.removeItem('level');
+}
 
 function updateStateIndex() {
   localStorage.setItem('stateIndex', stateIndex);
@@ -68,8 +76,21 @@ function popState(level) {
 }
 
 module.exports = {
+  saveLevel,
+  clearLevel,
   resetUndo,
   pushState,
   restoreState,
   popState,
+
+  get movesStored() {
+    return stateIndex - 1;
+  },
+
+  get savedLevel() {
+    var level = localStorage.getItem('level');
+
+    return level === null ? null : +level;
+  },
+
 };

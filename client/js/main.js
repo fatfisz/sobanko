@@ -6,4 +6,4 @@ var state = require('./state');
 
 
 // TODO: Remove later
-state.desktopDetected();
+state.controlsDetected('keyboard');

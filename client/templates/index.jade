@@ -2,15 +2,32 @@ doctype html
 
 html
   head
-    title. Sobanko
+    title Sobanko
     link(rel='stylesheet', href='static/css/bundle.css')
   body
     #game-container
       canvas
-      #undo
+      #menu
+        #undo.menu-button Undo
+        #back.menu-button Back
+      #moves
+        span#moves-count
+        | #{' '}moves
+      #boxes
+        span#boxes-count
+        | #{' '}/#{' '}
+        span#destination-count
+        | #{' '}boxes
 
     #start-screen
       h1 Sobanko
       #levels
+
+    #win-screen
+      h1 Good job!
+      #win-moves
+        | You've finished with#{' '}
+        span#win-moves-count
+        | #{' '}moves!
 
     script(src='static/js/bundle.js')

@@ -3,6 +3,7 @@
 var assign = require('object-assign');
 
 var { width: canvasWidth, height: canvasHeight, tiles } = require('./constants');
+var levels = require('./levels');
 var { getTileFromName } = require('./utils');
 
 
@@ -49,10 +50,12 @@ var LevelPrototype = {
 
 };
 
-module.exports = function processLevel(level, uiState) {
+module.exports = function getLevel(which, uiState) {
+  var level = levels[which];
   var result = assign(
     Object.create(LevelPrototype),
     {
+      which,
       uiState,
       controlsState: blankState,
       currentState: blankState,
@@ -61,6 +64,7 @@ module.exports = function processLevel(level, uiState) {
       offsetX: (canvasWidth - level.width) / 2,
       offsetY: (canvasHeight - level.height) / 2,
       boxesLeft: 0,
+      destinationCount: 0,
     },
     level
   );
@@ -77,6 +81,10 @@ module.exports = function processLevel(level, uiState) {
           break;
         case 'box':
           result.boxesLeft += 1;
+          break;
+        case 'destination':
+        case 'boxInDestination':
+          result.destinationCount += 1;
           break;
       }
     });

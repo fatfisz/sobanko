@@ -18,9 +18,8 @@ canvas.height = height * tileSize;
 resizeCanvas();
 window.onresize = resizeCanvas;
 
-// Setup the undo button
-var undo = $('#undo')[0];
+// Setup the Undo button
+$('#undo')[0].onclick = state.undo;
 
-undo.onclick = () => {
-  state.undo();
-};
+// Setup the Back button
+$('#back')[0].onclick = state.stopLevel;

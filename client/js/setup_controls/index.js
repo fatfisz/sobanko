@@ -27,13 +27,12 @@ function getStateCallback(callback) {
   };
 }
 
-module.exports = function setupControls(options) {
-  var { isKeyboard, isMouse, callback } = options;
+module.exports = function setupControls(type, callback) {
   var stateCallback = getStateCallback(callback);
 
-  if (isKeyboard) {
+  if (type === 'keyboard') {
     setupKeyboard(stateCallback);
-  } else if (isMouse) {
+  } else if (type === 'mouse') {
     setupMouse(stateCallback);
   }
 };

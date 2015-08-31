@@ -40,7 +40,6 @@ function stop(level) {
   }
 
   level.boxesLeft += (tiles[newBoxTile] === 'box' ? 1 : -1);
-  uiState.boxesLeftChanged(level.boxesLeft);
 }
 
 module.exports = {
