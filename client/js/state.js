@@ -124,6 +124,8 @@ function gameWon() {
 
   allowFocus('back-to-level-select');
 
+  $('#back-to-level-select')[0].focus();
+
   $('#win-moves-count')[0].textContent = moves;
   $('#win-best')[0].style.display = newBest ? '' : 'none';
 
