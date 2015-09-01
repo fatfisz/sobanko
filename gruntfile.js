@@ -12,10 +12,10 @@ module.exports = function tasks(grunt) {
   grunt.initConfig({
     script_bundle_src: 'client/js/main.js',
     script_bundle_intermediate: 'build/js/bundle.js',
-    script_bundle_dest: 'build/static/js/bundle.js',
+    script_bundle_dest: 'build/bundle.js',
 
     style_bundle_src: 'client/css/main.less',
-    style_bundle_dest: 'build/static/css/bundle.css',
+    style_bundle_dest: 'build/bundle.css',
 
     eslint: {
       client: ['client'],
