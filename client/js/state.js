@@ -7,6 +7,14 @@ var storage = require('./storage');
 var { $ } = require('./utils');
 
 
+function allowFocus(id) {
+  $('#' + id)[0].tabIndex = 0;
+}
+
+function blockFocus(id) {
+  $('#' + id)[0].tabIndex = -1;
+}
+
 var root = document.querySelectorAll('html')[0];
 var playing = false;
 var currentLevel;
@@ -44,7 +52,11 @@ function initStatus() {
     }
 
     $('.level')[currentLevel.which].classList.add('continue');
-  }, 1000);
+  }, 500);
+
+  allowFocus('undo');
+  allowFocus('back');
+  allowFocus('restart');
 
   $('#destination-count')[0].textContent = currentLevel.destinationCount;
   updateBoxCount();
@@ -87,6 +99,10 @@ function stopLevel() {
   gameLoop.stop();
 
   root.className = '';
+
+  blockFocus('undo');
+  blockFocus('back');
+  blockFocus('restart');
 }
 
 function gameWon() {
@@ -107,10 +123,16 @@ function gameWon() {
     storage.saveBest(which, moves);
   }
 
+  allowFocus('back-to-level-select');
+
   $('#win-moves-count')[0].textContent = moves;
   $('#win-best')[0].style.display = newBest ? '' : 'none';
 
   root.className = 'game-won';
+
+  blockFocus('undo');
+  blockFocus('back');
+  blockFocus('restart');
 
   var levelButton = $('.level.continue')[0];
 
@@ -124,6 +146,8 @@ function backToLevelSelect() {
   }
 
   root.className = '';
+
+  blockFocus('back-to-level-select');
 }
 
 function moveFinished() {
@@ -146,6 +170,51 @@ function undo() {
   updateMoveCount(storage.movesStored);
 }
 
+function openRestartDialog() {
+  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+    throw new Error('The game shouldn\'t have been stopped');
+  }
+
+  root.className = 'playing restart-dialog';
+
+  blockFocus('undo');
+  blockFocus('back');
+  blockFocus('restart');
+  allowFocus('restart-cancel');
+  allowFocus('restart-ok');
+
+  $('#restart-ok')[0].focus();
+}
+
+function resume() {
+  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+    throw new Error('The game shouldn\'t have been stopped');
+  }
+
+  root.className = 'playing';
+
+  allowFocus('undo');
+  allowFocus('back');
+  allowFocus('restart');
+  blockFocus('restart-cancel');
+  blockFocus('restart-ok');
+}
+
+function restart() {
+  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+    throw new Error('The game shouldn\'t have been stopped');
+  }
+
+  playing = false;
+  gameLoop.stop();
+  storage.clearLevel();
+
+  startLevel(currentLevel.which);
+
+  blockFocus('restart-cancel');
+  blockFocus('restart-ok');
+}
+
 module.exports = {
   controlsDetected,
   startLevel,
@@ -153,4 +222,7 @@ module.exports = {
   backToLevelSelect,
   moveFinished,
   undo,
+  openRestartDialog,
+  resume,
+  restart,
 };

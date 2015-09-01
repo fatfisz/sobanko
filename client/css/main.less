@@ -28,12 +28,13 @@ body {
 }
 
 .shadow() {
-  box-shadow: 0 0 12px 0 rgba(0, 0, 0, .75);
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, .5);
 }
 
 #game-container,
 #start-screen,
-#win-screen {
+#win-screen,
+#restart-screen {
   .center-elements();
   .fullscreen();
 }
@@ -47,24 +48,30 @@ body {
   position: absolute;
   right: 48px;
   top: 48px;
-
-  .button {
-    margin-left: 12px;
-  }
 }
 
-.button {
-  border: 1px solid black;
+button {
+  background: white;
   border-radius: 4px;
+  border: 1px solid black;
   cursor: pointer;
   display: inline-block;
+  font-size: 1em;
   height: 36px;
-  line-height: 36px;
-  padding: 0 18px;
+  line-height: 34px;
+  padding: 0 14px;
 
   &:hover {
     background: black;
     color: white;
+  }
+}
+
+.buttons {
+  text-align: right;
+
+  button {
+    margin-left: 12px;
   }
 }
 
@@ -96,14 +103,14 @@ body {
 }
 
 #start-screen {
-  transition: top 1s;
+  transition: transform .5s;
 
   html.playing & {
-    top: -105%;
+    transform: translateY(-105%);
   }
 
   html.game-won & {
-    transition: top 0s ease 1.5s;
+    transition: transform 0s ease .5s;
   }
 }
 
@@ -153,11 +160,32 @@ body {
 }
 
 #win-screen {
-  top: -105%;
-  transition: top 1s;
+  transform: translateY(-105%);
+  transition: transform .5s;
 
   html.game-won & {
-    top: 0;
-    transition: top 1s ease .5s;
+    transform: translateY(0);
+    transition: transform .5s ease .5s;
   }
+}
+
+#restart-screen {
+  background: rgba(0, 0, 0, .5);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity .5s, transform 0s ease .5s;
+
+  html.restart-dialog & {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity .5s, transform 0s;
+  }
+}
+
+.dialog {
+  .shadow();
+  background: white;
+  max-width: 600px;
+  padding: 20px 40px;
+  width: 100%;
 }

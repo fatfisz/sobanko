@@ -7,9 +7,10 @@ html
   body
     #game-container
       canvas
-      #menu
-        #undo.button Undo
-        #back.button Back
+      #menu.buttons
+        button#undo(type='button') Undo
+        button#restart(type='button') Restart
+        button#back(type='button') Back
       #boxes
         span#boxes-count
         | #{' '}/#{' '}
@@ -34,6 +35,13 @@ html
         | #{' '}moves
       h5#win-best
         | You've beaten your previous best score!
-      #back-to-level-select.button Back
+      button#back-to-level-select(type='button') Back
+
+    #restart-screen
+      .dialog
+        h3 Do you really want to restart and lose your progress?
+        .buttons
+          button#restart-cancel(type='button') Cancel
+          button#restart-ok(type='button') OK
 
     script(src='static/js/bundle.js')

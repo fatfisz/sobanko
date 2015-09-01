@@ -8,6 +8,13 @@ var storage = require('../storage');
 var { $ } = require('../utils');
 
 
+function setOnClickAndTabIndex(id, handler) {
+  var element = $('#' + id)[0];
+
+  element.onclick = handler;
+  element.tabIndex = -1;
+}
+
 // Setup the canvas
 var canvas = $('canvas')[0];
 var resizeCanvas = canvasResizer(canvas);
@@ -38,9 +45,15 @@ for (var i = 0, ii = levels.length; i < ii; i += 1) {
 levelsContainer.appendChild(levelsFragment);
 
 // Setup the Undo button
-$('#undo')[0].onclick = state.undo;
+setOnClickAndTabIndex('undo', state.undo);
 
 // Setup the Back buttons
-$('#back')[0].onclick = state.stopLevel;
+setOnClickAndTabIndex('back', state.stopLevel);
 
-$('#back-to-level-select')[0].onclick = state.backToLevelSelect;
+setOnClickAndTabIndex('back-to-level-select', state.backToLevelSelect);
+
+// Setup the Restart dialog
+
+setOnClickAndTabIndex('restart', state.openRestartDialog);
+setOnClickAndTabIndex('restart-cancel', state.resume);
+setOnClickAndTabIndex('restart-ok', state.restart);
