@@ -234,14 +234,16 @@ h1, h3, h4, h5 {
 }
 
 #start-screen {
-  transition: transform .5s;
+  transition: opacity .5s, transform 0s;
 
   html.playing & {
-    transform: translateY(-105%);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity .5s, transform 0s ease .5s;
   }
 
   html.game-won & {
-    transition: transform 0s ease .5s;
+    transition: opacity 0s ease 1s, transform 0s ease 1s;
   }
 }
 
@@ -299,12 +301,14 @@ h1, h3, h4, h5 {
 }
 
 #win-screen {
-  transform: translateY(-105%);
-  transition: transform .5s;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity .5s, transform 0s ease .5s;
 
   html.game-won & {
-    transform: translateY(0);
-    transition: transform .5s ease .5s;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity .5s ease .5s, transform 0s ease .5s;
   }
 }
 
