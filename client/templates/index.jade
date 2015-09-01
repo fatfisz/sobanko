@@ -3,25 +3,37 @@ doctype html
 html
   head
     title Sobanko
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
     link(rel='stylesheet', href='static/css/bundle.css')
   body
     #game-container
-      canvas
-      #menu.buttons
-        button#undo(type='button') Undo
-        button#restart(type='button') Restart
-        button#back(type='button') Back
-      #boxes
-        span#boxes-count
-        | #{' '}/#{' '}
-        span#destination-count
-        | #{' '}boxes
-      #moves
-        span#moves-count
-        | #{' '}moves
-      #best
-        | Your best:#{' '}
-        span#best-count
+      #info
+        .buttons
+          button#undo(type='button') Undo
+          button#restart(type='button') Restart
+          button#back(type='button') Back
+        #info-rows
+          .info-row
+            span#boxes-count
+            | #{' '}/#{' '}
+            span#destination-count
+            | #{' '}boxes
+          #moves.info-row
+            span#moves-count
+            | #{' '}moves
+          #best.info-row
+            | Your best:#{' '}
+            span#best-count
+      #canvas-container
+        canvas
+      #mobile-controls
+        #direction
+          #up
+          #down
+          #left
+          #right
+        #pulling
 
     #start-screen
       h1 Sobanko

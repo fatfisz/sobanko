@@ -3,7 +3,7 @@
 var assign = require('object-assign');
 
 var setupKeyboard = require('./keyboard');
-var setupMouse = require('./mouse');
+var setupTouch = require('./touch');
 
 
 var blankState = {
@@ -27,12 +27,9 @@ function getStateCallback(callback) {
   };
 }
 
-module.exports = function setupControls(type, callback) {
+module.exports = function setupControls(callback) {
   var stateCallback = getStateCallback(callback);
 
-  if (type === 'keyboard') {
-    setupKeyboard(stateCallback);
-  } else if (type === 'mouse') {
-    setupMouse(stateCallback);
-  }
+  setupKeyboard(stateCallback);
+  setupTouch(stateCallback);
 };

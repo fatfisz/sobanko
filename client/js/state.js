@@ -31,9 +31,7 @@ function controlsStateChanged(controlsState) {
   }
 }
 
-function controlsDetected(type) {
-  setupControls(type, controlsStateChanged);
-}
+setupControls(controlsStateChanged);
 
 function updateMoveCount() {
   $('#moves-count')[0].textContent = storage.movesStored;
@@ -85,6 +83,7 @@ function startLevel(which) {
   }
 
   initStatus();
+
   gameLoop.start(currentLevel);
 
   root.className = 'playing';
@@ -216,7 +215,6 @@ function restart() {
 }
 
 module.exports = {
-  controlsDetected,
   startLevel,
   stopLevel,
   backToLevelSelect,
