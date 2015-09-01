@@ -7,11 +7,11 @@ var drawPulledBox = require('../draw/pulled_box');
 var movePlayerAndBox = require('./move_player_and_box');
 
 
+var stopped = true;
 var redrawScheduled = false;
 var timestamp;
 var delta;
 var level;
-var stopped = true;
 
 function step() {
   if (stopped) {
@@ -42,9 +42,9 @@ function step() {
 function start(_level) {
   requestAnimationFrame(step);
 
+  stopped = false;
   timestamp = performance.now();
   level = _level;
-  stopped = false;
   scheduleRedraw();
 
   clear();
