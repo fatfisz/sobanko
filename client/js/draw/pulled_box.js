@@ -9,5 +9,5 @@ module.exports = function drawPulledBox(level) {
   var { direction, type } = pulledBoxState;
   var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
 
-  drawTile(type, offsetX + boxX, offsetY + boxY);
+  drawTile(offsetX, offsetY, type, boxX, boxY);
 };

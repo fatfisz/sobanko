@@ -78,16 +78,16 @@ module.exports = function getLevel(which, uiState) {
   result.data.forEach((row, y) => {
     row.forEach((value, x) => {
       switch (tiles[value]) {
-        case 'player':
-          assign(result, { playerX: x, playerY: y });
-          result.data[y][x] = getTileFromName('floor');
-          break;
         case 'box':
           result.boxesLeft += 1;
           break;
         case 'destination':
         case 'boxInDestination':
           result.destinationCount += 1;
+          break;
+        case 'player':
+          assign(result, { playerX: x, playerY: y });
+          result.data[y][x] = getTileFromName('floor');
           break;
       }
     });

@@ -31,6 +31,12 @@ var utils = {
     return name === 'box' || name === 'boxInDestination';
   },
 
+  isWallOrEmptyTile(tile) {
+    var name = tiles[tile];
+
+    return !name || name === 'wall';
+  },
+
   getTargetPosition(direction, playerX, playerY) {
     switch (direction) {
       case 'up':

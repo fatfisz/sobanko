@@ -27,11 +27,7 @@ module.exports = function drawLevelFragment(level, x, y, width, height) {
         continue;
       }
 
-      drawTile(
-        data[yMod + y][xMod + x],
-        offsetX + xMod + x,
-        offsetY + yMod + y
-      );
+      drawTile(offsetX, offsetY, data, xMod + x, yMod + y);
     }
   }
 };
