@@ -26,5 +26,5 @@ module.exports = {
     6: 'player',
   },
 
-  playerSpeed: 4,
+  playerSpeed: 4e-3,
 };

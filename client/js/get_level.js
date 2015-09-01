@@ -65,7 +65,6 @@ module.exports = function getLevel(which, uiState) {
       controlsState: blankState,
       currentState: blankState,
       pulledBoxState: blankPulledBoxState,
-      playerMoved: false,
       offsetX: (canvasWidth - width) / 2,
       offsetY: (canvasHeight - height) / 2,
       boxesLeft: 0,

@@ -36,10 +36,9 @@ function movePlayer(level, direction, delta) {
   var directionMod = directionToDirectionMod[direction];
   var playerProp = `player${axis}`;
   var targetProp = `target${axis}`;
-  var mod = delta / 1000 * playerSpeed;
+  var mod = delta * playerSpeed;
 
   level[playerProp] += mod * directionMod;
-  level.playerMoved = true;
 
   if (directionMod * (level[playerProp] - level[targetProp]) > 0) {
     // Did we move past the target?
@@ -58,7 +57,7 @@ module.exports = function movePlayerAndBox(level, delta) {
 
     if (!isPassable(data[targetY][targetX])) {
       // Player can't pass
-      return;
+      return false;
     }
 
     level.setCurrentState(controlsState);
@@ -72,4 +71,7 @@ module.exports = function movePlayerAndBox(level, delta) {
   }
 
   movePlayer(level, direction, delta);
+
+  // Player moved
+  return true;
 };

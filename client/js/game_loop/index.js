@@ -29,17 +29,13 @@ function step() {
   }
 
   if (level.currentState.direction || level.controlsState.direction) {
-    movePlayerAndBox(level, delta);
-  }
+    if (movePlayerAndBox(level, delta)) {
+      drawPlayer(level);
 
-  if (level.playerMoved) {
-    drawPlayer(level);
-
-    if (level.pulledBoxState.direction) {
-      drawPulledBox(level);
+      if (level.pulledBoxState.direction) {
+        drawPulledBox(level);
+      }
     }
-
-    level.playerMoved = false;
   }
 }
 
