@@ -27,7 +27,7 @@ function start(level) {
 }
 
 function stop(level) {
-  var { data, uiState, pulledBoxState, playerX, playerY } = level;
+  var { data, pulledBoxState, playerX, playerY } = level;
   var { direction, type } = pulledBoxState;
   var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
   var newBoxTile = getTileAfterPulling(data[boxY][boxX]);
