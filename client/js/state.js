@@ -172,6 +172,7 @@ function undo() {
   gameLoop.scheduleRedraw();
 
   updateMoveCount(storage.movesStored);
+  updateBoxCount(currentLevel);
 }
 
 function openRestartDialog() {
