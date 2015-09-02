@@ -36,29 +36,25 @@ function step() {
   }
 }
 
-function start(_level) {
-  requestAnimationFrame(step);
+module.exports = exports = {
 
-  stopped = false;
-  timestamp = performance.now();
-  level = _level;
-  scheduleRedraw();
+  start(_level) {
+    requestAnimationFrame(step);
 
-  clear();
+    stopped = false;
+    timestamp = performance.now();
+    level = _level;
+    exports.scheduleRedraw();
 
-  return stop;
-}
+    clear();
+  },
 
-function stop() {
-  stopped = true;
-}
+  stop() {
+    stopped = true;
+  },
 
-function scheduleRedraw() {
-  redrawScheduled = true;
-}
+  scheduleRedraw() {
+    redrawScheduled = true;
+  },
 
-module.exports = {
-  start,
-  stop,
-  scheduleRedraw,
 };

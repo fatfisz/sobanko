@@ -21,7 +21,7 @@ function getState() {
   };
 }
 
-function setupDirectionHandlers(id, callback) {
+function setupDirectionHandlers(callback, id) {
   var element = $('#' + id)[0];
 
   element.ontouchstart = () => {
@@ -56,9 +56,8 @@ function setupPullingHandlers(callback) {
 }
 
 module.exports = function setup(callback) {
-  setupDirectionHandlers('up', callback);
-  setupDirectionHandlers('down', callback);
-  setupDirectionHandlers('left', callback);
-  setupDirectionHandlers('right', callback);
+  ['up', 'down', 'left', 'right'].forEach(
+    setupDirectionHandlers.bind(null, callback)
+  );
   setupPullingHandlers(callback);
 };

@@ -8,7 +8,6 @@ var $ = document.querySelectorAll.bind(document);
 module.exports = exports = {
 
   $,
-
   context: $('canvas')[0].getContext('2d'),
 
   getTileFromName(name) {

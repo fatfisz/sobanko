@@ -27,18 +27,17 @@ function getStateCallback(callback) {
   };
 }
 
-function setup(callback) {
-  var stateCallback = getStateCallback(callback);
-
-  setupKeyboard(stateCallback);
-  setupTouch(stateCallback);
-}
-
 module.exports = {
-  setup,
 
   get state() {
     return state;
+  },
+
+  setup(callback) {
+    var stateCallback = getStateCallback(callback);
+
+    setupKeyboard(stateCallback);
+    setupTouch(stateCallback);
   },
 
 };

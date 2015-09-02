@@ -1,7 +1,7 @@
 'use strict';
 
 var { context } = require('../../utils');
-var drawBoxHelper = require('./common_helpers/box');
+var drawBoxHelper = require('./box_helper');
 var drawFloor = require('./floor');
 var tilePredraw = require('./tile_predraw');
 

@@ -2,7 +2,7 @@
 
 var assign = require('object-assign');
 
-var { width, height } = require('../constants');
+var { width, height } = require('./constants');
 
 
 var aspectRatio = width / height;

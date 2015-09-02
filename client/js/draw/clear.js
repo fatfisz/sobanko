@@ -1,9 +1,12 @@
 'use strict';
 
+var { width, height, tileSize } = require('../constants');
 var { context } = require('../utils');
 
-module.exports = function clearContext() {
-  var { width, height } = context.canvas;
 
-  context.clearRect(0, 0, width, height);
+var viewportWidth = width * tileSize;
+var viewportHeight = height * tileSize;
+
+module.exports = function clearContext() {
+  context.clearRect(0, 0, viewportWidth, viewportHeight);
 };

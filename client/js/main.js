@@ -1,11 +1,11 @@
 'use strict';
 
-var { width, height, tileSize } = require('../constants');
-var levels = require('../levels');
-var state = require('../state');
-var storage = require('../storage');
-var { $ } = require('../utils');
 var canvasResizer = require('./canvas_resizer');
+var { width, height, tileSize } = require('./constants');
+var levels = require('./levels');
+var state = require('./state');
+var storage = require('./storage');
+var { $ } = require('./utils');
 
 
 function setOnClickAndTabIndex(id, handler) {

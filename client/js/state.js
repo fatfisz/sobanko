@@ -13,21 +13,19 @@ function toggleFocus(ids, allow) {
   });
 }
 
-var root = document.querySelectorAll('html')[0];
+var root = $('html')[0];
 var playing = false;
 var currentLevel;
 
-function controlsStateChanged(state) {
+controls.setup(function controlsStateChanged(state) {
   if (!playing) {
     return;
   }
 
   if (state.special === 'undo') {
-    undo();
+    exports.undo();
   }
-}
-
-controls.setup(controlsStateChanged);
+});
 
 function updateCounters() {
   $('#boxes-count')[0].textContent = currentLevel.boxesLeft;
@@ -54,41 +52,6 @@ function initStatus() {
 
   $('#best')[0].style.display = best === null ? 'none' : '';
   $('#best-count')[0].textContent = best;
-}
-
-function startLevel(which) {
-  if (process.env.NODE_ENV !== 'production' && playing) {
-    throw new Error('Already playing');
-  }
-
-  playing = true;
-  currentLevel = getLevel(which, module.exports);
-
-  if (storage.getLevel() === which) {
-    storage.restoreState(currentLevel);
-  } else {
-    storage.resetUndo();
-    storage.saveLevel(which);
-    storage.saveState(currentLevel);
-  }
-  gameLoop.start(currentLevel);
-
-  initStatus();
-
-  root.className = 'playing';
-}
-
-function stopLevel() {
-  if (process.env.NODE_ENV !== 'production' && !playing) {
-    throw new Error('Already stopped');
-  }
-
-  playing = false;
-  gameLoop.stop();
-
-  toggleFocus(['undo', 'back', 'restart']);
-
-  root.className = '';
 }
 
 function gameWon() {
@@ -125,84 +88,111 @@ function gameWon() {
   levelButton.classList.remove('continue');
 }
 
-function backToLevelSelect() {
-  if (process.env.NODE_ENV !== 'production' && playing) {
-    throw new Error('The game should have been stopped');
-  }
+module.exports = exports = {
 
-  toggleFocus(['back-to-level-select']);
+  startLevel(which) {
+    if (process.env.NODE_ENV !== 'production' && playing) {
+      throw new Error('Already playing');
+    }
 
-  root.className = '';
-}
+    playing = true;
+    currentLevel = getLevel(which, exports);
 
-function beforeMove() {
-  storage.pushStateFragment(currentLevel);
-}
+    if (storage.getLevel() === which) {
+      storage.restoreState(currentLevel);
+    } else {
+      storage.resetUndo();
+      storage.saveLevel(which);
+      storage.saveState(currentLevel);
+    }
+    gameLoop.start(currentLevel);
 
-function afterMove() {
-  storage.saveState(currentLevel);
+    initStatus();
 
-  updateCounters();
+    root.className = 'playing';
+  },
 
-  if (currentLevel.boxesLeft === 0) {
-    gameWon();
-  }
-}
+  stopLevel() {
+    if (process.env.NODE_ENV !== 'production' && !playing) {
+      throw new Error('Already stopped');
+    }
 
-function undo() {
-  currentLevel.undo();
-  storage.popStateFragment(currentLevel);
-  storage.saveState(currentLevel);
-  gameLoop.scheduleRedraw();
+    playing = false;
+    gameLoop.stop();
 
-  updateCounters();
-}
+    toggleFocus(['undo', 'back', 'restart']);
 
-function openRestartDialog() {
-  if (process.env.NODE_ENV !== 'production' && !playing) {
-    throw new Error('The game shouldn\'t have been stopped');
-  }
+    root.className = '';
+  },
 
-  toggleFocus(['undo', 'back', 'restart']);
-  toggleFocus(['restart-cancel', 'restart-ok'], true);
-  $('#restart-ok')[0].focus();
+  backToLevelSelect() {
+    if (process.env.NODE_ENV !== 'production' && playing) {
+      throw new Error('The game should have been stopped');
+    }
 
-  root.className = 'playing restart-dialog';
-}
+    toggleFocus(['back-to-level-select']);
 
-function resume() {
-  if (process.env.NODE_ENV !== 'production' && !playing) {
-    throw new Error('The game shouldn\'t have been stopped');
-  }
+    root.className = '';
+  },
 
-  toggleFocus(['restart-cancel', 'restart-ok']);
-  toggleFocus(['undo', 'back', 'restart'], true);
+  beforeMove() {
+    storage.pushStateFragment(currentLevel);
+  },
 
-  root.className = 'playing';
-}
+  afterMove() {
+    storage.saveState(currentLevel);
 
-function restart() {
-  if (process.env.NODE_ENV !== 'production' && !playing) {
-    throw new Error('The game shouldn\'t have been stopped');
-  }
+    updateCounters();
 
-  playing = false;
-  storage.clearLevel();
-  gameLoop.stop();
+    if (currentLevel.boxesLeft === 0) {
+      gameWon();
+    }
+  },
 
-  startLevel(currentLevel.which);
+  undo() {
+    currentLevel.undo();
+    storage.popStateFragment(currentLevel);
+    storage.saveState(currentLevel);
+    gameLoop.scheduleRedraw();
 
-  toggleFocus(['restart-cancel', 'restart-ok']);
-}
+    updateCounters();
+  },
 
-module.exports = {
-  startLevel,
-  stopLevel,
-  backToLevelSelect,
-  beforeMove,
-  afterMove,
-  undo,
-  openRestartDialog,
-  resume,
-  restart,
+  openRestartDialog() {
+    if (process.env.NODE_ENV !== 'production' && !playing) {
+      throw new Error('The game shouldn\'t have been stopped');
+    }
+
+    toggleFocus(['undo', 'back', 'restart']);
+    toggleFocus(['restart-cancel', 'restart-ok'], true);
+    $('#restart-ok')[0].focus();
+
+    root.className = 'playing restart-dialog';
+  },
+
+  resume() {
+    if (process.env.NODE_ENV !== 'production' && !playing) {
+      throw new Error('The game shouldn\'t have been stopped');
+    }
+
+    toggleFocus(['restart-cancel', 'restart-ok']);
+    toggleFocus(['undo', 'back', 'restart'], true);
+
+    root.className = 'playing';
+  },
+
+  restart() {
+    if (process.env.NODE_ENV !== 'production' && !playing) {
+      throw new Error('The game shouldn\'t have been stopped');
+    }
+
+    playing = false;
+    storage.clearLevel();
+    gameLoop.stop();
+
+    exports.startLevel(currentLevel.which);
+
+    toggleFocus(['restart-cancel', 'restart-ok']);
+  },
+
 };

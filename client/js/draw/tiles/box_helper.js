@@ -1,6 +1,6 @@
 'use strict';
 
-var { tileSize } = require('../../../constants');
+var { tileSize } = require('../../constants');
 
 
 module.exports = function drawBoxHelper(bumperColor, context) {

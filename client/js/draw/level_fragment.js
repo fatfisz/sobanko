@@ -9,25 +9,23 @@ function isValidPosition(level, x, y) {
   return x >= 0 && y >= 0 && x < level.width && y < level.height;
 }
 
-module.exports = function drawLevelFragment(level, x, y, width, height) {
+module.exports = function drawLevelFragment(level, sx, sy, width, height) {
   var { data, offsetX, offsetY } = level;
-  var xMod;
-  var yMod;
 
   context.clearRect(
-    (offsetX + x) * tileSize,
-    (offsetY + y) * tileSize,
+    (offsetX + sx) * tileSize,
+    (offsetY + sy) * tileSize,
     width * tileSize,
     height * tileSize
   );
 
-  for (yMod = 0; yMod < height; yMod += 1) {
-    for (xMod = 0; xMod < width; xMod += 1) {
-      if (!isValidPosition(level, xMod + x, yMod + y)) {
+  for (var y = sy; y < sy + height; y += 1) {
+    for (var x = sx; x < sx + width; x += 1) {
+      if (!isValidPosition(level, x, y)) {
         continue;
       }
 
-      drawTile(offsetX, offsetY, data, xMod + x, yMod + y);
+      drawTile(offsetX, offsetY, data, x, y);
     }
   }
 };

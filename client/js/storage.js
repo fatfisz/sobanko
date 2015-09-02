@@ -10,39 +10,8 @@ var bestPrefix = 'best/';
 
 var stateIndex = +localStorage.getItem('stateIndex');
 
-function saveLevel(which) {
-  localStorage.setItem('level', which);
-}
-
-function getLevel() {
-  var level = localStorage.getItem('level');
-
-  return level === null ? null : +level;
-}
-
-function clearLevel() {
-  localStorage.removeItem('level');
-}
-
 function updateStateIndex() {
   localStorage.setItem('stateIndex', stateIndex);
-}
-
-function resetUndo() {
-  var keysToDelete = [];
-
-  for (var i = 0, ii = localStorage.length; i < ii; i += 1) {
-    if (localStorage.key(i).startsWith(undoPrefix)) {
-      keysToDelete.push(localStorage.key(i));
-    }
-  }
-
-  keysToDelete.forEach((key) => {
-    localStorage.removeItem(key);
-  });
-
-  stateIndex = 0;
-  updateStateIndex();
 }
 
 function encodeState(level) {
@@ -104,69 +73,85 @@ function applyStateFragment(level, value) {
   });
 }
 
-function saveState(level) {
-  localStorage.setItem('lastState', encodeState(level));
-}
-
-function restoreState(level) {
-  var savedState = localStorage.getItem('lastState');
-
-  applyState(level, savedState);
-}
-
-function clearState() {
-  localStorage.removeItem('lastState');
-}
-
-function pushStateFragment(level) {
-  localStorage.setItem(undoPrefix + stateIndex, encodeStateFragment(level));
-  stateIndex += 1;
-  updateStateIndex();
-}
-
-function popStateFragment(level) {
-  if (stateIndex === 0) {
-    return;
-  }
-
-  stateIndex -= 1;
-  updateStateIndex();
-
-  var savedState = localStorage.getItem(undoPrefix + stateIndex);
-
-  localStorage.removeItem(undoPrefix + stateIndex);
-  applyStateFragment(level, savedState);
-}
-
-function saveBest(which, moves) {
-  localStorage.setItem(bestPrefix + which, moves);
-}
-
-function getBest(which) {
-  var best = localStorage.getItem(bestPrefix + which);
-
-  return best === null ? null : +best;
-}
-
 module.exports = {
-  saveLevel,
-  getLevel,
-  clearLevel,
-
-  resetUndo,
-
-  saveState,
-  restoreState,
-  clearState,
-
-  pushStateFragment,
-  popStateFragment,
-
-  saveBest,
-  getBest,
 
   get movesStored() {
     return stateIndex;
+  },
+
+  saveLevel(which) {
+    localStorage.setItem('level', which);
+  },
+
+  getLevel() {
+    var level = localStorage.getItem('level');
+
+    return level === null ? null : +level;
+  },
+
+  clearLevel() {
+    localStorage.removeItem('level');
+  },
+
+  resetUndo() {
+    var keysToDelete = [];
+
+    for (var i = 0, ii = localStorage.length; i < ii; i += 1) {
+      if (localStorage.key(i).startsWith(undoPrefix)) {
+        keysToDelete.push(localStorage.key(i));
+      }
+    }
+
+    keysToDelete.forEach((key) => {
+      localStorage.removeItem(key);
+    });
+
+    stateIndex = 0;
+    updateStateIndex();
+  },
+
+  saveState(level) {
+    localStorage.setItem('lastState', encodeState(level));
+  },
+
+  restoreState(level) {
+    var savedState = localStorage.getItem('lastState');
+
+    applyState(level, savedState);
+  },
+
+  clearState() {
+    localStorage.removeItem('lastState');
+  },
+
+  pushStateFragment(level) {
+    localStorage.setItem(undoPrefix + stateIndex, encodeStateFragment(level));
+    stateIndex += 1;
+    updateStateIndex();
+  },
+
+  popStateFragment(level) {
+    if (stateIndex === 0) {
+      return;
+    }
+
+    stateIndex -= 1;
+    updateStateIndex();
+
+    var savedState = localStorage.getItem(undoPrefix + stateIndex);
+
+    localStorage.removeItem(undoPrefix + stateIndex);
+    applyStateFragment(level, savedState);
+  },
+
+  saveBest(which, moves) {
+    localStorage.setItem(bestPrefix + which, moves);
+  },
+
+  getBest(which) {
+    var best = localStorage.getItem(bestPrefix + which);
+
+    return best === null ? null : +best;
   },
 
 };
