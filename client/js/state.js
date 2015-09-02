@@ -150,11 +150,11 @@ function backToLevelSelect() {
   blockFocus('back-to-level-select');
 }
 
-function moveStarting() {
+function beforeMove() {
   storage.pushStateFragment(currentLevel);
 }
 
-function moveFinished() {
+function afterMove() {
   storage.saveState(currentLevel);
 
   updateMoveCount(storage.movesStored);
@@ -223,8 +223,8 @@ module.exports = {
   startLevel,
   stopLevel,
   backToLevelSelect,
-  moveStarting,
-  moveFinished,
+  beforeMove,
+  afterMove,
   undo,
   openRestartDialog,
   resume,

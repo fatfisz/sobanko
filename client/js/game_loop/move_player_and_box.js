@@ -40,7 +40,7 @@ function movePlayer(level, direction, delta) {
       boxPulling.stop(level);
     }
 
-    level.uiState.moveFinished();
+    level.uiState.afterMove();
   }
 }
 
@@ -72,14 +72,13 @@ module.exports = function movePlayerAndBox(level, delta) {
       return false; // nothing to redraw
     }
 
+    level.uiState.beforeMove();
+
     assign(level, {
       playerMoving: true,
       targetX,
       targetY,
     });
-
-    // Before boxPulling.start, because it changes the data
-    level.uiState.moveStarting();
 
     if (pulling) {
       boxPulling.start(level);
