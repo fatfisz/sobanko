@@ -1,12 +1,10 @@
 'use strict';
 
 var { tileSize } = require('../constants');
-var { getTileFromName, getBoxPosition, context } = require('../utils');
+var { getBoxPosition, context } = require('../utils');
 var drawLevelFragment = require('./level_fragment');
 var drawTile = require('./tile');
 
-
-var box = getTileFromName('box');
 
 function draw(x, y) {
   context.fillStyle = 'blue';
@@ -21,6 +19,7 @@ module.exports = function drawPlayer(level) {
     offsetY,
     playerX,
     playerY,
+    prevBoxType,
   } = level;
   var xLo = Math.floor(playerX) - 2;
   var xHi = Math.ceil(playerX) + 2;
@@ -33,6 +32,6 @@ module.exports = function drawPlayer(level) {
   if (playerMoving && currentState.pulling) {
     var [boxX, boxY] = getBoxPosition(currentState.direction, playerX, playerY);
 
-    drawTile(offsetX, offsetY, box, boxX, boxY);
+    drawTile(offsetX, offsetY, prevBoxType, boxX, boxY);
   }
 };

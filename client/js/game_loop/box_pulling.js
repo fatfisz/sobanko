@@ -19,6 +19,7 @@ function start(level) {
     return;
   }
 
+  level.prevBoxType = boxTile;
   data[boxY][boxX] = getTileBeforePulling(boxTile);
 }
 
