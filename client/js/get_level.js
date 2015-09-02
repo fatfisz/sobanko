@@ -7,14 +7,10 @@ var levels = require('./levels');
 var { getTileFromName } = require('./utils');
 
 
-var blankState = {
+var getBlankState = () => ({
   direction: null,
   pulling: false,
-};
-
-function cloneData(level) {
-  level.data = level.data.map((row) => row.slice()); // clone rows
-}
+});
 
 var LevelPrototype = {
 
@@ -22,26 +18,40 @@ var LevelPrototype = {
     this.controlsState = controlsState;
   },
 
-  setCurrentState(state) {
-    this.currentState = assign({}, state);
-  },
-
-  clearCurrentState() {
-    this.currentState = blankState;
-  },
-
   undo() {
-    this.controlsState = blankState;
-    this.currentState = blankState;
-    this.pulledBoxDirection = null;
+    this.controlsState = getBlankState();
+    this.playerMoving = false;
   },
 
 };
+
+function processData(level) {
+  level.data.map((row, y) => {
+    return row.map((value, x) => {
+      switch (tiles[value]) {
+        case 'box':
+          level.boxesLeft += 1;
+          break;
+        case 'destination':
+        case 'boxInDestination':
+          level.destinationCount += 1;
+          break;
+        case 'player':
+          assign(level, { playerX: x, playerY: y });
+          level.data[y][x] = getTileFromName('floor');
+          break;
+      }
+
+      return value;
+    });
+  });
+}
 
 module.exports = function getLevel(which, uiState) {
   var data = levels[which];
   var width = data[0].length;
   var height = data.length;
+
   var result = assign(
     Object.create(LevelPrototype),
     {
@@ -50,9 +60,9 @@ module.exports = function getLevel(which, uiState) {
       data,
       width,
       height,
-      controlsState: blankState,
-      currentState: blankState,
-      pulledBoxDirection: null,
+      controlsState: getBlankState(),
+      currentState: getBlankState(),
+      playerMoving: false,
       offsetX: (canvasWidth - width) / 2,
       offsetY: (canvasHeight - height) / 2,
       boxesLeft: 0,
@@ -60,26 +70,7 @@ module.exports = function getLevel(which, uiState) {
     }
   );
 
-  // Clone data so that the levels remain unchanged
-  cloneData(result);
-
-  result.data.forEach((row, y) => {
-    row.forEach((value, x) => {
-      switch (tiles[value]) {
-        case 'box':
-          result.boxesLeft += 1;
-          break;
-        case 'destination':
-        case 'boxInDestination':
-          result.destinationCount += 1;
-          break;
-        case 'player':
-          assign(result, { playerX: x, playerY: y });
-          result.data[y][x] = getTileFromName('floor');
-          break;
-      }
-    });
-  });
+  processData(result);
 
   return result;
 };

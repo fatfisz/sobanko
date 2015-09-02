@@ -21,16 +21,6 @@ var directionToDirectionMod = {
   right: 1,
 };
 
-function endMove(level) {
-  level.clearCurrentState();
-
-  if (level.pulledBoxDirection) {
-    boxPulling.stop(level);
-  }
-
-  level.uiState.moveFinished();
-}
-
 function movePlayer(level, direction, delta) {
   var axis = directionToAxis[direction];
   var directionMod = directionToDirectionMod[direction];
@@ -40,41 +30,63 @@ function movePlayer(level, direction, delta) {
 
   level[playerProp] += mod * directionMod;
 
+  // Did we move past the target?
   if (directionMod * (level[playerProp] - level[targetProp]) > 0) {
-    // Did we move past the target?
     level[playerProp] = level[targetProp];
-    endMove(level);
+    level.playerMoving = false;
+
+    if (level.currentState.pulling) {
+      boxPulling.stop(level);
+    }
+
+    level.uiState.moveFinished();
   }
 }
 
 module.exports = function movePlayerAndBox(level, delta) {
-  var { data, currentState, controlsState, playerX, playerY } = level;
-  var { direction } = currentState;
+  var {
+    data,
+    controlsState,
+    currentState,
+    playerMoving,
+    playerX,
+    playerY,
+  } = level;
 
-  if (!direction) {
-    // Controls state must have a direction set
-    var [targetX, targetY] = getTargetPosition(controlsState.direction, playerX, playerY);
+  if (!playerMoving) {
+    var { direction, pulling } = controlsState;
 
-    if (!isPassable(data[targetY][targetX])) {
-      // Player can't pass
-      return false;
+    assign(currentState, {
+      direction,
+      pulling,
+    });
+
+    if (process.env.NODE_ENV !== 'production' && !direction) {
+      throw new Error('Expected direction to be set');
     }
 
-    level.setCurrentState(controlsState);
-    currentState = level.currentState;
-    assign(level, { targetX, targetY });
-    ({ direction } = currentState);
+    var [targetX, targetY] = getTargetPosition(direction, playerX, playerY);
+
+    if (!isPassable(data[targetY][targetX])) {
+      currentState.pulling = false;
+      return false; // nothing to redraw
+    }
+
+    assign(level, {
+      playerMoving: true,
+      targetX,
+      targetY,
+    });
 
     // Before boxPulling.start, because it changes the data
     level.uiState.moveStarting();
 
-    if (currentState.pulling) {
+    if (pulling) {
       boxPulling.start(level);
     }
   }
 
-  movePlayer(level, direction, delta);
+  movePlayer(level, currentState.direction, delta);
 
-  // Player moved
-  return true;
+  return true; // redraw player
 };

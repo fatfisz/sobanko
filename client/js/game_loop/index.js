@@ -3,7 +3,6 @@
 var clear = require('../draw/clear');
 var drawLevelFragment = require('../draw/level_fragment');
 var drawPlayer = require('../draw/player');
-var drawPulledBox = require('../draw/pulled_box');
 var movePlayerAndBox = require('./move_player_and_box');
 
 
@@ -29,13 +28,9 @@ function step() {
     redrawScheduled = false;
   }
 
-  if (level.currentState.direction || level.controlsState.direction) {
+  if (level.playerMoving || level.controlsState.direction) {
     if (movePlayerAndBox(level, delta)) {
       drawPlayer(level);
-
-      if (level.pulledBoxDirection) {
-        drawPulledBox(level);
-      }
     }
   }
 }
