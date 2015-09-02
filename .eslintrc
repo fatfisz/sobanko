@@ -4,6 +4,7 @@
     "destructuring": true,
     "objectLiteralComputedProperties": true,
     "objectLiteralShorthandMethods": true,
+    "spread": true,
     "templateStrings": true,
   },
   "env": {

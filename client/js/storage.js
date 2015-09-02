@@ -2,6 +2,8 @@
 
 var assign = require('object-assign');
 
+var { isBoxTile, getBoxPosition } = require('./utils');
+
 
 var undoPrefix = 'undo/';
 var bestPrefix = 'best/';
@@ -10,6 +12,12 @@ var stateIndex = +localStorage.getItem('stateIndex');
 
 function saveLevel(which) {
   localStorage.setItem('level', which);
+}
+
+function getLevel() {
+  var level = localStorage.getItem('level');
+
+  return level === null ? null : +level;
 }
 
 function clearLevel() {
@@ -48,32 +56,94 @@ function encodeState(level) {
   });
 }
 
-function decodeState(value) {
-  return JSON.parse(value);
+function applyState(level, value) {
+  var parsed = JSON.parse(value);
+
+  assign(level, parsed);
 }
 
-function pushState(level) {
-  localStorage.setItem(undoPrefix + stateIndex, encodeState(level));
+function encodeStateFragment(level) {
+  var { data, currentState, boxesLeft, playerX, playerY } = level;
+  var savedState = [
+    boxesLeft,
+    playerX,
+    playerY,
+  ];
+
+  if (currentState.pulling) {
+    var [boxX, boxY] = getBoxPosition(currentState.direction, playerX, playerY);
+
+    if (isBoxTile(data[boxY][boxX])) {
+      savedState.push(
+        [playerX, playerY, data[playerY][playerX]],
+        [boxX, boxY, data[boxY][boxX]]
+      );
+    }
+  }
+
+  return JSON.stringify(savedState);
+}
+
+function applyStateFragment(level, value) {
+  var parsed = JSON.parse(value);
+  var [
+    boxesLeft,
+    playerX,
+    playerY,
+    /* eslint-disable comma-dangle */
+    ...data // This is a bug in eslint
+    /* eslint-enable comma-dangle */
+  ] = parsed;
+
+  data.forEach((tileData) => {
+    var [x, y, tile] = tileData;
+
+    level.data[y][x] = tile;
+  });
+
+  assign(level, {
+    boxesLeft,
+    playerX,
+    playerY,
+  });
+}
+
+function saveState(level) {
+  localStorage.setItem('lastState', encodeState(level));
+}
+
+function restoreState(level) {
+  var savedState = localStorage.getItem('lastState');
+
+  applyState(level, savedState);
+}
+
+function clearState() {
+  localStorage.removeItem('lastState');
+}
+
+function pushStateFragment(level) {
+  localStorage.setItem(undoPrefix + stateIndex, encodeStateFragment(level));
   stateIndex += 1;
   updateStateIndex();
 }
 
-function restoreState(level) {
-  var decodedState = decodeState(localStorage.getItem(undoPrefix + (stateIndex - 1)));
-
-  assign(level, decodedState);
-}
-
-function popState(level) {
-  if (stateIndex === 1) {
+function popStateFragment(level) {
+  if (stateIndex === 0) {
     return;
   }
 
   stateIndex -= 1;
   updateStateIndex();
-  localStorage.removeItem(undoPrefix + stateIndex);
 
-  restoreState(level);
+  var savedState = localStorage.getItem(undoPrefix + stateIndex);
+
+  localStorage.removeItem(undoPrefix + stateIndex);
+  applyStateFragment(level, savedState);
+}
+
+function saveBest(which, moves) {
+  localStorage.setItem(bestPrefix + which, moves);
 }
 
 function getBest(which) {
@@ -82,28 +152,25 @@ function getBest(which) {
   return best === null ? null : +best;
 }
 
-function saveBest(which, moves) {
-  localStorage.setItem(bestPrefix + which, moves);
-}
-
 module.exports = {
   saveLevel,
+  getLevel,
   clearLevel,
+
   resetUndo,
-  pushState,
+
+  saveState,
   restoreState,
-  popState,
-  getBest,
+  clearState,
+
+  pushStateFragment,
+  popStateFragment,
+
   saveBest,
+  getBest,
 
   get movesStored() {
-    return stateIndex - 1;
-  },
-
-  get level() {
-    var level = localStorage.getItem('level');
-
-    return level === null ? null : +level;
+    return stateIndex;
   },
 
 };

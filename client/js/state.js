@@ -74,12 +74,12 @@ function startLevel(which) {
   playing = true;
   currentLevel = getLevel(which, module.exports);
 
-  if (storage.level === which) {
+  if (storage.getLevel() === which) {
     storage.restoreState(currentLevel);
   } else {
+    storage.saveState(currentLevel);
     storage.resetUndo();
     storage.saveLevel(which);
-    storage.pushState(currentLevel);
   }
 
   initStatus();
@@ -115,8 +115,9 @@ function gameWon() {
   var newBest = moves < best;
 
   playing = false;
-  storage.clearLevel();
+  storage.clearState();
   storage.resetUndo();
+  storage.clearLevel();
   gameLoop.stop();
   if (best === null || newBest) {
     storage.saveBest(which, moves);
@@ -151,8 +152,13 @@ function backToLevelSelect() {
   blockFocus('back-to-level-select');
 }
 
+function moveStarting() {
+  storage.pushStateFragment(currentLevel);
+}
+
 function moveFinished() {
-  storage.pushState(currentLevel);
+  storage.saveState(currentLevel);
+
   updateMoveCount(storage.movesStored);
   updateBoxCount(currentLevel);
 
@@ -162,10 +168,9 @@ function moveFinished() {
 }
 
 function undo() {
-  var isMoving = currentLevel.currentState.direction;
-
   currentLevel.undo();
-  storage[isMoving ? 'restoreState' : 'popState'](currentLevel);
+  storage.popStateFragment(currentLevel);
+  storage.saveState(currentLevel);
   gameLoop.scheduleRedraw();
 
   updateMoveCount(storage.movesStored);
@@ -220,6 +225,7 @@ module.exports = {
   startLevel,
   stopLevel,
   backToLevelSelect,
+  moveStarting,
   moveFinished,
   undo,
   openRestartDialog,

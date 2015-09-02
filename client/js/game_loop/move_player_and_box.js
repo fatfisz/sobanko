@@ -65,6 +65,9 @@ module.exports = function movePlayerAndBox(level, delta) {
     assign(level, { targetX, targetY });
     ({ direction } = currentState);
 
+    // Before boxPulling.start, because it changes the data
+    level.uiState.moveStarting();
+
     if (currentState.pulling) {
       boxPulling.start(level);
     }

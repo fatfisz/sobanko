@@ -28,7 +28,7 @@ window.onresize = resizeCanvas;
 // Setup levels
 var levelsContainer = $('#levels')[0];
 var levelsFragment = document.createDocumentFragment();
-var levelContinue = storage.level;
+var levelContinue = storage.getLevel();
 var levelBox;
 
 for (var i = 0, ii = levels.length; i < ii; i += 1) {
