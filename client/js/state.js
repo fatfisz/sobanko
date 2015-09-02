@@ -29,12 +29,9 @@ function controlsStateChanged(state) {
 
 controls.setup(controlsStateChanged);
 
-function updateMoveCount() {
-  $('#moves-count')[0].textContent = storage.movesStored;
-}
-
-function updateBoxCount() {
+function updateCounters() {
   $('#boxes-count')[0].textContent = currentLevel.boxesLeft;
+  $('#moves-count')[0].textContent = storage.movesStored;
 }
 
 function initStatus() {
@@ -51,8 +48,7 @@ function initStatus() {
   toggleFocus(['undo', 'back', 'restart'], true);
 
   $('#destination-count')[0].textContent = currentLevel.destinations.length;
-  updateBoxCount();
-  updateMoveCount();
+  updateCounters();
 
   var best = storage.getBest(currentLevel.which);
 
@@ -71,14 +67,13 @@ function startLevel(which) {
   if (storage.getLevel() === which) {
     storage.restoreState(currentLevel);
   } else {
-    storage.saveState(currentLevel);
     storage.resetUndo();
     storage.saveLevel(which);
+    storage.saveState(currentLevel);
   }
+  gameLoop.start(currentLevel);
 
   initStatus();
-
-  gameLoop.start(currentLevel);
 
   root.className = 'playing';
 }
@@ -91,9 +86,9 @@ function stopLevel() {
   playing = false;
   gameLoop.stop();
 
-  root.className = '';
-
   toggleFocus(['undo', 'back', 'restart']);
+
+  root.className = '';
 }
 
 function gameWon() {
@@ -107,24 +102,22 @@ function gameWon() {
   var newBest = moves < best;
 
   playing = false;
-  storage.clearState();
   storage.resetUndo();
   storage.clearLevel();
+  storage.clearState();
   gameLoop.stop();
   if (best === null || newBest) {
     storage.saveBest(which, moves);
   }
 
+  toggleFocus(['undo', 'back', 'restart']);
   toggleFocus(['back-to-level-select'], true);
-
   $('#back-to-level-select')[0].focus();
 
   $('#win-moves-count')[0].textContent = moves;
   $('#win-best')[0].style.display = newBest ? '' : 'none';
 
   root.className = 'game-won';
-
-  toggleFocus(['undo', 'back', 'restart']);
 
   var levelButton = $('.level.continue')[0];
 
@@ -137,9 +130,9 @@ function backToLevelSelect() {
     throw new Error('The game should have been stopped');
   }
 
-  root.className = '';
-
   toggleFocus(['back-to-level-select']);
+
+  root.className = '';
 }
 
 function beforeMove() {
@@ -149,8 +142,7 @@ function beforeMove() {
 function afterMove() {
   storage.saveState(currentLevel);
 
-  updateMoveCount(storage.movesStored);
-  updateBoxCount(currentLevel);
+  updateCounters();
 
   if (currentLevel.boxesLeft === 0) {
     gameWon();
@@ -163,8 +155,7 @@ function undo() {
   storage.saveState(currentLevel);
   gameLoop.scheduleRedraw();
 
-  updateMoveCount(storage.movesStored);
-  updateBoxCount(currentLevel);
+  updateCounters();
 }
 
 function openRestartDialog() {
@@ -172,12 +163,11 @@ function openRestartDialog() {
     throw new Error('The game shouldn\'t have been stopped');
   }
 
-  root.className = 'playing restart-dialog';
-
   toggleFocus(['undo', 'back', 'restart']);
   toggleFocus(['restart-cancel', 'restart-ok'], true);
-
   $('#restart-ok')[0].focus();
+
+  root.className = 'playing restart-dialog';
 }
 
 function resume() {
@@ -185,10 +175,10 @@ function resume() {
     throw new Error('The game shouldn\'t have been stopped');
   }
 
-  root.className = 'playing';
-
-  toggleFocus(['undo', 'back', 'restart'], true);
   toggleFocus(['restart-cancel', 'restart-ok']);
+  toggleFocus(['undo', 'back', 'restart'], true);
+
+  root.className = 'playing';
 }
 
 function restart() {
@@ -197,8 +187,8 @@ function restart() {
   }
 
   playing = false;
-  gameLoop.stop();
   storage.clearLevel();
+  gameLoop.stop();
 
   startLevel(currentLevel.which);
 
