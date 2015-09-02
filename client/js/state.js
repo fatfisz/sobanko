@@ -1,8 +1,8 @@
 'use strict';
 
+var controls = require('./controls');
 var gameLoop = require('./game_loop');
 var getLevel = require('./get_level');
-var setupControls = require('./setup_controls');
 var storage = require('./storage');
 var { $ } = require('./utils');
 
@@ -19,19 +19,17 @@ var root = document.querySelectorAll('html')[0];
 var playing = false;
 var currentLevel;
 
-function controlsStateChanged(controlsState) {
+function controlsStateChanged(state) {
   if (!playing) {
     return;
   }
 
-  if (controlsState.special === 'undo') {
+  if (state.special === 'undo') {
     undo();
-  } else {
-    currentLevel.move(controlsState);
   }
 }
 
-setupControls(controlsStateChanged);
+controls.setup(controlsStateChanged);
 
 function updateMoveCount() {
   $('#moves-count')[0].textContent = storage.movesStored;

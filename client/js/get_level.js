@@ -20,12 +20,7 @@ var getBlankState = () => ({
 
 var LevelPrototype = {
 
-  move(controlsState) {
-    this.controlsState = controlsState;
-  },
-
   undo() {
-    this.controlsState = getBlankState();
     this.playerMoving = false;
   },
 
@@ -71,7 +66,6 @@ module.exports = function getLevel(which, uiState) {
       data,
       width,
       height,
-      controlsState: getBlankState(),
       currentState: getBlankState(),
       playerMoving: false,
       offsetX: (canvasWidth - width) / 2,

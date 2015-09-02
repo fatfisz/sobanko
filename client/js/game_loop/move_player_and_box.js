@@ -3,6 +3,7 @@
 var assign = require('object-assign');
 
 var { playerSpeed } = require('../constants');
+var controls = require('../controls');
 var { isPassable, getTargetPosition } = require('../utils');
 var boxPulling = require('./box_pulling');
 
@@ -46,7 +47,6 @@ function movePlayer(level, direction, delta) {
 module.exports = function movePlayerAndBox(level, delta) {
   var {
     data,
-    controlsState,
     currentState,
     playerMoving,
     playerX,
@@ -54,7 +54,7 @@ module.exports = function movePlayerAndBox(level, delta) {
   } = level;
 
   if (!playerMoving) {
-    var { direction, pulling } = controlsState;
+    var { direction, pulling } = controls.state;
 
     assign(currentState, {
       direction,

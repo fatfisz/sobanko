@@ -12,24 +12,33 @@ var blankState = {
   special: null,
 };
 
-var controlsState = blankState;
+var state = blankState;
 
 function getStateCallback(callback) {
   return (_nextState) => {
     var nextState = assign({}, blankState, _nextState);
 
-    if (controlsState.direction !== nextState.direction ||
-        controlsState.pulling !== nextState.pulling ||
-        controlsState.special !== nextState.special) {
-      controlsState = nextState;
-      callback(controlsState);
+    if (state.direction !== nextState.direction ||
+        state.pulling !== nextState.pulling ||
+        state.special !== nextState.special) {
+      state = nextState;
+      callback(state);
     }
   };
 }
 
-module.exports = function setupControls(callback) {
+function setup(callback) {
   var stateCallback = getStateCallback(callback);
 
   setupKeyboard(stateCallback);
   setupTouch(stateCallback);
+}
+
+module.exports = {
+  setup,
+
+  get state() {
+    return state;
+  },
+
 };
