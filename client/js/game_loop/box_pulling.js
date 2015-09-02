@@ -9,13 +9,12 @@ var {
 
 
 function start(level) {
-  var { data, currentState, playerX, playerY } = level;
-  var { direction } = currentState;
+  var { data, direction, playerX, playerY } = level;
   var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
   var boxTile = data[boxY][boxX];
 
   if (!isBoxTile(boxTile)) {
-    currentState.pulling = false;
+    level.pulling = false;
     return;
   }
 
@@ -24,11 +23,10 @@ function start(level) {
 }
 
 function stop(level) {
-  var { data, currentState, playerX, playerY } = level;
-  var { direction } = currentState;
+  var { data, direction, playerX, playerY } = level;
   var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
 
-  currentState.pulling = false;
+  level.pulling = false;
   data[boxY][boxX] = getTileAfterPulling(data[boxY][boxX]);
 }
 

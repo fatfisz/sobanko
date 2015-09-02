@@ -62,14 +62,14 @@ function applyState(level, value) {
 }
 
 function encodeStateFragment(level) {
-  var { data, currentState, playerX, playerY } = level;
+  var { data, direction, pulling, playerX, playerY } = level;
   var savedState = [
     playerX,
     playerY,
   ];
 
-  if (currentState.pulling) {
-    var [boxX, boxY] = getBoxPosition(currentState.direction, playerX, playerY);
+  if (pulling) {
+    var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
 
     if (isBoxTile(data[boxY][boxX])) {
       savedState.push(

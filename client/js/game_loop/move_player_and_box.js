@@ -22,7 +22,8 @@ var directionToDirectionMod = {
   right: 1,
 };
 
-function movePlayer(level, direction, delta) {
+function movePlayer(level, delta) {
+  var { uiState, direction, pulling } = level;
   var axis = directionToAxis[direction];
   var directionMod = directionToDirectionMod[direction];
   var playerProp = `player${axis}`;
@@ -36,18 +37,17 @@ function movePlayer(level, direction, delta) {
     level[playerProp] = level[targetProp];
     level.moving = false;
 
-    if (level.currentState.pulling) {
+    if (pulling) {
       boxPulling.stop(level);
     }
 
-    level.uiState.afterMove();
+    uiState.afterMove();
   }
 }
 
 module.exports = function movePlayerAndBox(level, delta) {
   var {
     data,
-    currentState,
     moving,
     playerX,
     playerY,
@@ -56,7 +56,7 @@ module.exports = function movePlayerAndBox(level, delta) {
   if (!moving) {
     var { direction, pulling } = controls.state;
 
-    assign(currentState, {
+    assign(level, {
       direction,
       pulling,
     });
@@ -68,7 +68,7 @@ module.exports = function movePlayerAndBox(level, delta) {
     var [targetX, targetY] = getTargetPosition(direction, playerX, playerY);
 
     if (!isPassable(data[targetY][targetX])) {
-      currentState.pulling = false;
+      level.pulling = false;
       return false; // nothing to redraw
     }
 
@@ -85,7 +85,7 @@ module.exports = function movePlayerAndBox(level, delta) {
     }
   }
 
-  movePlayer(level, currentState.direction, delta);
+  movePlayer(level, delta);
 
   return true; // redraw player
 };

@@ -13,11 +13,6 @@ var { getTileFromName } = require('./utils');
 
 var floor = getTileFromName('floor');
 
-var getBlankState = () => ({
-  direction: null,
-  pulling: false,
-});
-
 var LevelPrototype = {
 
   undo() {
@@ -44,7 +39,10 @@ function processData(level) {
           level.destinations.push([x, y]);
           break;
         case 'player':
-          assign(level, { playerX: x, playerY: y });
+          assign(level, {
+            playerX: x,
+            playerY: y,
+          });
           return floor;
       }
 
@@ -66,7 +64,8 @@ module.exports = function getLevel(which, uiState) {
       data,
       width,
       height,
-      currentState: getBlankState(),
+      direction: null,
+      pulling: false,
       moving: false,
       offsetX: (canvasWidth - width) / 2,
       offsetY: (canvasHeight - height) / 2,
