@@ -26,6 +26,7 @@ function step() {
   if (redrawScheduled) {
     drawLevelFragment(level, 0, 0, level.width, level.height);
     drawPlayer(level);
+    redrawScheduled = false;
   }
 
   if (level.currentState.direction || level.controlsState.direction) {
