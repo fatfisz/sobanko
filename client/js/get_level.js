@@ -21,7 +21,7 @@ var getBlankState = () => ({
 var LevelPrototype = {
 
   undo() {
-    this.playerMoving = false;
+    this.moving = false;
   },
 
   get boxesLeft() {
@@ -67,7 +67,7 @@ module.exports = function getLevel(which, uiState) {
       width,
       height,
       currentState: getBlankState(),
-      playerMoving: false,
+      moving: false,
       offsetX: (canvasWidth - width) / 2,
       offsetY: (canvasHeight - height) / 2,
       destinations: [],

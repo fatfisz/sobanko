@@ -14,7 +14,7 @@ function draw(x, y) {
 module.exports = function drawPlayer(level) {
   var {
     currentState,
-    playerMoving,
+    moving,
     offsetX,
     offsetY,
     playerX,
@@ -29,7 +29,7 @@ module.exports = function drawPlayer(level) {
   drawLevelFragment(level, xLo, yLo, xHi - xLo + 1, yHi - yLo + 1);
   draw(offsetX + playerX, offsetY + playerY);
 
-  if (playerMoving && currentState.pulling) {
+  if (moving && currentState.pulling) {
     var [boxX, boxY] = getBoxPosition(currentState.direction, playerX, playerY);
 
     drawTile(offsetX, offsetY, prevBoxType, boxX, boxY);

@@ -34,7 +34,7 @@ function movePlayer(level, direction, delta) {
   // Did we move past the target?
   if (directionMod * (level[playerProp] - level[targetProp]) > 0) {
     level[playerProp] = level[targetProp];
-    level.playerMoving = false;
+    level.moving = false;
 
     if (level.currentState.pulling) {
       boxPulling.stop(level);
@@ -48,12 +48,12 @@ module.exports = function movePlayerAndBox(level, delta) {
   var {
     data,
     currentState,
-    playerMoving,
+    moving,
     playerX,
     playerY,
   } = level;
 
-  if (!playerMoving) {
+  if (!moving) {
     var { direction, pulling } = controls.state;
 
     assign(currentState, {
@@ -75,7 +75,7 @@ module.exports = function movePlayerAndBox(level, delta) {
     level.uiState.beforeMove();
 
     assign(level, {
-      playerMoving: true,
+      moving: true,
       targetX,
       targetY,
     });

@@ -29,7 +29,7 @@ function step() {
     redrawScheduled = false;
   }
 
-  if (level.playerMoving || controls.state.direction) {
+  if (level.moving || controls.state.direction) {
     if (movePlayerAndBox(level, delta)) {
       drawPlayer(level);
     }
