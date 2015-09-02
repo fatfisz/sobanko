@@ -26,7 +26,7 @@ var LevelPrototype = {
 };
 
 function processData(level) {
-  level.data.map((row, y) => {
+  level.data = level.data.map((row, y) => {
     return row.map((value, x) => {
       switch (tiles[value]) {
         case 'box':
