@@ -3,9 +3,13 @@
 var { tiles } = require('./constants');
 
 
-var utils = {
+var $ = document.querySelectorAll.bind(document);
 
-  $: document.querySelectorAll.bind(document),
+module.exports = exports = {
+
+  $,
+
+  context: $('canvas')[0].getContext('2d'),
 
   getTileFromName(name) {
     for (var key in tiles) {
@@ -75,11 +79,11 @@ var utils = {
     var name = tiles[tile];
 
     if (name === 'box') {
-      return utils.getTileFromName('floor');
+      return exports.getTileFromName('floor');
     }
 
     if (name === 'boxInDestination') {
-      return utils.getTileFromName('destination');
+      return exports.getTileFromName('destination');
     }
 
     if (process.env.NODE_ENV !== 'production') {
@@ -91,11 +95,11 @@ var utils = {
     var name = tiles[tile];
 
     if (name === 'floor') {
-      return utils.getTileFromName('box');
+      return exports.getTileFromName('box');
     }
 
     if (name === 'destination') {
-      return utils.getTileFromName('boxInDestination');
+      return exports.getTileFromName('boxInDestination');
     }
 
     if (process.env.NODE_ENV !== 'production') {
@@ -104,10 +108,3 @@ var utils = {
   },
 
 };
-
-var { $ } = utils;
-var canvas = $('canvas')[0];
-
-utils.context = canvas.getContext('2d');
-
-module.exports = utils;
