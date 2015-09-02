@@ -90,7 +90,7 @@ function startLevel(which) {
 }
 
 function stopLevel() {
-  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+  if (process.env.NODE_ENV !== 'production' && !playing) {
     throw new Error('Already stopped');
   }
 
@@ -105,7 +105,7 @@ function stopLevel() {
 }
 
 function gameWon() {
-  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+  if (process.env.NODE_ENV !== 'production' && !playing) {
     throw new Error('Already stopped');
   }
 
@@ -143,7 +143,7 @@ function gameWon() {
 }
 
 function backToLevelSelect() {
-  if (process.env.NODE_ENV !== 'prodcution' && playing) {
+  if (process.env.NODE_ENV !== 'production' && playing) {
     throw new Error('The game should have been stopped');
   }
 
@@ -177,7 +177,7 @@ function undo() {
 }
 
 function openRestartDialog() {
-  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+  if (process.env.NODE_ENV !== 'production' && !playing) {
     throw new Error('The game shouldn\'t have been stopped');
   }
 
@@ -193,7 +193,7 @@ function openRestartDialog() {
 }
 
 function resume() {
-  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+  if (process.env.NODE_ENV !== 'production' && !playing) {
     throw new Error('The game shouldn\'t have been stopped');
   }
 
@@ -207,7 +207,7 @@ function resume() {
 }
 
 function restart() {
-  if (process.env.NODE_ENV !== 'prodcution' && !playing) {
+  if (process.env.NODE_ENV !== 'production' && !playing) {
     throw new Error('The game shouldn\'t have been stopped');
   }
 
