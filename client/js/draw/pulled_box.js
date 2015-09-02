@@ -1,13 +1,14 @@
 'use strict';
 
-var { getBoxPosition } = require('../utils');
+var { getTileFromName, getBoxPosition } = require('../utils');
 var drawTile = require('./tile');
 
 
-module.exports = function drawPulledBox(level) {
-  var { pulledBoxState, playerX, playerY, offsetX, offsetY } = level;
-  var { direction, type } = pulledBoxState;
-  var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
+var box = getTileFromName('box');
 
-  drawTile(offsetX, offsetY, type, boxX, boxY);
+module.exports = function drawPulledBox(level) {
+  var { pulledBoxDirection, playerX, playerY, offsetX, offsetY } = level;
+  var [boxX, boxY] = getBoxPosition(pulledBoxDirection, playerX, playerY);
+
+  drawTile(offsetX, offsetY, box, boxX, boxY);
 };

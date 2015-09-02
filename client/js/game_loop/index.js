@@ -32,7 +32,7 @@ function step() {
     if (movePlayerAndBox(level, delta)) {
       drawPlayer(level);
 
-      if (level.pulledBoxState.direction) {
+      if (level.pulledBoxDirection) {
         drawPulledBox(level);
       }
     }

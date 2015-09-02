@@ -20,26 +20,25 @@ function start(level) {
   }
 
   data[boxY][boxX] = getTileBeforePulling(boxTile);
-  level.setPulledBoxState({
-    direction,
-    type: boxTile,
-  });
+  level.pulledBoxDirection = direction;
+
+  if (tiles[boxTile] === 'boxInDestination') {
+    level.boxesLeft += 1;
+  }
+
 }
 
 function stop(level) {
-  var { data, pulledBoxState, playerX, playerY } = level;
-  var { direction, type } = pulledBoxState;
-  var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
+  var { data, pulledBoxDirection, playerX, playerY } = level;
+  var [boxX, boxY] = getBoxPosition(pulledBoxDirection, playerX, playerY);
   var newBoxTile = getTileAfterPulling(data[boxY][boxX]);
 
   data[boxY][boxX] = newBoxTile;
-  level.clearPulledBoxState();
+  level.pulledBoxDirection = null;
 
-  if (newBoxTile === type) {
-    return;
+  if (tiles[newBoxTile] === 'boxInDestination') {
+    level.boxesLeft -= 1;
   }
-
-  level.boxesLeft += (tiles[newBoxTile] === 'box' ? 1 : -1);
 }
 
 module.exports = {

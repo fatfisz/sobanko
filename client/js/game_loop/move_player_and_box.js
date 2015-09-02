@@ -24,7 +24,7 @@ var directionToDirectionMod = {
 function endMove(level) {
   level.clearCurrentState();
 
-  if (level.pulledBoxState.direction) {
+  if (level.pulledBoxDirection) {
     boxPulling.stop(level);
   }
 

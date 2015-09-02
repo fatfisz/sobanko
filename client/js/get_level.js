@@ -11,10 +11,6 @@ var blankState = {
   direction: null,
   pulling: false,
 };
-var blankPulledBoxState = {
-  direction: null,
-  type: null,
-};
 
 function cloneData(level) {
   level.data = level.data.map((row) => row.slice()); // clone rows
@@ -34,18 +30,10 @@ var LevelPrototype = {
     this.currentState = blankState;
   },
 
-  setPulledBoxState(state) {
-    this.pulledBoxState = assign({}, state);
-  },
-
-  clearPulledBoxState() {
-    this.pulledBoxState = blankPulledBoxState;
-  },
-
   undo() {
     this.controlsState = blankState;
     this.currentState = blankState;
-    this.pulledBoxState = blankPulledBoxState;
+    this.pulledBoxDirection = null;
   },
 
 };
@@ -64,7 +52,7 @@ module.exports = function getLevel(which, uiState) {
       height,
       controlsState: blankState,
       currentState: blankState,
-      pulledBoxState: blankPulledBoxState,
+      pulledBoxDirection: null,
       offsetX: (canvasWidth - width) / 2,
       offsetY: (canvasHeight - height) / 2,
       boxesLeft: 0,
