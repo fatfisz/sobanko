@@ -2,10 +2,16 @@
 
 var assign = require('object-assign');
 
-var { width: canvasWidth, height: canvasHeight, tiles } = require('./constants');
+var {
+  width: canvasWidth,
+  height: canvasHeight,
+  tiles,
+} = require('./constants');
 var levels = require('./levels');
 var { getTileFromName } = require('./utils');
 
+
+var floor = getTileFromName('floor');
 
 var getBlankState = () => ({
   direction: null,
@@ -23,23 +29,28 @@ var LevelPrototype = {
     this.playerMoving = false;
   },
 
+  get boxesLeft() {
+    return this.destinations.reduce((acc, pos) => {
+      var [x, y] = pos;
+      var shouldCount = tiles[this.data[y][x]] === 'destination';
+
+      return acc + (shouldCount ? 1 : 0);
+    }, 0);
+  },
+
 };
 
 function processData(level) {
   level.data = level.data.map((row, y) => {
     return row.map((value, x) => {
       switch (tiles[value]) {
-        case 'box':
-          level.boxesLeft += 1;
-          break;
         case 'destination':
         case 'boxInDestination':
-          level.destinationCount += 1;
+          level.destinations.push([x, y]);
           break;
         case 'player':
           assign(level, { playerX: x, playerY: y });
-          level.data[y][x] = getTileFromName('floor');
-          break;
+          return floor;
       }
 
       return value;
@@ -65,8 +76,7 @@ module.exports = function getLevel(which, uiState) {
       playerMoving: false,
       offsetX: (canvasWidth - width) / 2,
       offsetY: (canvasHeight - height) / 2,
-      boxesLeft: 0,
-      destinationCount: 0,
+      destinations: [],
     }
   );
 

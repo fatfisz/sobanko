@@ -56,7 +56,7 @@ function initStatus() {
   allowFocus('back');
   allowFocus('restart');
 
-  $('#destination-count')[0].textContent = currentLevel.destinationCount;
+  $('#destination-count')[0].textContent = currentLevel.destinations.length;
   updateBoxCount();
   updateMoveCount();
 

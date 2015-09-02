@@ -46,11 +46,10 @@ function resetUndo() {
 }
 
 function encodeState(level) {
-  var { data, boxesLeft, playerX, playerY } = level;
+  var { data, playerX, playerY } = level;
 
   return JSON.stringify({
     data,
-    boxesLeft,
     playerX,
     playerY,
   });
@@ -63,9 +62,8 @@ function applyState(level, value) {
 }
 
 function encodeStateFragment(level) {
-  var { data, currentState, boxesLeft, playerX, playerY } = level;
+  var { data, currentState, playerX, playerY } = level;
   var savedState = [
-    boxesLeft,
     playerX,
     playerY,
   ];
@@ -87,7 +85,6 @@ function encodeStateFragment(level) {
 function applyStateFragment(level, value) {
   var parsed = JSON.parse(value);
   var [
-    boxesLeft,
     playerX,
     playerY,
     /* eslint-disable comma-dangle */
@@ -102,7 +99,6 @@ function applyStateFragment(level, value) {
   });
 
   assign(level, {
-    boxesLeft,
     playerX,
     playerY,
   });
