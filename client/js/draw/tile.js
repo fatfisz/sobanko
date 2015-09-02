@@ -189,9 +189,7 @@ var drawingFunctions = [
     context.fill();
   },
   function drawBoxInDestination(drawX, drawY, data, x, y) {
-    if (Array.isArray(data)) {
-      drawFloorHelper(drawX, drawY, data, x, y);
-    }
+    drawFloorHelper(drawX, drawY, data, x, y);
     drawBoxHelper(drawX, drawY, '#9be581');
   },
 ];
