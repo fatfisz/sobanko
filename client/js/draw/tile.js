@@ -102,6 +102,7 @@ function drawBoxHelper(x, y, bumperColor) {
   context.stroke();
 
   context.beginPath();
+  context.strokeStyle = 'rgba(0, 0, 0, .17)';
   context.fillStyle = bodyColor;
   context.moveTo(x + offset * 2, y + offset);
   context.arcTo(x + tileSize - offset, y + offset, x + tileSize - offset, y + offset * 2, radius);
@@ -109,6 +110,7 @@ function drawBoxHelper(x, y, bumperColor) {
   context.arcTo(x + offset, y + tileSize - offset, x + offset, y + tileSize - offset * 2, radius);
   context.arcTo(x + offset, y + offset, x + offset * 2, y + offset, radius);
   context.fill();
+  context.stroke();
 
   context.beginPath();
   context.strokeStyle = 'rgba(0, 0, 0, .17)';
