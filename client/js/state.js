@@ -7,12 +7,10 @@ var storage = require('./storage');
 var { $ } = require('./utils');
 
 
-function allowFocus(id) {
-  $('#' + id)[0].tabIndex = 0;
-}
-
-function blockFocus(id) {
-  $('#' + id)[0].tabIndex = -1;
+function toggleFocus(ids, allow) {
+  ids.forEach((id) => {
+    $('#' + id)[0].tabIndex = allow ? 0 : -1;
+  });
 }
 
 var root = document.querySelectorAll('html')[0];
@@ -50,9 +48,7 @@ function initStatus() {
     $('.level')[currentLevel.which].classList.add('continue');
   }, 500);
 
-  allowFocus('undo');
-  allowFocus('back');
-  allowFocus('restart');
+  toggleFocus(['undo', 'back', 'restart'], true);
 
   $('#destination-count')[0].textContent = currentLevel.destinations.length;
   updateBoxCount();
@@ -97,9 +93,7 @@ function stopLevel() {
 
   root.className = '';
 
-  blockFocus('undo');
-  blockFocus('back');
-  blockFocus('restart');
+  toggleFocus(['undo', 'back', 'restart']);
 }
 
 function gameWon() {
@@ -121,7 +115,7 @@ function gameWon() {
     storage.saveBest(which, moves);
   }
 
-  allowFocus('back-to-level-select');
+  toggleFocus(['back-to-level-select'], true);
 
   $('#back-to-level-select')[0].focus();
 
@@ -130,9 +124,7 @@ function gameWon() {
 
   root.className = 'game-won';
 
-  blockFocus('undo');
-  blockFocus('back');
-  blockFocus('restart');
+  toggleFocus(['undo', 'back', 'restart']);
 
   var levelButton = $('.level.continue')[0];
 
@@ -147,7 +139,7 @@ function backToLevelSelect() {
 
   root.className = '';
 
-  blockFocus('back-to-level-select');
+  toggleFocus(['back-to-level-select']);
 }
 
 function beforeMove() {
@@ -182,11 +174,8 @@ function openRestartDialog() {
 
   root.className = 'playing restart-dialog';
 
-  blockFocus('undo');
-  blockFocus('back');
-  blockFocus('restart');
-  allowFocus('restart-cancel');
-  allowFocus('restart-ok');
+  toggleFocus(['undo', 'back', 'restart']);
+  toggleFocus(['restart-cancel', 'restart-ok'], true);
 
   $('#restart-ok')[0].focus();
 }
@@ -198,11 +187,8 @@ function resume() {
 
   root.className = 'playing';
 
-  allowFocus('undo');
-  allowFocus('back');
-  allowFocus('restart');
-  blockFocus('restart-cancel');
-  blockFocus('restart-ok');
+  toggleFocus(['undo', 'back', 'restart'], true);
+  toggleFocus(['restart-cancel', 'restart-ok']);
 }
 
 function restart() {
@@ -216,8 +202,7 @@ function restart() {
 
   startLevel(currentLevel.which);
 
-  blockFocus('restart-cancel');
-  blockFocus('restart-ok');
+  toggleFocus(['restart-cancel', 'restart-ok']);
 }
 
 module.exports = {
