@@ -72,17 +72,17 @@ var boxInDestination = tilePrerender(drawBoxHelper.bind(null, '#9be581'));
 
 module.exports = {
 
-  drawBox(drawX, drawY, data, x, y, forceOnlyTile) {
+  drawBox(level, x, y, drawX, drawY, forceOnlyTile) {
     if (!forceOnlyTile) {
-      drawFloor(drawX, drawY, data, x, y);
+      drawFloor(level, x, y, drawX, drawY);
     }
 
     context.drawImage(box, drawX, drawY);
   },
 
-  drawBoxInDestination(drawX, drawY, data, x, y, forceOnlyTile) {
+  drawBoxInDestination(level, x, y, drawX, drawY, forceOnlyTile) {
     if (!forceOnlyTile) {
-      drawFloor(drawX, drawY, data, x, y);
+      drawFloor(level, x, y, drawX, drawY);
     }
 
     context.drawImage(boxInDestination, drawX, drawY);

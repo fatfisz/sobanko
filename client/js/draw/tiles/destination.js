@@ -63,7 +63,7 @@ function drawDestinationHelper(context) {
 
 var destination = tilePrerender(drawDestinationHelper);
 
-module.exports = function drawDestination(drawX, drawY, data, x, y) {
-  drawFloor(drawX, drawY, data, x, y);
+module.exports = function drawDestination(level, x, y, drawX, drawY) {
+  drawFloor(level, x, y, drawX, drawY);
   context.drawImage(destination, drawX, drawY);
 };
