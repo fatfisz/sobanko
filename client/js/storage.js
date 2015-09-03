@@ -15,18 +15,28 @@ function updateStateIndex() {
 }
 
 function encodeState(level) {
-  var { data, playerPos } = level;
+  var { data, direction, playerPos } = level;
 
-  return JSON.stringify({
+  return JSON.stringify([
     data,
+    direction,
     playerPos,
-  });
+  ]);
 }
 
 function applyState(level, value) {
   var parsed = JSON.parse(value);
+  var [
+    data,
+    direction,
+    playerPos,
+  ] = parsed;
 
-  assign(level, parsed);
+  assign(level, {
+    data,
+    direction,
+    playerPos,
+  });
 }
 
 function encodeStateFragment(level) {

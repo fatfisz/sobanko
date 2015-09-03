@@ -35,7 +35,7 @@ function movePlayer(level, delta) {
 }
 
 module.exports = function movePlayerAndBox(level, delta) {
-  var { moving, playerPos } = level;
+  var { uiState, moving, playerPos } = level;
 
   if (!moving) {
     var { direction, pulling } = controls.state;
@@ -54,10 +54,12 @@ module.exports = function movePlayerAndBox(level, delta) {
     var targetPos = getTargetPosition(direction, playerPos);
 
     if (!isPassable(level.getTile(targetPos))) {
+      // At least save the direction
+      uiState.saveState();
       return true;
     }
 
-    level.uiState.beforeMove();
+    uiState.beforeMove();
 
     assign(level, {
       moving: true,

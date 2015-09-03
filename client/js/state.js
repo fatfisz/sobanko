@@ -135,12 +135,16 @@ module.exports = exports = {
     root.className = '';
   },
 
+  saveState() {
+    storage.saveState(currentLevel);
+  },
+
   beforeMove() {
     storage.pushStateFragment(currentLevel);
   },
 
   afterMove() {
-    storage.saveState(currentLevel);
+    exports.saveState();
 
     updateCounters();
 
