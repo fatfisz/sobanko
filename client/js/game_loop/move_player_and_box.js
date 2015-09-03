@@ -39,21 +39,22 @@ module.exports = function movePlayerAndBox(level, delta) {
 
   if (!moving) {
     var { direction, pulling } = controls.state;
+    var pullingChanged = level.pulling !== pulling;
 
-    assign(level, {
-      direction,
-      pulling,
-    });
-
-    if (process.env.NODE_ENV !== 'production' && !direction) {
-      throw new Error('Expected direction to be set');
+    if (pullingChanged) {
+      level.pulling = pulling;
     }
+
+    if (!direction) {
+      return pullingChanged;
+    }
+
+    level.direction = direction;
 
     var targetPos = getTargetPosition(direction, playerPos);
 
     if (!isPassable(level.getTile(targetPos))) {
-      level.pulling = false;
-      return false; // nothing to redraw
+      return true;
     }
 
     level.uiState.beforeMove();
@@ -70,5 +71,5 @@ module.exports = function movePlayerAndBox(level, delta) {
 
   movePlayer(level, delta);
 
-  return true; // redraw player
+  return true; // redraw after each move
 };

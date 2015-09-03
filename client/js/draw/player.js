@@ -1,6 +1,7 @@
 'use strict';
 
 var { tileSize } = require('../constants');
+var controls = require('../controls');
 var { getBoxPosition, context } = require('../utils');
 var drawLevelFragment = require('./level_fragment');
 var drawTile = require('./tile');

@@ -31,7 +31,10 @@ function applyState(level, value) {
 
 function encodeStateFragment(level) {
   var { direction, pulling, playerPos } = level;
-  var savedState = [playerPos];
+  var savedState = [
+    direction,
+    playerPos,
+  ];
 
   if (pulling) {
     var boxPos = getBoxPosition(direction, playerPos);
@@ -50,6 +53,7 @@ function encodeStateFragment(level) {
 function applyStateFragment(level, value) {
   var parsed = JSON.parse(value);
   var [
+    direction,
     playerPos,
     /* eslint-disable comma-dangle */
     ...data // This is a bug in eslint
@@ -62,7 +66,10 @@ function applyStateFragment(level, value) {
     level.setTile(pos, tile);
   });
 
-  level.playerPos = playerPos;
+  assign(level, {
+    direction,
+    playerPos,
+  });
 }
 
 module.exports = {

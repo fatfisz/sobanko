@@ -24,37 +24,27 @@ function getState(doNotCheckSpecial) {
   }
 
   var shiftIndex = pressedKeys.indexOf(shiftKey);
-  var ctrlIndex = pressedKeys.indexOf(ctrlKey);
+  var ctrlActive = pressedKeys.indexOf(ctrlKey) !== -1;
   var lastKey = pressedKeys[length - 1];
+  var result = {
+    pulling: shiftIndex !== -1,
+  };
+  var shiftIsLast = shiftIndex === length - 1;
 
-  if (shiftIndex === length - 1) {
-    lastKey = length === 1 ? null : pressedKeys[length - 2];
+  if (shiftIsLast) {
+    lastKey = pressedKeys[length - 2] || null;
   }
 
-  if (directionKeys[lastKey]) {
-    return {
-      direction: directionKeys[lastKey],
-      pulling: shiftIndex !== -1,
-    };
+  var direction = directionKeys[lastKey] || null;
+  var special = specialKeys[lastKey] || null;
+
+  if (direction || shiftIsLast || doNotCheckSpecial) {
+    result.direction = direction;
+  } else if (special && ctrlActive) {
+    result.special = special;
   }
 
-  if (shiftIndex === length - 1) {
-    // Shift is the last key, but the last but one is not a direction key
-    return null;
-  }
-
-  if (doNotCheckSpecial) {
-    // Don't fire special keys on keyup
-    return null;
-  }
-
-  if (specialKeys[lastKey] && ctrlIndex !== -1) {
-    return {
-      special: specialKeys[lastKey],
-    };
-  }
-
-  return null;
+  return result;
 }
 
 module.exports = function setup(callback) {

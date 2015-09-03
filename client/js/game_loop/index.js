@@ -1,6 +1,5 @@
 'use strict';
 
-var controls = require('../controls');
 var clear = require('../draw/clear');
 var drawLevelFragment = require('../draw/level_fragment');
 var drawPlayer = require('../draw/player');
@@ -29,10 +28,8 @@ function step() {
     redrawScheduled = false;
   }
 
-  if (level.moving || controls.state.direction) {
-    if (movePlayerAndBox(level, delta)) {
-      drawPlayer(level);
-    }
+  if (movePlayerAndBox(level, delta)) {
+    drawPlayer(level);
   }
 }
 
