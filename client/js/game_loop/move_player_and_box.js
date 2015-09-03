@@ -4,37 +4,26 @@ var assign = require('object-assign');
 
 var { playerSpeed } = require('../constants');
 var controls = require('../controls');
-var { isPassable, getTargetPosition } = require('../utils');
+var {
+  isPassable,
+  directionToIndex,
+  directionToDirectionMod,
+  getTargetPosition,
+} = require('../utils');
 var boxPulling = require('./box_pulling');
 
 
-var directionToAxis = {
-  up: 'Y',
-  down: 'Y',
-  left: 'X',
-  right: 'X',
-};
-
-var directionToDirectionMod = {
-  up: -1,
-  down: 1,
-  left: -1,
-  right: 1,
-};
-
 function movePlayer(level, delta) {
-  var { uiState, direction, pulling } = level;
-  var axis = directionToAxis[direction];
+  var { uiState, direction, pulling, playerPos, targetPos } = level;
+  var posindex = directionToIndex[direction];
   var directionMod = directionToDirectionMod[direction];
-  var playerProp = `player${axis}`;
-  var targetProp = `target${axis}`;
   var mod = delta * playerSpeed;
 
-  level[playerProp] += mod * directionMod;
+  playerPos[posindex] += mod * directionMod;
 
   // Did we move past the target?
-  if (directionMod * (level[playerProp] - level[targetProp]) > 0) {
-    level[playerProp] = level[targetProp];
+  if (directionMod * (playerPos[posindex] - targetPos[posindex]) > 0) {
+    playerPos[posindex] = targetPos[posindex];
     level.moving = false;
 
     if (pulling) {
@@ -46,12 +35,7 @@ function movePlayer(level, delta) {
 }
 
 module.exports = function movePlayerAndBox(level, delta) {
-  var {
-    data,
-    moving,
-    playerX,
-    playerY,
-  } = level;
+  var { moving, playerPos } = level;
 
   if (!moving) {
     var { direction, pulling } = controls.state;
@@ -65,9 +49,9 @@ module.exports = function movePlayerAndBox(level, delta) {
       throw new Error('Expected direction to be set');
     }
 
-    var [targetX, targetY] = getTargetPosition(direction, playerX, playerY);
+    var targetPos = getTargetPosition(direction, playerPos);
 
-    if (!isPassable(data[targetY][targetX])) {
+    if (!isPassable(level.getTile(targetPos))) {
       level.pulling = false;
       return false; // nothing to redraw
     }
@@ -76,8 +60,7 @@ module.exports = function movePlayerAndBox(level, delta) {
 
     assign(level, {
       moving: true,
-      targetX,
-      targetY,
+      targetPos,
     });
 
     if (pulling) {

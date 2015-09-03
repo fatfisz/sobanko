@@ -3,8 +3,8 @@
 var assign = require('object-assign');
 
 var {
-  width: canvasWidth,
-  height: canvasHeight,
+  width: boardWidth,
+  height: boardHeight,
   tiles,
 } = require('./constants');
 var levels = require('./levels');
@@ -12,17 +12,25 @@ var levels = require('./levels');
 
 var LevelPrototype = {
 
-  undo() {
-    this.moving = false;
-  },
-
   get boxesLeft() {
     return this.destinations.reduce((acc, pos) => {
-      var [x, y] = pos;
-      var shouldCount = tiles[this.data[y][x]] === 'destination';
+      var tile = this.getTile(pos);
+      var shouldCount = tiles[tile] === 'destination';
 
       return acc + (shouldCount ? 1 : 0);
     }, 0);
+  },
+
+  getTile([x, y]) {
+    return this.data[y][x];
+  },
+
+  setTile([x, y], tile) {
+    this.data[y][x] = tile;
+  },
+
+  undo() {
+    this.moving = false;
   },
 
 };
@@ -36,10 +44,7 @@ function processData(level) {
           level.destinations.push([x, y]);
           break;
         case 'player':
-          assign(level, {
-            playerX: x,
-            playerY: y,
-          });
+          level.playerPos = [x, y];
           return tiles.floor;
       }
 
@@ -64,8 +69,10 @@ module.exports = function getLevel(which, uiState) {
       direction: null,
       pulling: false,
       moving: false,
-      offsetX: (canvasWidth - width) / 2,
-      offsetY: (canvasHeight - height) / 2,
+      offset: [
+        (boardWidth - width) / 2,
+        (boardHeight - height) / 2,
+      ],
       destinations: [],
     }
   );

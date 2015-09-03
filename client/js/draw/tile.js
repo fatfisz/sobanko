@@ -12,13 +12,14 @@ var drawingFunctions = [
   require('./tiles/box_in_destination'),
 ];
 
-module.exports = function drawTile(offsetX, offsetY, data, x, y) {
-  var tile;
+module.exports = function drawTile(level, pos, _tile) {
+  var { data, offset } = level;
+  var tile = _tile;
+  var [offsetX, offsetY] = offset;
+  var [x, y] = pos;
 
-  if (Array.isArray(data)) {
-    tile = data[y][x];
-  } else {
-    tile = data;
+  if (!tile) {
+    tile = level.getTile(pos);
   }
 
   if (!drawingFunctions[tile]) {
@@ -30,6 +31,7 @@ module.exports = function drawTile(offsetX, offsetY, data, x, y) {
     (offsetY + y) * tileSize,
     data,
     x,
-    y
+    y,
+    _tile // pass the tile if it was provided
   );
 };

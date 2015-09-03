@@ -5,12 +5,9 @@ var { context } = require('../utils');
 var drawTile = require('./tile');
 
 
-function isValidPosition(level, x, y) {
-  return x >= 0 && y >= 0 && x < level.width && y < level.height;
-}
-
 module.exports = function drawLevelFragment(level, sx, sy, width, height) {
-  var { data, offsetX, offsetY } = level;
+  var { offset } = level;
+  var [offsetX, offsetY] = offset;
 
   context.clearRect(
     (offsetX + sx) * tileSize,
@@ -21,11 +18,11 @@ module.exports = function drawLevelFragment(level, sx, sy, width, height) {
 
   for (var y = sy; y < sy + height; y += 1) {
     for (var x = sx; x < sx + width; x += 1) {
-      if (!isValidPosition(level, x, y)) {
+      if (x < 0 || y < 0 || x >= level.width || y >= level.height) {
         continue;
       }
 
-      drawTile(offsetX, offsetY, data, x, y);
+      drawTile(level, [x, y]);
     }
   }
 };

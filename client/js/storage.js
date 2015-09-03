@@ -15,12 +15,11 @@ function updateStateIndex() {
 }
 
 function encodeState(level) {
-  var { data, playerX, playerY } = level;
+  var { data, playerPos } = level;
 
   return JSON.stringify({
     data,
-    playerX,
-    playerY,
+    playerPos,
   });
 }
 
@@ -31,19 +30,16 @@ function applyState(level, value) {
 }
 
 function encodeStateFragment(level) {
-  var { data, direction, pulling, playerX, playerY } = level;
-  var savedState = [
-    playerX,
-    playerY,
-  ];
+  var { direction, pulling, playerPos } = level;
+  var savedState = [playerPos];
 
   if (pulling) {
-    var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
+    var boxPos = getBoxPosition(direction, playerPos);
 
-    if (isBoxTile(data[boxY][boxX])) {
+    if (isBoxTile(level.getTile(boxPos))) {
       savedState.push(
-        [playerX, playerY, data[playerY][playerX]],
-        [boxX, boxY, data[boxY][boxX]]
+        [playerPos, level.getTile(playerPos)],
+        [boxPos, level.getTile(boxPos)]
       );
     }
   }
@@ -54,23 +50,19 @@ function encodeStateFragment(level) {
 function applyStateFragment(level, value) {
   var parsed = JSON.parse(value);
   var [
-    playerX,
-    playerY,
+    playerPos,
     /* eslint-disable comma-dangle */
     ...data // This is a bug in eslint
     /* eslint-enable comma-dangle */
   ] = parsed;
 
   data.forEach((tileData) => {
-    var [x, y, tile] = tileData;
+    var [pos, tile] = tileData;
 
-    level.data[y][x] = tile;
+    level.setTile(pos, tile);
   });
 
-  assign(level, {
-    playerX,
-    playerY,
-  });
+  level.playerPos = playerPos;
 }
 
 module.exports = {

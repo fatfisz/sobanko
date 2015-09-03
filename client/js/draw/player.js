@@ -16,12 +16,12 @@ module.exports = function drawPlayer(level) {
     direction,
     pulling,
     moving,
-    offsetX,
-    offsetY,
-    playerX,
-    playerY,
+    playerPos,
+    offset,
     prevBoxType,
   } = level;
+  var [playerX, playerY] = playerPos;
+  var [offsetX, offsetY] = offset;
   var xLo = Math.floor(playerX) - 2;
   var xHi = Math.ceil(playerX) + 2;
   var yLo = Math.floor(playerY) - 2;
@@ -31,8 +31,8 @@ module.exports = function drawPlayer(level) {
   draw(offsetX + playerX, offsetY + playerY);
 
   if (moving && pulling) {
-    var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
+    var boxPos = getBoxPosition(direction, playerPos);
 
-    drawTile(offsetX, offsetY, prevBoxType, boxX, boxY);
+    drawTile(level, boxPos, prevBoxType);
   }
 };

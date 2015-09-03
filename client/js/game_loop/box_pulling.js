@@ -11,9 +11,9 @@ var {
 module.exports = {
 
   start(level) {
-    var { data, direction, playerX, playerY } = level;
-    var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
-    var boxTile = data[boxY][boxX];
+    var { direction, playerPos } = level;
+    var boxPos = getBoxPosition(direction, playerPos);
+    var boxTile = level.getTile(boxPos);
 
     if (!isBoxTile(boxTile)) {
       level.pulling = false;
@@ -21,15 +21,16 @@ module.exports = {
     }
 
     level.prevBoxType = boxTile;
-    data[boxY][boxX] = getTileBeforePulling(boxTile);
+    level.setTile(boxPos, getTileBeforePulling(boxTile));
   },
 
   stop(level) {
-    var { data, direction, playerX, playerY } = level;
-    var [boxX, boxY] = getBoxPosition(direction, playerX, playerY);
+    var { direction, playerPos } = level;
+    var boxPos = getBoxPosition(direction, playerPos);
+    var boxTile = level.getTile(boxPos);
 
     level.pulling = false;
-    data[boxY][boxX] = getTileAfterPulling(data[boxY][boxX]);
+    level.setTile(boxPos, getTileAfterPulling(boxTile));
   },
 
 };

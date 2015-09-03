@@ -1,21 +1,12 @@
 'use strict';
 
-var keymirror = require('keymirror');
-
-
 module.exports = {
   width: 20,
   height: 20,
 
   tileSize: 48,
 
-  controls: keymirror({
-    up: null,
-    down: null,
-    left: null,
-    right: null,
-    pulling: null,
-  }),
+  playerSpeed: 4e-3,
 
   tiles: {
     1: 'wall',
@@ -36,6 +27,4 @@ module.exports = {
     6: 'player',
     player: 6,
   },
-
-  playerSpeed: 4e-3,
 };

@@ -28,38 +28,38 @@ module.exports = exports = {
     return !name || name === 'wall';
   },
 
-  getTargetPosition(direction, playerX, playerY) {
-    switch (direction) {
-      case 'up':
-        return [playerX, playerY - 1];
-      case 'down':
-        return [playerX, playerY + 1];
-      case 'left':
-        return [playerX - 1, playerY];
-      case 'right':
-        return [playerX + 1, playerY];
-    }
-
-    if (process.env.NODE_ENV !== 'production') {
-      throw new Error('Invalid direction specified');
-    }
+  directionToIndex: {
+    up: 1,
+    down: 1,
+    left: 0,
+    right: 0,
   },
 
-  getBoxPosition(direction, playerX, playerY) {
-    switch (direction) {
-      case 'up':
-        return [playerX, playerY + 1];
-      case 'down':
-        return [playerX, playerY - 1];
-      case 'left':
-        return [playerX + 1, playerY];
-      case 'right':
-        return [playerX - 1, playerY];
-    }
+  directionToDirectionMod: {
+    up: -1,
+    down: 1,
+    left: -1,
+    right: 1,
+  },
 
-    if (process.env.NODE_ENV !== 'production') {
-      throw new Error('Invalid direction specified');
-    }
+  getTargetPosition(direction, pos) {
+    var result = pos.slice();
+    var index = exports.directionToIndex[direction];
+    var directionMod = exports.directionToDirectionMod[direction];
+
+    result[index] += directionMod;
+
+    return result;
+  },
+
+  getBoxPosition(direction, pos) {
+    var result = pos.slice();
+    var index = exports.directionToIndex[direction];
+    var directionMod = exports.directionToDirectionMod[direction];
+
+    result[index] -= directionMod;
+
+    return result;
   },
 
   getTileBeforePulling(tile) {

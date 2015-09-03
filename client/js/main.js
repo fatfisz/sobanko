@@ -26,23 +26,19 @@ resizeCanvas();
 window.onresize = resizeCanvas;
 
 // Setup levels
-var levelsContainer = $('#levels')[0];
-var levelsFragment = document.createDocumentFragment();
 var levelContinue = storage.getLevel();
-var levelBox;
 
-for (var i = 0, ii = levels.length; i < ii; i += 1) {
-  levelBox = document.createElement('div');
+levels.forEach((level, i) => {
+  var levelBox = document.createElement('div');
+
   levelBox.className =
     'level' +
     (i === levelContinue ? ' continue' : '') +
     (storage.getBest(i) !== null ? ' solved' : '');
   levelBox.onclick = state.startLevel.bind(null, i);
   levelBox.textContent = i + 1;
-  levelsFragment.appendChild(levelBox);
-}
-
-levelsContainer.appendChild(levelsFragment);
+  $('#levels')[0].appendChild(levelBox);
+});
 
 // Setup the Undo button
 setOnClickAndTabIndex('undo', state.undo);

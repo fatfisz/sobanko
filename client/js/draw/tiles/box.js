@@ -8,8 +8,8 @@ var tilePredraw = require('./tile_predraw');
 
 var box = tilePredraw(drawBoxHelper.bind(null, '#ccd7ea'));
 
-module.exports = function drawBox(drawX, drawY, data, x, y) {
-  if (Array.isArray(data)) {
+module.exports = function drawBox(drawX, drawY, data, x, y, forceOnlyTile) {
+  if (!forceOnlyTile) {
     drawFloor(drawX, drawY, data, x, y);
   }
 
