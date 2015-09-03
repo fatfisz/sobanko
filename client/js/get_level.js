@@ -8,10 +8,7 @@ var {
   tiles,
 } = require('./constants');
 var levels = require('./levels');
-var { getTileFromName } = require('./utils');
 
-
-var floor = getTileFromName('floor');
 
 var LevelPrototype = {
 
@@ -43,7 +40,7 @@ function processData(level) {
             playerX: x,
             playerY: y,
           });
-          return floor;
+          return tiles.floor;
       }
 
       return value;

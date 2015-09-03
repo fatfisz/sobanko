@@ -10,18 +10,6 @@ module.exports = exports = {
   $,
   context: $('canvas')[0].getContext('2d'),
 
-  getTileFromName(name) {
-    for (var key in tiles) {
-      if (tiles[key] === name) {
-        return +key;
-      }
-    }
-
-    if (process.env.NODE_ENV !== 'production') {
-      throw new Error(`Unknown tile name ${name}`);
-    }
-  },
-
   isPassable(tile) {
     var name = tiles[tile];
 
@@ -78,11 +66,11 @@ module.exports = exports = {
     var name = tiles[tile];
 
     if (name === 'box') {
-      return exports.getTileFromName('floor');
+      return tiles.floor;
     }
 
     if (name === 'boxInDestination') {
-      return exports.getTileFromName('destination');
+      return tiles.destination;
     }
 
     if (process.env.NODE_ENV !== 'production') {
@@ -94,11 +82,11 @@ module.exports = exports = {
     var name = tiles[tile];
 
     if (name === 'floor') {
-      return exports.getTileFromName('box');
+      return tiles.box;
     }
 
     if (name === 'destination') {
-      return exports.getTileFromName('boxInDestination');
+      return tiles.boxInDestination;
     }
 
     if (process.env.NODE_ENV !== 'production') {
