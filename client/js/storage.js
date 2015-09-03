@@ -2,7 +2,7 @@
 
 var assign = require('object-assign');
 
-var { isBoxTile, getBoxPosition } = require('./utils');
+var { isBoxTile, opposite, getBoxPosition } = require('./utils');
 
 
 var undoPrefix = 'undo/';
@@ -42,7 +42,7 @@ function applyState(level, value) {
 function encodeStateFragment(level) {
   var { direction, pulling, playerPos } = level;
   var savedState = [
-    direction,
+    pulling ? opposite[direction] : direction,
     playerPos,
   ];
 

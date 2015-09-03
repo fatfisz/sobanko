@@ -2,6 +2,7 @@
 
 var {
   isBoxTile,
+  opposite,
   getBoxPosition,
   getTileBeforePulling,
   getTileAfterPulling,
@@ -29,6 +30,7 @@ module.exports = {
     var boxPos = getBoxPosition(direction, playerPos);
     var boxTile = level.getTile(boxPos);
 
+    level.direction = opposite[direction];
     level.pulling = false;
     level.setTile(boxPos, getTileAfterPulling(boxTile));
   },

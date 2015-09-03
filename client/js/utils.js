@@ -28,6 +28,13 @@ module.exports = exports = {
     return !name || name === 'wall';
   },
 
+  opposite: {
+    up: 'down',
+    down: 'up',
+    left: 'right',
+    right: 'left',
+  },
+
   directionToIndex: {
     up: 1,
     down: 1,
