@@ -3,7 +3,7 @@
 var { tileSize } = require('../../constants');
 var { context } = require('../../utils');
 var drawFloor = require('./floor');
-var tilePredraw = require('./tile_predraw');
+var tilePrerender = require('./tile_prerender');
 
 
 function drawDestinationHelper(context) {
@@ -61,7 +61,7 @@ function drawDestinationHelper(context) {
   context.fill();
 }
 
-var destination = tilePredraw(drawDestinationHelper);
+var destination = tilePrerender(drawDestinationHelper);
 
 module.exports = function drawDestination(drawX, drawY, data, x, y) {
   drawFloor(drawX, drawY, data, x, y);

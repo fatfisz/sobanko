@@ -1,9 +1,12 @@
 'use strict';
 
 var { tileSize } = require('../../constants');
+var { context } = require('../../utils');
+var drawFloor = require('./floor');
+var tilePrerender = require('./tile_prerender');
 
 
-module.exports = function drawBoxHelper(bumperColor, context) {
+function drawBoxHelper(bumperColor, context) {
   var bumperOffset = 5;
   var bodyColor = '#b4b4b4';
   var offset = 4;
@@ -62,4 +65,27 @@ module.exports = function drawBoxHelper(bumperColor, context) {
   context.closePath();
   context.fill();
   context.stroke();
+}
+
+var box = tilePrerender(drawBoxHelper.bind(null, '#ccd7ea'));
+var boxInDestination = tilePrerender(drawBoxHelper.bind(null, '#9be581'));
+
+module.exports = {
+
+  drawBox(drawX, drawY, data, x, y, forceOnlyTile) {
+    if (!forceOnlyTile) {
+      drawFloor(drawX, drawY, data, x, y);
+    }
+
+    context.drawImage(box, drawX, drawY);
+  },
+
+  drawBoxInDestination(drawX, drawY, data, x, y, forceOnlyTile) {
+    if (!forceOnlyTile) {
+      drawFloor(drawX, drawY, data, x, y);
+    }
+
+    context.drawImage(boxInDestination, drawX, drawY);
+  },
+
 };

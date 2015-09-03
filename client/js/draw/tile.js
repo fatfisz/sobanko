@@ -1,15 +1,15 @@
 'use strict';
 
 var { tileSize } = require('../constants');
-
+var { drawBox, drawBoxInDestination } = require('./tiles/boxes');
 
 var drawingFunctions = [
   null,
   require('./tiles/wall'),
   require('./tiles/floor'),
-  require('./tiles/box'),
+  drawBox,
   require('./tiles/destination'),
-  require('./tiles/box_in_destination'),
+  drawBoxInDestination,
 ];
 
 module.exports = function drawTile(level, pos, _tile) {

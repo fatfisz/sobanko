@@ -9,7 +9,7 @@ var context = canvas.getContext('2d');
 canvas.width = tileSize;
 canvas.height = tileSize;
 
-module.exports = function tilePredraw(draw) {
+module.exports = function tilePrerender(draw) {
   var image = new Image();
 
   context.clearRect(0, 0, tileSize, tileSize);
