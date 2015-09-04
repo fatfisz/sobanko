@@ -9,7 +9,10 @@ var { $ } = require('./utils');
 
 function toggleFocus(ids, allow) {
   ids.forEach((id) => {
-    $('#' + id)[0].tabIndex = allow ? 0 : -1;
+    var element = $('#' + id)[0];
+
+    element.tabIndex = allow ? 0 : -1;
+    element.blur();
   });
 }
 
