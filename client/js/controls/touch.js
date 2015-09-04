@@ -7,18 +7,16 @@ var pulling = false;
 var pressedButtons = [];
 
 function getState() {
-  var length = pressedButtons.length;
-
-  if (length === 0) {
-    return null;
-  }
-
-  var lastButton = pressedButtons[length - 1];
-
-  return {
-    direction: lastButton,
+  var result = {
     pulling,
   };
+  var length = pressedButtons.length;
+
+  if (length !== 0) {
+    result.direction = pressedButtons[length - 1];
+  }
+
+  return result;
 }
 
 function setupDirectionHandlers(callback, id) {
