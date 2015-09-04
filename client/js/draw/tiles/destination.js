@@ -13,57 +13,33 @@ function drawDestinationHelper(context) {
   var socketColor = '#eda991';
   var socketOffset = 7;
 
-  context.beginPath();
   context.strokeStyle = 'rgba(0, 0, 0, .17)';
   context.fillStyle = connectorColor;
-  context.moveTo(connectorOffset, tileSize / 2);
-  context.arcTo(connectorOffset, tileSize / 2 - connectorRadius,
-                tileSize / 2, tileSize / 2 - connectorRadius,
-                connectorRadius);
-  context.arcTo(tileSize - connectorOffset, tileSize / 2 - connectorRadius,
-                tileSize - connectorOffset, tileSize / 2,
-                connectorRadius);
-  context.arcTo(tileSize - connectorOffset, tileSize / 2 + connectorRadius,
-                tileSize / 2, tileSize / 2 + connectorRadius,
-                connectorRadius);
-  context.arcTo(connectorOffset, tileSize / 2 + connectorRadius,
-                connectorOffset, tileSize / 2,
-                connectorRadius);
+
+  context.roundedRect(
+    connectorOffset, tileSize / 2 - connectorRadius,
+    tileSize - connectorOffset, tileSize / 2 + connectorRadius,
+    connectorRadius
+  );
   context.fill();
   context.stroke();
 
-  context.beginPath();
-  context.strokeStyle = 'rgba(0, 0, 0, .17)';
-  context.fillStyle = connectorColor;
-  context.moveTo(tileSize / 2, connectorOffset);
-  context.arcTo(tileSize / 2 - connectorRadius, connectorOffset,
-                tileSize / 2 - connectorRadius, tileSize / 2,
-                connectorRadius);
-  context.arcTo(tileSize / 2 - connectorRadius, tileSize - connectorOffset,
-                tileSize / 2, tileSize - connectorOffset,
-                connectorRadius);
-  context.arcTo(tileSize / 2 + connectorRadius, tileSize - connectorOffset,
-                tileSize / 2 + connectorRadius, tileSize / 2,
-                connectorRadius);
-  context.arcTo(tileSize / 2 + connectorRadius, connectorOffset,
-                tileSize / 2, connectorOffset,
-                connectorRadius);
+  context.roundedRect(
+    tileSize / 2 - connectorRadius, connectorOffset,
+    tileSize / 2 + connectorRadius, tileSize - connectorOffset,
+    connectorRadius
+  );
   context.fill();
   context.stroke();
 
-
-  context.beginPath();
+  context.circle(tileSize / 2, tileSize / 2, tileSize / 2 - socketOffset * 2);
   context.fillStyle = socketColor;
-  context.arc(tileSize / 2, tileSize / 2,
-              tileSize / 2 - socketOffset * 2,
-              0, 2 * Math.PI);
-  context.closePath();
   context.fill();
 }
 
 var destination = tilePrerender(drawDestinationHelper);
 
-module.exports = function drawDestination(level, x, y, drawX, drawY) {
-  drawFloor(level, x, y, drawX, drawY);
-  context.drawImage(destination, drawX, drawY);
+module.exports = function drawDestination(level, x, y) {
+  drawFloor(level, x, y);
+  context.drawImage(destination, x * tileSize, y * tileSize);
 };

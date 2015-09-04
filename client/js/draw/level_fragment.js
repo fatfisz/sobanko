@@ -5,24 +5,16 @@ var { context } = require('../utils');
 var drawTile = require('./tile');
 
 
-module.exports = function drawLevelFragment(level, sx, sy, width, height) {
-  var { offset } = level;
-  var [offsetX, offsetY] = offset;
+module.exports = function drawLevelFragment(level, x, y, width, height) {
+  context.clearRect(x * tileSize, y * tileSize, width * tileSize, height * tileSize);
 
-  context.clearRect(
-    (offsetX + sx) * tileSize,
-    (offsetY + sy) * tileSize,
-    width * tileSize,
-    height * tileSize
-  );
-
-  for (var y = sy; y < sy + height; y += 1) {
-    for (var x = sx; x < sx + width; x += 1) {
-      if (x < 0 || y < 0 || x >= level.width || y >= level.height) {
+  for (var ty = y; ty < y + height; ty += 1) {
+    for (var tx = x; tx < x + width; tx += 1) {
+      if (tx < 0 || ty < 0 || tx >= level.width || ty >= level.height) {
         continue;
       }
 
-      drawTile(level, [x, y]);
+      drawTile(level, [tx, ty]);
     }
   }
 };

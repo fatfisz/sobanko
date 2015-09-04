@@ -7,40 +7,6 @@ var drawLevelFragment = require('./level_fragment');
 var drawTile = require('./tile');
 
 
-function beginRoundedRect(x1, y1, x2, y2, radius) {
-  var halfX = (x1 + x2) / 2;
-  var halfY = (y1 + y2) / 2;
-
-  context.beginPath();
-  context.moveTo(x1, halfY);
-  context.arcTo(x1, y1, halfX, y1, radius);
-  context.arcTo(x2, y1, x2, halfY, radius);
-  context.arcTo(x2, y2, halfX, y2, radius);
-  context.arcTo(x1, y2, x1, halfY, radius);
-  context.closePath();
-}
-
-function beginCircle(x, y, radius) {
-  beginRoundedRect(x - radius, y - radius, x + radius, y + radius, radius);
-}
-
-function rotate(x, y, direction) {
-  switch (direction) {
-    case 'down':
-      context.transform(-1, 0, 0, -1, (x + 1) * tileSize, (y + 1) * tileSize);
-      break;
-    case 'left':
-      context.transform(0, -1, 1, 0, x * tileSize, (y + 1) * tileSize);
-      break;
-    case 'right':
-      context.transform(0, 1, -1, 0, (x + 1) * tileSize, y * tileSize);
-      break;
-    default:
-      context.transform(1, 0, 0, 1, x * tileSize, y * tileSize);
-      break;
-  }
-}
-
 var foldedArmStops = [
   tileSize / 2 - 2,
   tileSize * 3 / 4,
@@ -95,17 +61,17 @@ function draw(x, y, direction, pulling) {
 
   context.save();
 
-  rotate(x, y, direction);
+  context.basedRotate(x, y, direction);
 
   if (pulling) {
-    rotate(0, 0, 'down');
+    context.basedRotate(0, 0, 'down');
   }
 
   // Tracks
   context.fillStyle = trackColor;
   context.strokeStyle = 'rgba(0, 0, 0, .25)';
 
-  beginRoundedRect(
+  context.roundedRect(
     horzOffset, topTrackY - 1,
     horzOffset + trackWidth, bottomTrackY + 1,
     trackRadius
@@ -113,7 +79,7 @@ function draw(x, y, direction, pulling) {
   context.fill();
   context.stroke();
 
-  beginRoundedRect(
+  context.roundedRect(
     tileSize - horzOffset - trackWidth, topTrackY - 1,
     tileSize - horzOffset, bottomTrackY + 1,
     trackRadius
@@ -136,7 +102,7 @@ function draw(x, y, direction, pulling) {
   context.fillStyle = pipeColor;
   context.strokeStyle = 'rgba(0, 0, 0, .25)';
 
-  beginRoundedRect(
+  context.roundedRect(
     pipeHorzOffset, tileSize - pipeVertOffset,
     pipeHorzOffset + pipeWidth, tileSize / 2,
     pipeRadius
@@ -144,7 +110,7 @@ function draw(x, y, direction, pulling) {
   context.fill();
   context.stroke();
 
-  beginRoundedRect(
+  context.roundedRect(
     tileSize - pipeHorzOffset - pipeWidth, tileSize - pipeVertOffset,
     tileSize - pipeHorzOffset, tileSize / 2,
     pipeRadius
@@ -153,7 +119,7 @@ function draw(x, y, direction, pulling) {
   context.stroke();
 
   // Body
-  beginRoundedRect(
+  context.roundedRect(
     horzOffset + trackWidth, vertBodyPadding,
     tileSize - horzOffset - trackWidth, tileSize - vertBodyPadding,
     bodyRadius
@@ -164,7 +130,7 @@ function draw(x, y, direction, pulling) {
   context.stroke();
 
   // Arm base
-  beginCircle(tileSize / 2, tileSize / 2, armBaseRadius);
+  context.circle(tileSize / 2, tileSize / 2, armBaseRadius);
   context.fillStyle = armBaseColor;
   context.fill();
   context.strokeStyle = 'rgba(0, 0, 0, .1)';
@@ -175,7 +141,7 @@ function draw(x, y, direction, pulling) {
   context.strokeStyle = 'rgba(0, 0, 0, .25)';
 
   // First arm part
-  beginRoundedRect(
+  context.roundedRect(
     (tileSize - firstArmPartWidth) / 2, armStops[0],
     (tileSize + firstArmPartWidth) / 2, armStops[1],
     armPartRadius
@@ -184,7 +150,7 @@ function draw(x, y, direction, pulling) {
   context.stroke();
 
   // First arm part
-  beginRoundedRect(
+  context.roundedRect(
     (tileSize - secondArmPartWidth) / 2, armStops[2],
     (tileSize + secondArmPartWidth) / 2, armStops[3],
     armPartRadius
@@ -216,11 +182,9 @@ module.exports = function drawPlayer(level) {
     pulling,
     moving,
     playerPos,
-    offset,
     prevBoxType,
   } = level;
   var [playerX, playerY] = playerPos;
-  var [offsetX, offsetY] = offset;
   var xLo = Math.floor(playerX) - 2;
   var xHi = Math.ceil(playerX) + 2;
   var yLo = Math.floor(playerY) - 2;
@@ -235,5 +199,6 @@ module.exports = function drawPlayer(level) {
     drawTile(level, boxPos, prevBoxType);
   }
 
-  draw(offsetX + playerX, offsetY + playerY, direction, moving && pulling);
+  draw(playerX, playerY, direction, moving && pulling);
+
 };

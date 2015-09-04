@@ -12,9 +12,9 @@ var variants = [
   '#f2f3f7',
 ];
 
-module.exports = function drawFloor(level, x, y, drawX, drawY) {
+module.exports = function drawFloor(level, x, y) {
   var which = (x + y * 2) % 5;
 
   context.fillStyle = variants[which];
-  context.fillRect(drawX, drawY, tileSize, tileSize);
+  context.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
 };

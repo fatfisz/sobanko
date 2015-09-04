@@ -1,11 +1,13 @@
 'use strict';
 
 var {
-  width: boardWidth,
-  height: boardHeight,
+  width: canvasWidth,
+  height: canvasHeight,
+  tileSize,
   tiles,
 } = require('./constants');
 var levels = require('./levels');
+var { context } = require('./utils');
 
 
 function processData(level) {
@@ -32,6 +34,16 @@ module.exports = function getLevel(which, uiState) {
   var data = levels[which];
   var width = data[0].length;
   var height = data.length;
+
+  // Center the board on the canvas
+  context.setTransform(
+    1,
+    0,
+    0,
+    1,
+    (1 - (canvasWidth - width) / 2) * tileSize,
+    (canvasHeight - height) / 2 * tileSize
+  );
 
   return processData({
 
@@ -62,10 +74,6 @@ module.exports = function getLevel(which, uiState) {
     direction: null,
     pulling: false,
     moving: false,
-    offset: [
-      (boardWidth - width) / 2,
-      (boardHeight - height) / 2,
-    ],
     destinations: [],
   });
 };
