@@ -8,7 +8,7 @@ var tilePrerender = require('./tile_prerender');
 
 function drawBoxHelper(bumperColor, context) {
   var bumperOffset = 5;
-  var bodyColor = '#b4b4b4';
+  var bodyColor = '#eee';
   var offset = 4;
   var radius = 5;
 
@@ -46,8 +46,8 @@ function drawBoxHelper(bumperColor, context) {
   context.stroke();
 }
 
-var box = tilePrerender(drawBoxHelper.bind(null, '#ccd7ea'));
-var boxInDestination = tilePrerender(drawBoxHelper.bind(null, '#9be581'));
+var box = tilePrerender(drawBoxHelper.bind(null, '#dbdbdb'));
+var boxInDestination = tilePrerender(drawBoxHelper.bind(null, '#9cf266'));
 
 module.exports = {
 
