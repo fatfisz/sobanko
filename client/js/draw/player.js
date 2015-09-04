@@ -69,7 +69,7 @@ function draw(x, y, direction, pulling) {
 
   // Tracks
   context.fillStyle = trackColor;
-  context.strokeStyle = 'rgba(0, 0, 0, .25)';
+  context.strokeStyle = 'rgba(0, 0, 0, .3)';
 
   context.roundedRect(
     horzOffset, topTrackY - 1,
@@ -95,12 +95,12 @@ function draw(x, y, direction, pulling) {
     context.moveTo(tileSize - horzOffset - trackWidth - .5, i + .5);
     context.lineTo(tileSize - horzOffset + .5, i + .5);
   }
-  context.strokeStyle = 'rgba(0, 0, 0, .17)';
+  context.strokeStyle = 'rgba(0, 0, 0, .1)';
   context.stroke();
 
   // Exhaust pipes
   context.fillStyle = pipeColor;
-  context.strokeStyle = 'rgba(0, 0, 0, .25)';
+  context.strokeStyle = 'rgba(0, 0, 0, .3)';
 
   context.roundedRect(
     pipeHorzOffset, tileSize - pipeVertOffset,
@@ -126,7 +126,7 @@ function draw(x, y, direction, pulling) {
   );
   context.fillStyle = bodyColor;
   context.fill();
-  context.strokeStyle = 'rgba(0, 0, 0, .17)';
+  context.strokeStyle = 'rgba(0, 0, 0, .3)';
   context.stroke();
 
   // Arm base
@@ -138,7 +138,7 @@ function draw(x, y, direction, pulling) {
 
   // Arm part style
   context.fillStyle = armColor;
-  context.strokeStyle = 'rgba(0, 0, 0, .25)';
+  context.strokeStyle = 'rgba(0, 0, 0, .3)';
 
   // First arm part
   context.roundedRect(
@@ -170,7 +170,7 @@ function draw(x, y, direction, pulling) {
 
   context.fillStyle = diskColor;
   context.fill();
-  context.strokeStyle = 'rgba(0, 0, 0, .25)';
+  context.strokeStyle = 'rgba(0, 0, 0, .3)';
   context.stroke();
 
   context.restore();

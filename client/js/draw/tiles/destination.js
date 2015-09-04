@@ -13,7 +13,7 @@ function drawDestinationHelper(context) {
   var socketColor = '#eda991';
   var socketOffset = 7;
 
-  context.strokeStyle = 'rgba(0, 0, 0, .17)';
+  context.strokeStyle = 'rgba(0, 0, 0, .1)';
   context.fillStyle = connectorColor;
 
   context.roundedRect(
