@@ -12,15 +12,26 @@ function drawBoxHelper(bumperColor, context) {
   var offset = 4;
   var radius = 5;
 
-  context.fillStyle = bumperColor;
-  context.strokeStyle = 'rgba(0, 0, 0, .17)';
+  context.strokeStyle = 'rgba(0, 0, 0, .3)';
 
   context.roundedRect(bumperOffset * 2, 0, tileSize - bumperOffset * 2, tileSize, bumperOffset);
+  context.fillStyle = bumperColor;
   context.fill();
+
+  context.roundedRect(bumperOffset * 2, 0, tileSize - bumperOffset * 2, tileSize, bumperOffset);
+  context.fillStyle = 'rgba(0, 0, 0, .1)';
+  context.fill();
+
   context.stroke();
 
   context.roundedRect(0, bumperOffset * 2, tileSize, tileSize - bumperOffset * 2, bumperOffset);
+  context.fillStyle = bumperColor;
   context.fill();
+
+  context.roundedRect(0, bumperOffset * 2, tileSize, tileSize - bumperOffset * 2, bumperOffset);
+  context.fillStyle = 'rgba(0, 0, 0, .1)';
+  context.fill();
+
   context.stroke();
 
   context.roundedRect(offset, offset, tileSize - offset, tileSize - offset, radius);
@@ -28,6 +39,7 @@ function drawBoxHelper(bumperColor, context) {
   context.fill();
   context.stroke();
 
+  context.strokeStyle = 'rgba(0, 0, 0, .1)';
   context.circle(tileSize / 2, tileSize / 2, tileSize / 2 - bumperOffset * 2);
   context.fillStyle = bumperColor;
   context.fill();
