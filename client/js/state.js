@@ -3,6 +3,7 @@
 var controls = require('./controls');
 var gameLoop = require('./game_loop');
 var getLevel = require('./get_level');
+var resizeCanvas = require('./resize_canvas');
 var storage = require('./storage');
 var { $ } = require('./utils');
 
@@ -114,6 +115,8 @@ module.exports = exports = {
     initStatus();
 
     root.classList.add('playing');
+
+    resizeCanvas();
   },
 
   stopLevel() {

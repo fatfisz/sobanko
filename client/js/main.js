@@ -1,9 +1,9 @@
 'use strict';
 
-var canvasResizer = require('./canvas_resizer');
 var { width, height, tileSize } = require('./constants');
 var events = require('./events');
 var levels = require('./levels');
+var resizeCanvas = require('./resize_canvas');
 var state = require('./state');
 var storage = require('./storage');
 var { $ } = require('./utils');
@@ -24,12 +24,10 @@ function setupButton(element, handler) {
 
 // Setup the canvas
 var canvas = $('canvas')[0];
-var resizeCanvas = canvasResizer(canvas);
 
 canvas.width = width * tileSize;
 canvas.height = height * tileSize;
 
-resizeCanvas();
 window.onresize = resizeCanvas;
 
 // Setup levels
