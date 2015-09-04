@@ -41,7 +41,7 @@ module.exports = function getLevel(which, uiState) {
     0,
     0,
     1,
-    (1 - (canvasWidth - width) / 2) * tileSize,
+    (canvasWidth - width) / 2 * tileSize,
     (canvasHeight - height) / 2 * tileSize
   );
 
