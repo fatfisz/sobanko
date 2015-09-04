@@ -15,16 +15,27 @@ button {
   background: white;
   border-radius: 4px;
   border: 1px solid black;
+  color: black;
   cursor: pointer;
   display: inline-block;
   font-size: 1em;
   height: 36px;
   line-height: 34px;
   padding: 0 14px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
-  &:hover {
+  &:hover, &.active {
     background: black;
     color: white;
+  }
+
+  html.touch &:focus {
+    outline: none;
+  }
+
+  html.touch &:not(.active) {
+    background: white;
+    color: black;
   }
 
   .buttons & {
@@ -150,7 +161,7 @@ h1, h3, h4, h5 {
   padding: 0 12px 12px;
   width: 100%;
 
-  @media (max-width: 767px) {
+  html.touch & {
     display: block;
   }
 
@@ -281,6 +292,7 @@ h1, h3, h4, h5 {
     border-radius: 4px;
     border: 2px solid black;
     bottom: -13px;
+    color: black;
     content: 'Continue';
     font-size: 11px;
     height: 14px;

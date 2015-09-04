@@ -2,17 +2,24 @@
 
 var canvasResizer = require('./canvas_resizer');
 var { width, height, tileSize } = require('./constants');
+var events = require('./events');
 var levels = require('./levels');
 var state = require('./state');
 var storage = require('./storage');
 var { $ } = require('./utils');
 
 
-function setOnClickAndTabIndex(id, handler) {
-  var element = $('#' + id)[0];
-
-  element.onclick = handler;
+function setupButton(element, handler) {
   element.tabIndex = -1;
+
+  events
+    .on(element, 'click', handler)
+    .on(element, 'touchstart', () => {
+      element.classList.add('active');
+    })
+    .on(element, 'touchend', () => {
+      element.classList.remove('active');
+    });
 }
 
 // Setup the canvas
@@ -29,27 +36,29 @@ window.onresize = resizeCanvas;
 var levelContinue = storage.getLevel();
 
 levels.forEach((level, i) => {
-  var levelBox = document.createElement('div');
+  var levelBox = document.createElement('button');
 
   levelBox.className =
     'level' +
     (i === levelContinue ? ' continue' : '') +
     (storage.getBest(i) !== null ? ' solved' : '');
-  levelBox.onclick = state.startLevel.bind(null, i);
   levelBox.textContent = i + 1;
+
+  setupButton(levelBox, state.startLevel.bind(null, i));
+
   $('#levels')[0].appendChild(levelBox);
 });
 
 // Setup the Undo button
-setOnClickAndTabIndex('undo', state.undo);
+setupButton($('#undo')[0], state.undo);
 
 // Setup the Back buttons
-setOnClickAndTabIndex('back', state.stopLevel);
+setupButton($('#back')[0], state.stopLevel);
 
-setOnClickAndTabIndex('back-to-level-select', state.backToLevelSelect);
+setupButton($('#back-to-level-select')[0], state.backToLevelSelect);
 
 // Setup the Restart dialog
 
-setOnClickAndTabIndex('restart', state.openRestartDialog);
-setOnClickAndTabIndex('restart-cancel', state.resume);
-setOnClickAndTabIndex('restart-ok', state.restart);
+setupButton($('#restart')[0], state.openRestartDialog);
+setupButton($('#restart-cancel')[0], state.resume);
+setupButton($('#restart-ok')[0], state.restart);

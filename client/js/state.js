@@ -83,7 +83,8 @@ function gameWon() {
   $('#win-moves-count')[0].textContent = moves;
   $('#win-best')[0].style.display = newBest ? '' : 'none';
 
-  root.className = 'game-won';
+  root.classList.remove('playing');
+  root.classList.add('game-won');
 
   var levelButton = $('.level.continue')[0];
 
@@ -112,7 +113,7 @@ module.exports = exports = {
 
     initStatus();
 
-    root.className = 'playing';
+    root.classList.add('playing');
   },
 
   stopLevel() {
@@ -125,7 +126,7 @@ module.exports = exports = {
 
     toggleFocus(['undo', 'back', 'restart']);
 
-    root.className = '';
+    root.classList.remove('playing');
   },
 
   backToLevelSelect() {
@@ -135,7 +136,7 @@ module.exports = exports = {
 
     toggleFocus(['back-to-level-select']);
 
-    root.className = '';
+    root.classList.remove('game-won');
   },
 
   saveState() {
@@ -174,7 +175,7 @@ module.exports = exports = {
     toggleFocus(['restart-cancel', 'restart-ok'], true);
     $('#restart-ok')[0].focus();
 
-    root.className = 'playing restart-dialog';
+    root.classList.add('restart-dialog');
   },
 
   resume() {
@@ -185,7 +186,7 @@ module.exports = exports = {
     toggleFocus(['restart-cancel', 'restart-ok']);
     toggleFocus(['undo', 'back', 'restart'], true);
 
-    root.className = 'playing';
+    root.classList.remove('restart-dialog');
   },
 
   restart() {
@@ -200,6 +201,8 @@ module.exports = exports = {
     exports.startLevel(currentLevel.which);
 
     toggleFocus(['restart-cancel', 'restart-ok']);
+
+    root.classList.remove('restart-dialog');
   },
 
 };
