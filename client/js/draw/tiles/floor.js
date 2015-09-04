@@ -17,4 +17,6 @@ module.exports = function drawFloor(level, x, y) {
 
   context.fillStyle = variants[which];
   context.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+  context.strokeStyle = 'rgba(0, 0, 0, .03)';
+  context.strokeRect(x * tileSize + .5, y * tileSize + .5, tileSize - 1, tileSize - 1);
 };
