@@ -4,7 +4,11 @@ var { tileSize } = require('../../constants');
 var { context, isWallOrEmptyTile } = require('../../utils');
 
 
-function drawWallHelper(level, x, y, width, color) {
+module.exports = function drawWall(level, x, y) {
+  var color = '#666';
+  var width = 12;
+
+
   context.save();
 
   context.translate(x * tileSize, y * tileSize);
@@ -48,9 +52,4 @@ function drawWallHelper(level, x, y, width, color) {
   }
 
   context.restore();
-}
-
-module.exports = function drawWall(level, x, y) {
-  drawWallHelper(level, x, y, 12, '#666');
-  drawWallHelper(level, x, y, 2, '#555');
 };
