@@ -47,7 +47,7 @@ function getState(doNotCheckSpecial) {
   return result;
 }
 
-module.exports = function setup(callback) {
+module.exports = function setup(callback, registerReset) {
 
   window.onkeydown = ({ which }) => {
     if (pressedKeys.indexOf(which) === -1) {
@@ -64,5 +64,10 @@ module.exports = function setup(callback) {
     }
     callback(getState(true));
   };
+
+  registerReset(() => {
+    pressedKeys.length = 0;
+    callback(null);
+  });
 
 };

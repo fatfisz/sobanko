@@ -61,9 +61,20 @@ function setupPullingHandlers(callback) {
   };
 }
 
-module.exports = function setup(callback) {
+module.exports = function setup(callback, registerReset) {
   ['up', 'down', 'left', 'right'].forEach(
     setupDirectionHandlers.bind(null, callback)
   );
   setupPullingHandlers(callback);
+
+  registerReset(() => {
+    pulling = false;
+    pressedButtons.length = 0;
+
+    [].forEach.call($('#mobile-controls .active'), (element) => {
+      element.className = '';
+    });
+
+    callback(null);
+  });
 };

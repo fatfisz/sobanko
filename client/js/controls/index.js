@@ -27,6 +27,11 @@ function getStateCallback(callback) {
   };
 }
 
+function registerReset(resetCallback) {
+  window.addEventListener('blur', resetCallback);
+  document.addEventListener('visibilitychange', resetCallback);
+}
+
 module.exports = {
 
   get state() {
@@ -36,8 +41,8 @@ module.exports = {
   setup(callback) {
     var stateCallback = getStateCallback(callback);
 
-    setupKeyboard(stateCallback);
-    setupTouch(stateCallback);
+    setupKeyboard(stateCallback, registerReset);
+    setupTouch(stateCallback, registerReset);
   },
 
 };
