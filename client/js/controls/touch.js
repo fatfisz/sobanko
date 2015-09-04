@@ -23,6 +23,8 @@ function setupDirectionHandlers(callback, id) {
   var element = $('#' + id)[0];
 
   element.ontouchstart = () => {
+    element.className = 'active';
+
     if (pressedButtons.indexOf(id) === -1) {
       pressedButtons.push(id);
     }
@@ -30,6 +32,8 @@ function setupDirectionHandlers(callback, id) {
   };
 
   element.ontouchend = () => {
+    element.className = '';
+
     var pos = pressedButtons.indexOf(id);
 
     if (pos !== -1) {
@@ -43,11 +47,15 @@ function setupPullingHandlers(callback) {
   var element = $('#pulling')[0];
 
   element.ontouchstart = () => {
+    element.className = 'active';
+
     pulling = true;
     callback(getState());
   };
 
   element.ontouchend = () => {
+    element.className = '';
+
     pulling = false;
     callback(getState());
   };

@@ -165,10 +165,11 @@ h1, h3, h4, h5 {
 
 @button-size: 46px;
 @offset: 20px;
+@touchButtonColor: darken(#c8e, 40%);
 
 #direction {
   bottom: 12px;
-  color: rgba(64, 64, 192, .5);
+  color: fade(@touchButtonColor, 20%);
   font-size: 18px;
   height: 0;
   left: 12px;
@@ -178,10 +179,16 @@ h1, h3, h4, h5 {
   width: 0;
 }
 
-#up, #down, #left, #right {
-  background: rgba(64, 64, 192, .1);
-  border: 3px solid rgba(64, 64, 192, .5);
+#up, #down, #left, #right, #pulling {
+  border: 3px solid fade(@touchButtonColor, 50%);
   border-radius: 50%;
+
+  &.active {
+    background: fade(@touchButtonColor, 20%);
+  }
+}
+
+#up, #down, #left, #right {
   height: @button-size;
   position: absolute;
   width: @button-size;
@@ -225,9 +232,6 @@ h1, h3, h4, h5 {
 
 
 #pulling {
-  background: rgba(64, 64, 192, .1);
-  border: 3px solid rgba(64, 64, 192, .5);
-  border-radius: 50%;
   float: right;
   height: 100px;
   width: 100px;
