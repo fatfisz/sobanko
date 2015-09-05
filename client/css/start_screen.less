@@ -4,9 +4,12 @@
   .module-mixins();
 
   #start-screen {
-    .fullscreen-with-centered-children();
+    .fullscreen();
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     overflow-y: auto;
-    padding: 20px 0;
     transition: opacity .5s, transform 0s;
 
     html.playing & {
@@ -18,6 +21,11 @@
     html.game-won & {
       transition: opacity 0s ease 1s, transform 0s ease 1s;
     }
+  }
+
+  .flex-padding {
+    flex: 1 0 20px;
+    width: 100%;
   }
 
   #logo-container {

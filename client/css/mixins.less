@@ -16,13 +16,17 @@
     justify-content: center;
   }
 
-  .fullscreen-with-centered-children() {
-    .centered-children();
+  .fullscreen() {
     background: white;
     height: 100%;
     left: 0;
     position: fixed;
     top: 0;
     width: 100%;
+  }
+
+  .fullscreen-with-centered-children() {
+    .centered-children();
+    .fullscreen();
   }
 }
