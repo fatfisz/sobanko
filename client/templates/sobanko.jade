@@ -53,7 +53,6 @@ svg(viewBox=[0, 0, width * tileSize, height * tileSize].join(' '),
       circle(cx='24' cy='24' r='14',
              fill=bumperColor stroke='rgba(0, 0, 0, .1)')
 
-
   each letter in letters
     each pos in letter
-      use(xlink:href='#box' x=(letter.offset + pos[0]) * 48 y=pos[1] * 48)
+      use(xlink:href='#box', x=(letter.offset + pos[0]) * 48, y=pos[1] * 48)
