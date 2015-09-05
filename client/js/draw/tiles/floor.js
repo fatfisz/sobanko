@@ -5,11 +5,11 @@ var { context } = require('../../utils');
 
 
 var variants = [
-  '#f2f6fa',
-  '#fafaf7',
-  '#f0f1f5',
-  '#fafafa',
-  '#f2f3f7',
+  '#f6f8fc',
+  '#fcfcf9',
+  '#f4f5f7',
+  '#fcfcfc',
+  '#f6f7f9',
 ];
 
 module.exports = function drawFloor(level, x, y) {
@@ -17,6 +17,6 @@ module.exports = function drawFloor(level, x, y) {
 
   context.fillStyle = variants[which];
   context.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
-  context.strokeStyle = 'rgba(0, 0, 0, .03)';
+  context.strokeStyle = 'rgba(0, 0, 0, .04)';
   context.strokeRect(x * tileSize + .5, y * tileSize + .5, tileSize - 1, tileSize - 1);
 };

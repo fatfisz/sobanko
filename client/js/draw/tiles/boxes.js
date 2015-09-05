@@ -12,26 +12,23 @@ function drawBoxHelper(bumperColor, context) {
   var offset = 4;
   var radius = 5;
 
+  context.fillStyle = bumperColor;
   context.strokeStyle = 'rgba(0, 0, 0, .3)';
 
   context.roundedRect(bumperOffset * 2, 0, tileSize - bumperOffset * 2, tileSize, bumperOffset);
-  context.fillStyle = bumperColor;
   context.fill();
+
+  context.roundedRect(0, bumperOffset * 2, tileSize, tileSize - bumperOffset * 2, bumperOffset);
+  context.fill();
+
+  context.fillStyle = 'rgba(0, 0, 0, .1)';
 
   context.roundedRect(bumperOffset * 2, 0, tileSize - bumperOffset * 2, tileSize, bumperOffset);
-  context.fillStyle = 'rgba(0, 0, 0, .1)';
   context.fill();
-
   context.stroke();
 
   context.roundedRect(0, bumperOffset * 2, tileSize, tileSize - bumperOffset * 2, bumperOffset);
-  context.fillStyle = bumperColor;
   context.fill();
-
-  context.roundedRect(0, bumperOffset * 2, tileSize, tileSize - bumperOffset * 2, bumperOffset);
-  context.fillStyle = 'rgba(0, 0, 0, .1)';
-  context.fill();
-
   context.stroke();
 
   context.roundedRect(offset, offset, tileSize - offset, tileSize - offset, radius);
@@ -46,7 +43,7 @@ function drawBoxHelper(bumperColor, context) {
   context.stroke();
 }
 
-var box = tilePrerender(drawBoxHelper.bind(null, '#dbdbdb'));
+var box = tilePrerender(drawBoxHelper.bind(null, '#ccc'));
 var boxInDestination = tilePrerender(drawBoxHelper.bind(null, '#9cf266'));
 
 module.exports = {
