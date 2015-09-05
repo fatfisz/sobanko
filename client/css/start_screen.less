@@ -85,13 +85,21 @@
       }
     }
 
-    html.touch &:not(.active):before {
-      .z1-shadow();
+    html.touch &:not(.active) {
+      &:before {
+        .z1-shadow();
+      }
+    }
+
+    &:active, &.active {
+      &:before {
+        background: darken(white, 10%);
+      }
     }
   }
 
   .solved {
-    @color: lighten(#9cf266, 25%);
+    @color: lighten(#9cf266, 20%);
     &, &:before {
       background: @color;
     }

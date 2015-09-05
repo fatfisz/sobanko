@@ -17,6 +17,7 @@ body {
 
 button {
   .module-mixins();
+
   .z1-shadow();
   background: white;
   border: none;
@@ -42,7 +43,7 @@ button {
   }
 
   &:active, &.active {
-    background: rgba(0, 0, 0, 0.1);
+    background: darken(white, 10%);
   }
 
   html.touch &:focus {
