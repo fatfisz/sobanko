@@ -41,20 +41,21 @@ html
       #levels
 
     #win-screen
-      h1 Good job!
+      h2 Good job!
       h4#win-moves
         | You've finished in#{' '}
         span#win-moves-count
         | #{' '}moves
-      h5#win-best
-        | You've beaten your previous best score!
+      #win-best You've beaten your previous best score!
+      br
       .buttons
         button#back-to-level-select(type='button') Back
         button#next-level(type='button') Next level
 
     #restart-screen
       .dialog
-        h3 Do you really want to restart and lose your progress?
+        div Do you really want to restart and lose your progress?
+        br
         .buttons
           button#restart-cancel(type='button') Cancel
           button#restart-ok(type='button') OK

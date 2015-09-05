@@ -1,72 +1,73 @@
 @import 'mixins';
 
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  color: #444;
-  font-family: sans-serif;
-  font-size: 16px;
-}
-
-body {
-  user-select: none;
-}
-
-button {
+& {
   .module-mixins();
 
-  .z1-shadow();
-  background: white;
-  border: none;
-  border-radius: 2px;
-  color: #444;
-  cursor: pointer;
-  display: inline-block;
-  font-size: .8em;
-  font-weight: 600;
-  height: 36px;
-  line-height: 36px;
-  padding: 0 14px;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  text-transform: uppercase;
-  transition: background .1s, box-shadow .2s;
-
-  &:hover, &.active {
-    .z2-shadow();
+  .font() {
+    font-family: Trebuchet MS, sans-serif;
   }
 
-  html.touch &:not(.active) {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    .font();
+    color: #444;
+    font-size: 16px;
+  }
+
+  body {
+    user-select: none;
+  }
+
+  button {
+    .font();
     .z1-shadow();
-  }
+    background: white;
+    border: none;
+    border-radius: 2px;
+    color: #444;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1em;
+    font-weight: 600;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 14px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    text-transform: uppercase;
+    transition: background .1s, box-shadow .2s;
 
-  &:active, &.active {
-    background: darken(white, 10%);
-  }
+    &:hover, &.active {
+      .z2-shadow();
+    }
 
-  html.touch &:focus {
-    outline: none;
-  }
+    html.touch &:not(.active) {
+      .z1-shadow();
+    }
 
-  .buttons & {
-    margin-left: 12px;
+    &:active, &.active {
+      background: darken(white, 10%);
+    }
 
-    &:first-child {
-      margin-left: 0;
+    html.touch &:focus {
+      outline: none;
+    }
+
+    .buttons & {
+      margin-left: 12px;
+
+      &:first-child {
+        margin-left: 0;
+      }
     }
   }
-}
 
-h1, h3, h4, h5 {
-  margin: 4px 0 16px;
+  .hidden {
+    display: none !important;
+  }
 }
-
-.hidden {
-  display: none;
-}
-
 
 @import 'game_screen';
 @import 'misc_screens';
