@@ -1,0 +1,59 @@
+-
+  var letters = [
+    [[0, 0], [1, 0], [2, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 3], [0, 4], [1, 4], [2, 4]],
+    [[0, 2], [1, 2], [2, 2], [0, 3], [2, 3], [0, 4], [1, 4], [2, 4]],
+    [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [0, 3], [2, 3], [0, 4], [1, 4], [2, 4]],
+    [[0, 2], [1, 2], [2, 2], [0, 3], [2, 3], [0, 4], [1, 4], [2, 4], [3, 4]],
+    [[0, 2], [1, 2], [2, 2], [0, 3], [2, 3], [0, 4], [2, 4]],
+    [[0, 0], [0, 1], [0, 2], [2, 2], [0, 3], [1, 3], [0, 4], [2, 4]],
+    [[0, 2], [1, 2], [2, 2], [0, 3], [2, 3], [0, 4], [1, 4], [2, 4]],
+  ];
+
+  letters.forEach(function (letter, i) {
+    letter.width = 0;
+
+    letter.forEach(function (pos) {
+      letter.width = Math.max(letter.width, pos[0] + 1);
+    });
+
+    if (i === 0) {
+      letter.offset = 0;
+    } else {
+      letter.offset = letters[i - 1].offset + letters[i - 1].width + 1;
+    }
+  });
+
+  var lastLetter = letters[letters.length - 1];
+
+  var width = lastLetter.offset + lastLetter.width;
+  var height = 5;
+  var tileSize = 48;
+  var scale = 20;
+
+  var bumperColor = '#ccc';
+  var bodyColor = '#eee';
+
+svg(viewBox=[0, 0, width * tileSize, height * tileSize].join(' '),
+    width=scale * width)
+  defs
+    g#box
+      rect(x='10', y='0', width='28', height='48', rx='5', ry='5',
+           fill=bumperColor, stroke='none')
+      rect(x='0', y='10', width='48', height='28', rx='5', ry='5',
+           fill=bumperColor, stroke='none')
+
+      rect(x='10', y='0', width='28', height='48', rx='5', ry='5',
+           fill='rgba(0, 0, 0, .1)', stroke='rgba(0, 0, 0, .3)')
+      rect(x='0', y='10', width='48', height='28', rx='5', ry='5',
+           fill='rgba(0, 0, 0, .1)', stroke='rgba(0, 0, 0, .3)')
+
+      rect(x='4' y='4' width='40' height='40' rx='5' ry='5',
+           fill=bodyColor stroke='rgba(0, 0, 0, .3)')
+
+      circle(cx='24' cy='24' r='14',
+             fill=bumperColor stroke='rgba(0, 0, 0, .1)')
+
+
+  each letter in letters
+    each pos in letter
+      use(xlink:href='#box' x=(letter.offset + pos[0]) * 48 y=pos[1] * 48)
