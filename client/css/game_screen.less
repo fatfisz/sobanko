@@ -1,0 +1,85 @@
+@import 'mixins';
+
+
+& {
+  .module-mixins();
+
+  #game-container {
+    .fullscreen-with-centered-children();
+  }
+
+  #info {
+    flex: 0 0 auto;
+    padding: 48px;
+    text-align: right;
+    width: 100%;
+
+    @media (max-width: 767px) {
+      padding: 12px 24px 4px;
+      text-align: center;
+    }
+
+    @media (max-height: 360px) {
+      .buttons {
+        float: right;
+      }
+    }
+  }
+
+  #info-rows {
+    margin-top: 12px;
+
+    @media (max-height: 360px) {
+      float: left;
+      margin-top: 0;
+    }
+  }
+
+  .info-row {
+    font-size: 13px;
+    height: 24px;
+    line-height: 24px;
+    margin-top: 12px;
+
+    @media (max-width: 767px) {
+      display: inline-block;
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+
+    @media (max-height: 360px) {
+      height: 36px;
+      line-height: 36px;
+      margin-left: 24px;
+      margin-right: 24px;
+      margin-top: 0;
+    }
+  }
+
+  #moves {
+    @media (max-height: 360px) {
+      // Move to the left so that it's aligned with the best score info
+      float: left;
+    }
+  }
+
+  #best {
+    display: block;
+
+    @media (max-height: 360px) {
+      position: absolute;
+    }
+  }
+
+  #moves-count,
+  #boxes-count {
+    font-size: 20px;
+  }
+
+  #canvas-container {
+    .centered-children();
+    flex: 1 1 auto;
+    overflow: hidden;
+    width: 100%;
+  }
+}
