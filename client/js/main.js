@@ -47,16 +47,15 @@ levels.forEach((level, i) => {
   $('#levels')[0].appendChild(levelBox);
 });
 
-// Setup the Undo button
+// Setup the Info buttons
 setupButton($('#undo')[0], state.undo);
-
-// Setup the Back buttons
+setupButton($('#restart')[0], state.openRestartDialog);
 setupButton($('#back')[0], state.stopLevel);
 
-setupButton($('#back-to-level-select')[0], state.backToLevelSelect);
-
-// Setup the Restart dialog
-
-setupButton($('#restart')[0], state.openRestartDialog);
+// Setup the Restart dialog buttons
 setupButton($('#restart-cancel')[0], state.resume);
 setupButton($('#restart-ok')[0], state.restart);
+
+// Setup the Game Won screen buttons
+setupButton($('#back-to-level-select')[0], state.backToLevelSelect);
+setupButton($('#next-level')[0], state.startNextLevel);

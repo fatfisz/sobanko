@@ -3,6 +3,7 @@
 var controls = require('./controls');
 var gameLoop = require('./game_loop');
 var getLevel = require('./get_level');
+var levels = require('./levels');
 var resizeCanvas = require('./resize_canvas');
 var storage = require('./storage');
 var { $ } = require('./utils');
@@ -54,7 +55,7 @@ function initStatus() {
 
   var best = storage.getBest(currentLevel.which);
 
-  $('#best')[0].style.display = best === null ? 'none' : '';
+  $('#best')[0].classList[best === null ? 'add' : 'remove']('hidden');
   $('#best-count')[0].textContent = best;
 }
 
@@ -67,6 +68,7 @@ function gameWon() {
   var moves = storage.movesStored;
   var best = storage.getBest(which);
   var newBest = moves < best;
+  var nextLevelButton = $('#next-level')[0];
 
   playing = false;
   storage.resetUndo();
@@ -78,11 +80,17 @@ function gameWon() {
   }
 
   toggleFocus(['undo', 'back', 'restart']);
-  toggleFocus(['back-to-level-select'], true);
-  $('#back-to-level-select')[0].focus();
+  toggleFocus(['back-to-level-select', 'next-level'], true);
+  if (levels[which + 1]) {
+    nextLevelButton.className = '';
+    nextLevelButton.focus();
+  } else {
+    $('#back-to-level-select')[0].focus();
+    nextLevelButton.className = 'hidden';
+  }
 
   $('#win-moves-count')[0].textContent = moves;
-  $('#win-best')[0].style.display = newBest ? '' : 'none';
+  $('#win-best')[0].className = newBest ? '' : 'hidden';
 
   root.classList.remove('playing');
   root.classList.add('game-won');
@@ -137,9 +145,21 @@ module.exports = exports = {
       throw new Error('The game should have been stopped');
     }
 
-    toggleFocus(['back-to-level-select']);
+    toggleFocus(['back-to-level-select', 'next-level']);
 
     root.classList.remove('game-won');
+  },
+
+  startNextLevel() {
+    if (process.env.NODE_ENV !== 'production' && playing) {
+      throw new Error('The game should have been stopped');
+    }
+
+    root.classList.remove('game-won');
+
+    exports.startLevel(currentLevel.which + 1);
+
+    toggleFocus(['back-to-level-select', 'next-level']);
   },
 
   saveState() {
