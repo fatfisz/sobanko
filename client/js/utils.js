@@ -142,4 +142,13 @@ assign(Object.getPrototypeOf(exports.context), {
     this.arc(x, y, radius, 0, 2 * Math.PI);
   },
 
+  corner(x1, y1, x2, y2, radius) {
+    this.beginPath();
+    this.moveTo(x1, y2);
+    this.arcTo(x2, y2, x2, y1, radius);
+    this.lineTo(x2, y1);
+    this.lineTo(x1, y1);
+    this.closePath();
+  },
+
 });

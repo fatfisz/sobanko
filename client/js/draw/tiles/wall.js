@@ -7,7 +7,7 @@ var { context, isWallOrEmptyTile } = require('../../utils');
 module.exports = function drawWall(level, x, y) {
   var color = '#666';
   var width = 12;
-
+  var radius = 6;
 
   context.save();
 
@@ -17,7 +17,8 @@ module.exports = function drawWall(level, x, y) {
 
   if (y > 0) {
     if (!isWallOrEmptyTile(level.getTile([x - 1, y - 1]))) {
-      context.fillRect(0, 0, width, width);
+      context.corner(0, 0, width, width, radius);
+      context.fill();
     }
 
     if (!isWallOrEmptyTile(level.getTile([x, y - 1]))) {
@@ -25,7 +26,8 @@ module.exports = function drawWall(level, x, y) {
     }
 
     if (!isWallOrEmptyTile(level.getTile([x + 1, y - 1]))) {
-      context.fillRect(tileSize - width, 0, width, width);
+      context.corner(tileSize, 0, tileSize - width, width, radius);
+      context.fill();
     }
   }
 
@@ -39,7 +41,8 @@ module.exports = function drawWall(level, x, y) {
 
   if (y < level.height - 1) {
     if (!isWallOrEmptyTile(level.getTile([x - 1, y + 1]))) {
-      context.fillRect(0, tileSize - width, width, width);
+      context.corner(0, tileSize, width, tileSize - width, radius);
+      context.fill();
     }
 
     if (!isWallOrEmptyTile(level.getTile([x, y + 1]))) {
@@ -47,7 +50,8 @@ module.exports = function drawWall(level, x, y) {
     }
 
     if (!isWallOrEmptyTile(level.getTile([x + 1, y + 1]))) {
-      context.fillRect(tileSize - width, tileSize - width, width, width);
+      context.corner(tileSize, tileSize, tileSize - width, tileSize - width, radius);
+      context.fill();
     }
   }
 
