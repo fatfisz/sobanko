@@ -4,90 +4,91 @@ var events = require('../events');
 var { $ } = require('../utils');
 
 
+var gameContainer = $('#game-container')[0];
+var centerOffset = 12 + 60; // padding + half size of the circle
+var detectionBound = 400;
+
+var direction = null;
+var detectingDirection = false;
 var pulling = false;
-var pressedButtons = [];
+
+var centerOffset = 12 + 50; // padding + half size of the circle
 
 function getState() {
-  var result = {
+  return {
+    direction: detectingDirection ? direction : null,
     pulling,
   };
-  var length = pressedButtons.length;
-
-  if (length !== 0) {
-    result.direction = pressedButtons[length - 1];
-  }
-
-  return result;
-}
-
-function setupHandlers(activate, deactivate, id) {
-  var element = $(`#${id}`)[0];
-
-  events
-    .on(element, 'touchstart', activate)
-    .on(element, 'mousedown', activate)
-    .on(element, 'touchend', deactivate)
-    .on(element, 'mouseup', deactivate);
 }
 
 module.exports = function setup(callback, registerReset) {
-  ['up', 'down', 'left', 'right'].forEach(
-    setupHandlers.bind(
-      null,
-      (event) => {
-        var element = event.target;
+  var directionElement = $('#direction')[0];
+  var pullingElement = $('#pulling')[0];
 
-        element.className = 'active';
+  function handleTouchMove(event) {
+    if (!event.changedTouches) {
+      return;
+    }
 
-        if (pressedButtons.indexOf(element.id) === -1) {
-          pressedButtons.push(element.id);
+    var { clientX, clientY } = event.changedTouches[0];
+
+    var x = clientX - centerOffset;
+    var y = clientY - gameContainer.clientHeight + centerOffset;
+    direction = null;
+
+    if (x * x + y * y > detectionBound) {
+      if (x + y > 0) {
+        if (x - y > 0) {
+          direction = 'right';
+        } else {
+          direction = 'down';
         }
-        callback(getState());
-      },
-      (event) => {
-        var element = event.target;
-
-        element.className = '';
-
-        var pos = pressedButtons.indexOf(element.id);
-
-        if (pos !== -1) {
-          pressedButtons.splice(pos, 1);
-        }
-        callback(getState());
+      } else if (x - y > 0) {
+        direction = 'up';
+      } else {
+        direction = 'left';
       }
-    )
-  );
+    }
 
-  setupHandlers(
-    (event) => {
-      var element = event.target;
+    callback(getState());
+  }
 
-      element.className = 'active';
-
+  events
+    .on(directionElement, 'touchstart', (event) => {
+      directionElement.className = 'active';
+      detectingDirection = true;
+      handleTouchMove(event);
+      callback(getState());
+    })
+    .on(directionElement, 'touchend', () => {
+      directionElement.className = '';
+      detectingDirection = false;
+      callback(getState());
+    })
+    .on(directionElement, 'touchmove', handleTouchMove)
+    .on(pullingElement, 'touchstart', () => {
+      pullingElement.className = 'active';
       pulling = true;
       callback(getState());
-    },
-    (event) => {
-      var element = event.target;
-
-      element.className = '';
-
+    })
+    .on(pullingElement, 'touchend', () => {
+      pullingElement.className = '';
       pulling = false;
       callback(getState());
-    },
-    'pulling'
-  );
+    })
+    .on(document, 'touchstart', function enableTouch() {
+      $('html')[0].className = 'touch';
 
-  events.on(document, 'touchstart', function enableTouch() {
-    $('html')[0].className = 'touch';
-
-    events.off(document, 'touchstart', enableTouch);
-  });
+      events.off(document, 'touchstart', enableTouch);
+    })
+    .on(document, 'contextmenu', (event) => {
+      event.preventDefault();
+    });
 
   registerReset(() => {
+    direction = null;
+    detectingDirection = false;
     pulling = false;
-    pressedButtons.length = 0;
 
     [].forEach.call($('#mobile-controls .active'), (element) => {
       element.className = '';
