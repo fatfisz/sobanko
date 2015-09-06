@@ -5,11 +5,11 @@ var { context } = require('../../utils');
 
 
 var variants = [
-  '#f6f8fc',
-  '#fcfcf9',
-  '#f4f5f7',
-  '#fcfcfc',
-  '#f6f7f9',
+  '#f7f9fd',
+  '#fdfdfa',
+  '#f5f6f8',
+  '#fdfdfd',
+  '#f7f8fa',
 ];
 
 module.exports = function drawFloor(level, x, y) {

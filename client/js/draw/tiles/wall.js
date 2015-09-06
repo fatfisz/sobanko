@@ -6,8 +6,8 @@ var { context, isWallOrEmptyTile } = require('../../utils');
 
 module.exports = function drawWall(level, x, y) {
   var color = '#666';
-  var width = 12;
-  var radius = 6;
+  var width = tileSize / 5;
+  var radius = tileSize / 8;
 
   context.save();
 
