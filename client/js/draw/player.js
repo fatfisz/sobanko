@@ -49,8 +49,8 @@ function draw(x, y, direction, pulling) {
   var armBaseRadius = 8;
 
   var armColor = '#fafafa';
-  var firstArmPartWidth = 6;
-  var secondArmPartWidth = 5;
+  var firstArmPartWidth = 8;
+  var secondArmPartWidth = 6;
   var armPartRadius = 1;
   var armStops = pulling || controls.state.pulling ? stretchedArmStops : foldedArmStops;
 
