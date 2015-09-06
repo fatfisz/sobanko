@@ -61,7 +61,7 @@ function initStatus() {
 
 function gameWon() {
   if (process.env.NODE_ENV !== 'production' && !playing) {
-    throw new Error('Already stopped');
+    throw new Error('The game shouldn\'t have been stopped');
   }
 
   var { which } = currentLevel;
@@ -104,8 +104,8 @@ function gameWon() {
 module.exports = exports = {
 
   startLevel(which) {
-    if (process.env.NODE_ENV !== 'production' && playing) {
-      throw new Error('Already playing');
+    if (playing) { // this can happen if user clicked too fast
+      return;
     }
 
     playing = true;
@@ -128,8 +128,8 @@ module.exports = exports = {
   },
 
   stopLevel() {
-    if (process.env.NODE_ENV !== 'production' && !playing) {
-      throw new Error('Already stopped');
+    if (!playing) { // this can happen if user clicked too fast
+      return;
     }
 
     playing = false;
@@ -141,8 +141,8 @@ module.exports = exports = {
   },
 
   backToLevelSelect() {
-    if (process.env.NODE_ENV !== 'production' && playing) {
-      throw new Error('The game should have been stopped');
+    if (playing) { // this can happen if user clicked too fast
+      return;
     }
 
     toggleFocus(['back-to-level-select', 'next-level']);
@@ -151,8 +151,8 @@ module.exports = exports = {
   },
 
   startNextLevel() {
-    if (process.env.NODE_ENV !== 'production' && playing) {
-      throw new Error('The game should have been stopped');
+    if (playing) { // this can happen if user clicked too fast
+      return;
     }
 
     root.classList.remove('game-won');
