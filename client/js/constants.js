@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-  width: 20,
-  height: 20,
+  width: 19,
+  height: 16,
 
   tileSize: 48,
 
