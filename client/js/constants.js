@@ -6,7 +6,7 @@ module.exports = {
 
   tileSize: 48,
 
-  playerSpeed: 4e-3,
+  playerSpeed: 4.3e-3,
 
   tiles: {
     1: 'wall',
