@@ -1,35 +1,25 @@
 'use strict';
 
-var assign = require('object-assign');
-
 var setupKeyboard = require('./keyboard');
 var setupTouch = require('./touch');
 
 
-var blankState = {
+var state = {
   direction: null,
   pulling: false,
   special: null,
 };
 
-var state = blankState;
-
-function getStateCallback(callback) {
-  return (_nextState) => {
-    var nextState = assign({}, blankState, _nextState);
-
-    if (state.direction !== nextState.direction ||
-        state.pulling !== nextState.pulling ||
-        state.special !== nextState.special) {
-      state = nextState;
-      callback(state);
-    }
-  };
-}
-
 function registerReset(resetCallback) {
   window.addEventListener('blur', resetCallback);
   document.addEventListener('visibilitychange', resetCallback);
+}
+
+function resetState(callback) {
+  state.direction = null;
+  state.pulling = false;
+  state.special = null;
+  callback();
 }
 
 module.exports = {
@@ -39,10 +29,9 @@ module.exports = {
   },
 
   setup(callback) {
-    var stateCallback = getStateCallback(callback);
-
-    setupKeyboard(stateCallback, registerReset);
-    setupTouch(stateCallback, registerReset);
+    setupKeyboard(state, callback, registerReset);
+    setupTouch(state, callback, registerReset);
+    registerReset(resetState.bind(null, callback));
   },
 
 };

@@ -14,46 +14,66 @@ var specialKeys = {
   90: 'undo',
 };
 
-var pressedKeys = [];
+module.exports = function setup(state, callback, registerReset) {
+  var pressedKeys = [];
 
-function getState(doNotCheckSpecial) {
-  var length = pressedKeys.length;
+  function keysChanged(doNotCheckSpecial) {
+    var length = pressedKeys.length;
 
-  if (length === 0) {
-    return null;
+    if (length === 0) {
+      if (state.direction || state.pulling || state.special) {
+        state.direction = null;
+        state.pulling = false;
+        state.special = null;
+        callback();
+      }
+
+      return;
+    }
+
+    var changed = false;
+    var shiftIndex = pressedKeys.indexOf(shiftKey);
+    var ctrlActive = pressedKeys.indexOf(ctrlKey) !== -1;
+    var lastKey = pressedKeys[length - 1];
+    var pulling = shiftIndex !== -1;
+    var shiftIsLast = shiftIndex === length - 1;
+
+    if (shiftIsLast) {
+      lastKey = pressedKeys[length - 2] || null;
+    }
+
+    var direction = directionKeys[lastKey] || null;
+    var special = specialKeys[lastKey] || null;
+
+    if (direction || shiftIsLast || doNotCheckSpecial) {
+      if (state.direction !== direction || state.special) {
+        changed = true;
+        state.direction = direction;
+        state.special = null;
+      }
+    } else if (special && ctrlActive) {
+      if (state.special !== special || state.direction) {
+        changed = true;
+        state.direction = null;
+        state.special = special;
+      }
+    }
+
+    if (state.pulling !== pulling) {
+      changed = true;
+      state.pulling = pulling;
+    }
+
+    if (changed) {
+      callback();
+    }
   }
-
-  var shiftIndex = pressedKeys.indexOf(shiftKey);
-  var ctrlActive = pressedKeys.indexOf(ctrlKey) !== -1;
-  var lastKey = pressedKeys[length - 1];
-  var result = {
-    pulling: shiftIndex !== -1,
-  };
-  var shiftIsLast = shiftIndex === length - 1;
-
-  if (shiftIsLast) {
-    lastKey = pressedKeys[length - 2] || null;
-  }
-
-  var direction = directionKeys[lastKey] || null;
-  var special = specialKeys[lastKey] || null;
-
-  if (direction || shiftIsLast || doNotCheckSpecial) {
-    result.direction = direction;
-  } else if (special && ctrlActive) {
-    result.special = special;
-  }
-
-  return result;
-}
-
-module.exports = function setup(callback, registerReset) {
 
   window.onkeydown = ({ which }) => {
     if (pressedKeys.indexOf(which) === -1) {
       pressedKeys.push(which);
     }
-    callback(getState());
+    keysChanged();
   };
 
   window.onkeyup = ({ which }) => {
@@ -62,12 +82,11 @@ module.exports = function setup(callback, registerReset) {
     if (pos !== -1) {
       pressedKeys.splice(pos, 1);
     }
-    callback(getState(true));
+    keysChanged(true);
   };
 
   registerReset(() => {
     pressedKeys.length = 0;
     callback(null);
   });
-
 };

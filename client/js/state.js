@@ -22,12 +22,12 @@ var root = $('html')[0];
 var playing = false;
 var currentLevel;
 
-controls.setup(function controlsStateChanged(state) {
+controls.setup(function controlsStateChanged() {
   if (!playing) {
     return;
   }
 
-  if (state.special === 'undo') {
+  if (controls.state.special === 'undo') {
     exports.undo();
   }
 });

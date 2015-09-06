@@ -8,20 +8,7 @@ var gameContainer = $('#game-container')[0];
 var centerOffset = 12 + 60; // padding + half size of the circle
 var detectionBound = 400;
 
-var direction = null;
-var detectingDirection = false;
-var pulling = false;
-
-var centerOffset = 12 + 50; // padding + half size of the circle
-
-function getState() {
-  return {
-    direction: detectingDirection ? direction : null,
-    pulling,
-  };
-}
-
-module.exports = function setup(callback, registerReset) {
+module.exports = function setup(state, callback, registerReset) {
   var directionElement = $('#direction')[0];
   var pullingElement = $('#pulling')[0];
 
@@ -34,7 +21,7 @@ module.exports = function setup(callback, registerReset) {
 
     var x = clientX - centerOffset;
     var y = clientY - gameContainer.clientHeight + centerOffset;
-    direction = null;
+    var direction = null;
 
     if (x * x + y * y > detectionBound) {
       if (x + y > 0) {
@@ -50,31 +37,32 @@ module.exports = function setup(callback, registerReset) {
       }
     }
 
-    callback(getState());
+    if (state.direction !== direction) {
+      state.direction = direction;
+      callback();
+    }
   }
 
   events
     .on(directionElement, 'touchstart', (event) => {
       directionElement.className = 'active';
-      detectingDirection = true;
       handleTouchMove(event);
-      callback(getState());
     })
     .on(directionElement, 'touchend', () => {
       directionElement.className = '';
-      detectingDirection = false;
-      callback(getState());
+      state.direction = null;
+      callback();
     })
     .on(directionElement, 'touchmove', handleTouchMove)
     .on(pullingElement, 'touchstart', () => {
       pullingElement.className = 'active';
-      pulling = true;
-      callback(getState());
+      state.pulling = true;
+      callback();
     })
     .on(pullingElement, 'touchend', () => {
       pullingElement.className = '';
-      pulling = false;
-      callback(getState());
+      state.pulling = false;
+      callback();
     })
     .on(document, 'touchstart', function enableTouch() {
       $('html')[0].className = 'touch';
@@ -86,14 +74,8 @@ module.exports = function setup(callback, registerReset) {
     });
 
   registerReset(() => {
-    direction = null;
-    detectingDirection = false;
-    pulling = false;
-
     [].forEach.call($('#mobile-controls .active'), (element) => {
       element.className = '';
     });
-
-    callback(null);
   });
 };
