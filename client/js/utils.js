@@ -12,6 +12,15 @@ module.exports = exports = {
   $,
   context: $('canvas')[0].getContext('2d'),
 
+  toggleFocus(ids, allow) {
+    ids.forEach((id) => {
+      var element = $('#' + id)[0];
+
+      element.tabIndex = allow ? 0 : -1;
+      element.blur();
+    });
+  },
+
   isPassable(tile) {
     var name = tiles[tile];
 

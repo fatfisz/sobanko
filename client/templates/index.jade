@@ -54,12 +54,20 @@ html
         button#back-to-level-select(type='button') Back
         button#next-level(type='button') Next level
 
-    #restart-screen
+    #restart-screen.dim
       .dialog
         div Do you really want to restart and lose your progress?
         br
         .buttons
           button#restart-cancel(type='button') Cancel
           button#restart-ok(type='button') OK
+
+    #tutorial-dim.dim
+    #tutorial-overlay
+      #tutorial-dialog.dialog
+        #tutorial-caption
+        br
+        .buttons
+          button#tutorial-next(type='button') OK
 
     script(src='bundle.js')

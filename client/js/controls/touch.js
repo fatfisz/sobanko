@@ -45,27 +45,27 @@ module.exports = function setup(state, callback, registerReset) {
 
   events
     .on(directionElement, 'touchstart', (event) => {
-      directionElement.className = 'active';
+      directionElement.classList.add('active');
       handleTouchMove(event);
     })
     .on(directionElement, 'touchend', () => {
-      directionElement.className = '';
+      directionElement.classList.remove('active');
       state.direction = null;
       callback();
     })
     .on(directionElement, 'touchmove', handleTouchMove)
     .on(pullingElement, 'touchstart', () => {
-      pullingElement.className = 'active';
+      pullingElement.classList.add('active');
       state.pulling = true;
       callback();
     })
     .on(pullingElement, 'touchend', () => {
-      pullingElement.className = '';
+      pullingElement.classList.remove('active');
       state.pulling = false;
       callback();
     })
     .on(document, 'touchstart', function enableTouch() {
-      $('html')[0].className = 'touch';
+      $('html')[0].classList.add('touch');
 
       events.off(document, 'touchstart', enableTouch);
     })
@@ -75,7 +75,7 @@ module.exports = function setup(state, callback, registerReset) {
 
   registerReset(() => {
     [].forEach.call($('#mobile-controls .active'), (element) => {
-      element.className = '';
+      element.classList.remove('active');
     });
   });
 };

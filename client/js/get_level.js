@@ -66,6 +66,15 @@ module.exports = function getLevel(which, uiState) {
       this.moving = false;
     },
 
+    reset() {
+      this.data = levels[which];
+      this.direction = null;
+      this.pulling = false;
+      this.moving = false;
+      this.destinations = [];
+      processData(this);
+    },
+
     uiState,
     which,
     data,

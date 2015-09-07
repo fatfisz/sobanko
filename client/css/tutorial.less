@@ -1,0 +1,53 @@
+@import 'mixins';
+
+
+& {
+  .module-mixins();
+
+  html.playing.tutorial #tutorial-dim {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity .5s, transform 0s;
+    z-index: 1;
+  }
+
+  .tutorial-highlight {
+    position: relative;
+    z-index: 2;
+  }
+
+  #tutorial-overlay {
+    .fullscreen();
+    background: none;
+    transform: scale(0);
+    z-index: 3;
+
+    html.playing.tutorial & {
+      transform: scale(1);
+    }
+
+    .dialog {
+      left: 50%;
+      opacity: 0;
+      position: absolute;
+      top: 10px;
+      transform: translateX(-50%);
+      transition: opacity .5s;
+
+      &.middle {
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        @media (max-height: 360px) {
+          bottom: 10px;
+          top: auto;
+          transform: translateX(-50%);
+        }
+      }
+
+      &.visible {
+        opacity: 1;
+      }
+    }
+  }
+}

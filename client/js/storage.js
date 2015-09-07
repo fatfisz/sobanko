@@ -8,6 +8,7 @@ var { isBoxTile, opposite, getBoxPosition } = require('./utils');
 var undoPrefix = 'undo/';
 var bestPrefix = 'best/';
 
+var tutorialMode = !localStorage.getItem('tutorialDone');
 var stateIndex = +localStorage.getItem('stateIndex');
 
 function updateStateIndex() {
@@ -84,8 +85,17 @@ function applyStateFragment(level, value) {
 
 module.exports = {
 
+  get tutorialMode() {
+    return tutorialMode;
+  },
+
   get movesStored() {
     return stateIndex;
+  },
+
+  tutorialFinished() {
+    localStorage.setItem('tutorialDone', 1);
+    tutorialMode = false;
   },
 
   saveLevel(which) {

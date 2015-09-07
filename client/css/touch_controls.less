@@ -1,4 +1,9 @@
+@import 'mixins';
+
+
 & {
+  .module-mixins();
+
   @padding: 12px;
   @button-size: 120px;
 
@@ -13,9 +18,7 @@
     }
 
     @media (max-height: 360px) {
-      bottom: 0;
-      left: 0;
-      position: fixed;
+      flex: 0 0 @padding;
     }
   }
 
@@ -25,19 +28,28 @@
   @half-color: fade(@color, 50%);
 
   #direction, #pulling {
+    .background();
     border: 3px solid @half-color;
     border-radius: 50%;
     height: @button-size;
+    position: relative;
     width: @button-size;
 
     &.active {
-      background: fade(@color, 20%);
+      .background(fade(@color, 20%));
+    }
+
+    &.tutorial-highlight {
+      z-index: 4; // more than tutorial-overlay
+    }
+
+    @media (max-height: 360px) {
+      top: (-@button-size);
     }
   }
 
   #direction {
     float: left;
-    position: relative;
   }
 
   #up, #down, #left, #right {

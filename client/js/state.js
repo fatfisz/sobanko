@@ -6,21 +6,17 @@ var getLevel = require('./get_level');
 var levels = require('./levels');
 var resizeCanvas = require('./resize_canvas');
 var storage = require('./storage');
-var { $ } = require('./utils');
+var tutorial = require('./tutorial');
+var { $, toggleFocus } = require('./utils');
 
-
-function toggleFocus(ids, allow) {
-  ids.forEach((id) => {
-    var element = $('#' + id)[0];
-
-    element.tabIndex = allow ? 0 : -1;
-    element.blur();
-  });
-}
 
 var root = $('html')[0];
 var playing = false;
 var currentLevel;
+
+if (storage.tutorialMode) {
+  root.classList.add('tutorial');
+}
 
 controls.setup(function controlsStateChanged() {
   if (!playing) {
@@ -111,7 +107,7 @@ module.exports = exports = {
     playing = true;
     currentLevel = getLevel(which, exports);
 
-    if (storage.getLevel() === which) {
+    if (storage.getLevel() === which && !storage.tutorialMode) {
       storage.restoreState(currentLevel);
     } else {
       storage.resetUndo();
@@ -125,6 +121,10 @@ module.exports = exports = {
     root.classList.add('playing');
 
     resizeCanvas();
+
+    if (storage.tutorialMode) {
+      tutorial.start(currentLevel);
+    }
   },
 
   stopLevel() {
@@ -171,9 +171,13 @@ module.exports = exports = {
   },
 
   afterMove() {
-    exports.saveState();
+    storage.saveState(currentLevel);
 
     updateCounters();
+
+    if (storage.tutorialMode) {
+      tutorial.afterMove(currentLevel);
+    }
 
     if (currentLevel.boxesLeft === 0) {
       gameWon();
@@ -217,11 +221,13 @@ module.exports = exports = {
       throw new Error('The game shouldn\'t have been stopped');
     }
 
-    playing = false;
-    storage.clearLevel();
-    gameLoop.stop();
+    currentLevel.reset();
+    storage.resetUndo();
+    storage.saveState(currentLevel);
 
-    exports.startLevel(currentLevel.which);
+    gameLoop.scheduleRedraw();
+
+    initStatus();
 
     toggleFocus(['restart-cancel', 'restart-ok']);
 

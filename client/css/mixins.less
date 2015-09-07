@@ -1,4 +1,10 @@
 .module-mixins() {
+  .background(@over: rgba(0, 0, 0, 0)) {
+    @alpha: alpha(@over);
+
+    background: (#f4f8fa * (1 - @alpha) + @over * @alpha);
+  }
+
   .z1-shadow() {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
                 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -17,7 +23,7 @@
   }
 
   .fullscreen() {
-    background: #f4f8fa;
+    .background();
     height: 100%;
     left: 0;
     position: fixed;
