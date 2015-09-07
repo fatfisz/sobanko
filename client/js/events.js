@@ -11,6 +11,11 @@ function getEventHandler(eventName) {
   return (event) => {
     var { target } = event;
 
+    if (eventName === 'click' && event.button !== 0) {
+      event.preventDefault();
+      return;
+    }
+
     function fireHandlerIfMatches([_element, handler]) {
       if (_element === target) {
         handler.call(target, event);
