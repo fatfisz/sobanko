@@ -7,10 +7,9 @@ var levels = require('./levels');
 var resizeCanvas = require('./resize_canvas');
 var storage = require('./storage');
 var tutorial = require('./tutorial');
-var { $, toggleFocus } = require('./utils');
+var { $, root, toggleFocus } = require('./utils');
 
 
-var root = $('html')[0];
 var playing = false;
 var currentLevel;
 

@@ -10,6 +10,7 @@ var $ = document.querySelectorAll.bind(document);
 module.exports = exports = {
 
   $,
+  root: $('html')[0],
   context: $('canvas')[0].getContext('2d'),
 
   toggleFocus(ids, allow) {

@@ -1,7 +1,7 @@
 'use strict';
 
 var events = require('../events');
-var { $ } = require('../utils');
+var { $, root } = require('../utils');
 
 
 var gameContainer = $('#game-container')[0];
@@ -81,7 +81,7 @@ module.exports = function setup(state, callback, registerReset) {
       callback();
     })
     .on(document, 'touchstart', function enableTouch() {
-      $('html')[0].classList.add('touch');
+      root.classList.add('touch');
 
       events.off(document, 'touchstart', enableTouch);
     })

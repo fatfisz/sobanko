@@ -5,7 +5,7 @@ var controls = require('./controls');
 var events = require('./events');
 var gameLoop = require('./game_loop');
 var storage = require('./storage');
-var { $, toggleFocus, isPassable, getTargetPosition } = require('./utils');
+var { $, root, toggleFocus, isPassable, getTargetPosition } = require('./utils');
 
 
 var dialog = $('#tutorial-dialog')[0];
@@ -14,7 +14,7 @@ var nextButton = $('#tutorial-next')[0];
 var currentStep;
 
 function isTouch() {
-  return $('html')[0].classList.contains('touch');
+  return root.classList.contains('touch');
 }
 
 function checkSurroundings(level, predicate) {
@@ -153,7 +153,7 @@ var steps = {
       controls.setLock(false);
       storage.tutorialFinished();
 
-      $('html')[0].classList.remove('tutorial');
+      root.classList.remove('tutorial');
     },
   },
 };
