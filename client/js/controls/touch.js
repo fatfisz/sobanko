@@ -6,18 +6,32 @@ var { $ } = require('../utils');
 
 var gameContainer = $('#game-container')[0];
 var centerOffset = 12 + 60; // padding + half size of the circle
-var detectionBound = 400;
+var detectionBound = 300;
 
 module.exports = function setup(state, callback, registerReset) {
   var directionElement = $('#direction')[0];
   var pullingElement = $('#pulling')[0];
+  var directionTouchIdentifier = null;
 
   function handleTouchMove(event) {
     if (!event.changedTouches) {
       return;
     }
 
-    var { clientX, clientY } = event.changedTouches[0];
+    var clientX;
+    var clientY;
+    var found = false;
+
+    [].forEach.call(event.changedTouches, (touch) => {
+      if (touch.identifier === directionTouchIdentifier) {
+        ({ clientX, clientY } = touch);
+        found = true;
+      }
+    });
+
+    if (!found) {
+      return;
+    }
 
     var x = clientX - centerOffset;
     var y = clientY - gameContainer.clientHeight + centerOffset;
@@ -46,10 +60,12 @@ module.exports = function setup(state, callback, registerReset) {
   events
     .on(directionElement, 'touchstart', (event) => {
       directionElement.classList.add('active');
+      directionTouchIdentifier = event.changedTouches[0].identifier;
       handleTouchMove(event);
     })
     .on(directionElement, 'touchend', () => {
       directionElement.classList.remove('active');
+      directionTouchIdentifier = null;
       state.direction = null;
       callback();
     })
