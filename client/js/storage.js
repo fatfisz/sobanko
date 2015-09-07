@@ -67,7 +67,7 @@ function applyStateFragment(level, value) {
     direction,
     playerPos,
     /* eslint-disable comma-dangle */
-    ...data // This is a bug in eslint
+    ...data // Filed a bug for this: https://github.com/eslint/eslint/issues/3627
     /* eslint-enable comma-dangle */
   ] = parsed;
 
