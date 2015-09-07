@@ -1,3 +1,11 @@
+/*
+ * Sobanko
+ * https://github.com/fatfisz/sobanko
+ *
+ * Copyright (c) 2015 FatFisz
+ * Licensed under the MIT license.
+ */
+
 'use strict';
 
 var { drawBox, drawBoxInDestination } = require('./tiles/boxes');

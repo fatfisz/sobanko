@@ -1,7 +1,7 @@
 {
-  "name": "sobanko",
-  "description": "js13k 2015 entry",
-  "version": "0.0.1",
+  "name": "Sobanko",
+  "description": "js13kGames 2015 entry",
+  "version": "1.0.0",
   "private": true,
   "author": {
     "name": "FatFisz",

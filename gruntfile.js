@@ -1,3 +1,11 @@
+/*
+ * Sobanko
+ * https://github.com/fatfisz/sobanko
+ *
+ * Copyright (c) 2015 FatFisz
+ * Licensed under the MIT license.
+ */
+
 /* eslint camelcase: [2, { properties: "never" }] */
 'use strict';
 

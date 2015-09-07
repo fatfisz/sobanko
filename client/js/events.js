@@ -1,9 +1,12 @@
-'use strict';
-
-/* This code exists only because Chrome would behave in a very strange way when
- * dubugging through "Inspect device". It seems that adding event listeners
- * only on document and window solved the problem.
+/*
+ * Sobanko
+ * https://github.com/fatfisz/sobanko
+ *
+ * Copyright (c) 2015 FatFisz
+ * Licensed under the MIT license.
  */
+
+'use strict';
 
 var events = {};
 
@@ -12,6 +15,7 @@ function getEventHandler(eventName) {
     var { target } = event;
 
     if (eventName === 'click' && event.button !== 0) {
+      // FF fires `click` also for right-clicks
       event.preventDefault();
       return;
     }

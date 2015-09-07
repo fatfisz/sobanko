@@ -2,7 +2,7 @@
 
 This is my entry for the [js13kGames competition](http://2015.js13kgames.com/).
 
-The game is a little homage to Sokoban, one of my favourite games from the time I was about 3 years old.
+The game is a little homage to Sokoban, one of my favourite games from the time I was about 2 years old.
 
 The main difference is that the game is reversed - you now have to pull the boxes instead of pushing them.
 This means that Sobanko, although similar to Sokoban, is quite a different game; some positions possible to obtain in one game are impossible in another.
