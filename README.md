@@ -1,5 +1,7 @@
 # Sobanko
 
+![Sobanko](https://raw.githubusercontent.com/fatfisz/sobanko/master/big.png)
+
 This is my entry for the [js13kGames competition](http://2015.js13kgames.com/).
 
 The game is a little homage to Sokoban, one of my favourite games from the time I was about 2 years old.
