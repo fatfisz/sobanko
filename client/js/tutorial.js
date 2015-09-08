@@ -55,7 +55,7 @@ var steps = {
     get caption() {
       return `
         First, move next to a box using
-        ${isTouch() ? 'the left button' : 'arrow keys'}.
+        ${isTouch() ? 'the pad on the left' : 'arrow keys'}.
       `;
     },
     highlight: ['canvas', '#direction'],
@@ -76,7 +76,7 @@ var steps = {
     get caption() {
       return `
         Now try dragging the box to an orange activator.<br>
-        To do it, hold the ${isTouch() ? 'right button' : 'Shift key'} while moving.
+        To do it, hold the ${isTouch() ? 'button on the right' : 'Shift key'} while moving.
       `;
     },
     highlight: ['#pulling'],
@@ -131,7 +131,7 @@ var steps = {
     middle: true,
     get caption() {
       return `
-        That's it!<br>
+        That's it! Now activate other boxes.<br>
         <br>
         Remember to use Undo and Restart buttons if you get stuck.<br>
         ${isTouch() ? '' : 'You can also use Ctrl + Z for undo too.<br>'}
