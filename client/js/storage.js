@@ -124,7 +124,7 @@ module.exports = {
     var keysToDelete = [];
 
     for (var i = 0, ii = localStorage.length; i < ii; i += 1) {
-      if (localStorage.key(i).startsWith(undoPrefix)) {
+      if (localStorage.key(i).indexOf(undoPrefix) === 0) {
         keysToDelete.push(localStorage.key(i));
       }
     }

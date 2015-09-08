@@ -16,19 +16,25 @@ var movePlayerAndBox = require('./move_player_and_box');
 
 var stopped = true;
 var redrawScheduled = false;
-var timestamp;
+var firstFrame;
+var lastTimestamp;
 var delta;
 var level;
 
-function step() {
+function step(timestamp) {
   if (stopped) {
     return;
   }
 
   requestAnimationFrame(step);
 
-  delta = performance.now() - timestamp;
-  timestamp += delta;
+  if (firstFrame) {
+    lastTimestamp = timestamp;
+    firstFrame = false;
+  }
+
+  delta = timestamp - lastTimestamp;
+  lastTimestamp = timestamp;
 
   if (redrawScheduled) {
     drawLevelFragment(level, 0, 0, level.width, level.height);
@@ -47,7 +53,7 @@ module.exports = exports = {
     requestAnimationFrame(step);
 
     stopped = false;
-    timestamp = performance.now();
+    firstFrame = true;
     level = _level;
     exports.scheduleRedraw();
 
