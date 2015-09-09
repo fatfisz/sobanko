@@ -9,6 +9,8 @@ The game is a little homage to Sokoban, one of my favourite games from the time 
 The main difference is that the game is reversed - you now have to pull the boxes instead of pushing them.
 This means that Sobanko, although similar to Sokoban, is quite a different game; some positions possible to obtain in one game are impossible in another.
 
+[You can play the game here thanks to the GitHub Pages](http://fatfisz.github.io/sobanko/).
+
 ## Requirements
 
 The project requires [Node.js](https://nodejs.org/) and npm (comes with Node.js) to be installed.
