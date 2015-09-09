@@ -25,9 +25,9 @@
       display: block;
     }
 
-    @media (max-height: 360px) {
+    .mobile-landscape({
       flex: 0 0 @padding;
-    }
+    })
   }
 
   @offset: 12px;
@@ -51,9 +51,9 @@
       z-index: 4; // more than tutorial-overlay
     }
 
-    @media (max-height: 360px) {
+    .mobile-landscape({
       top: (-@button-size);
-    }
+    })
   }
 
   #direction {

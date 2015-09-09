@@ -29,20 +29,20 @@
       text-align: center;
     }
 
-    @media (max-height: 360px) {
+    .mobile-landscape({
       .buttons {
         float: right;
       }
-    }
+    })
   }
 
   #info-rows {
     margin-top: 12px;
 
-    @media (max-height: 360px) {
+    .mobile-landscape({
       float: left;
       margin-top: 0;
-    }
+    })
   }
 
   .info-row {
@@ -57,28 +57,28 @@
       margin-right: 24px;
     }
 
-    @media (max-height: 360px) {
+    .mobile-landscape({
       height: 36px;
       line-height: 36px;
       margin-left: 24px;
       margin-right: 24px;
       margin-top: 0;
-    }
+    })
   }
 
   #moves {
-    @media (max-height: 360px) {
+    .mobile-landscape({
       // Move to the left so that it's aligned with the best score info
       float: left;
-    }
+    })
   }
 
   #best {
     display: block;
 
-    @media (max-height: 360px) {
+    .mobile-landscape({
       position: absolute;
-    }
+    })
   }
 
   #moves-count,
