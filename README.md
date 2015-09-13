@@ -11,6 +11,8 @@ This means that Sobanko, although similar to Sokoban, is quite a different game;
 
 [You can play the game here thanks to the GitHub Pages](http://fatfisz.github.io/sobanko/).
 
+Thanks to my friend Bartosz Gąsowski for giving me the idea to make this game.
+
 ## Requirements
 
 The project requires [Node.js](https://nodejs.org/) and npm (comes with Node.js) to be installed.
